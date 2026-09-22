@@ -4,50 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>Generador de enlaces</title>
+  <title>Enlaces de invitados</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
   <style>
     body { font-family: Montserrat, sans-serif; background: #fbf6f1; color: #5a4448; margin: 0; padding: 24px 16px; }
-    .box { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 12px 30px -18px rgba(120,60,70,.5); }
-    h1 { font-family: "Great Vibes", cursive; font-weight: normal; color: #a8646a; font-size: 44px; margin: 0 0 8px; text-align: center; }
-    label { display: block; font-size: 13px; margin: 14px 0 6px; }
-    input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #e2a9a4; border-radius: 10px; font: inherit; }
-    button { margin-top: 18px; width: 100%; padding: 14px; border: 0; border-radius: 30px; background: #a8646a; color: #fff; font: inherit; cursor: pointer; }
-    textarea { width: 100%; box-sizing: border-box; margin-top: 18px; min-height: 90px; padding: 12px; border-radius: 10px; border: 1px dashed #c98b8b; font: inherit; font-size: 13px; }
-    .row { display: flex; gap: 10px; margin-top: 10px; }
-    .row a, .row button { flex: 1; margin: 0; text-align: center; padding: 12px; border-radius: 30px; text-decoration: none; font-size: 14px; }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 { font-family: "Great Vibes", cursive; font-weight: normal; color: #a8646a; font-size: 44px; margin: 0; text-align: center; }
+    .sub { text-align: center; font-size: 13px; color: #8a7074; margin: 4px 0 20px; }
+    .total { text-align: center; font-size: 14px; margin-bottom: 18px; }
+    .card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 10px 24px -18px rgba(120,60,70,.6); }
+    .top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .name { font-weight: 500; }
+    .pases { font-size: 12px; background: #e9efe3; color: #6f8660; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+    .url { font-size: 12px; color: #8a7074; word-break: break-all; margin: 8px 0 10px; }
+    .row { display: flex; gap: 8px; }
+    .row a, .row button { flex: 1; text-align: center; padding: 10px; border-radius: 30px; border: 0; font: inherit; font-size: 13px; cursor: pointer; text-decoration: none; }
+    .copy { background: #f3d9d3; color: #a8646a; }
     .wa { background: #25d366; color: #fff; }
-    small { color: #8a7074; }
+    .err { color: #a8646a; text-align: center; }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Enlaces de invitación</h1>
-    <small>Crea el enlace personalizado para cada familia y envíalo por WhatsApp.</small>
-    <label for="fam">Nombre de la familia o invitado</label>
-    <input id="fam" placeholder="Ej: Familia Pérez Gómez">
-    <label for="pas">Número de pases</label>
-    <input id="pas" type="number" min="1" max="20" value="2">
-    <button id="gen">Generar enlace</button>
-    <textarea id="out" readonly placeholder="Aquí aparecerá el enlace"></textarea>
-    <div class="row">
-      <button id="copy">Copiar</button>
-      <a id="wa" class="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
-    </div>
+  <div class="wrap">
+    <h1>Enlaces de invitados</h1>
+    <p class="sub">Esta lista sale del archivo <b>invitados.csv</b>. Para añadir o cambiar invitados, edita ese archivo.</p>
+    <p class="total" id="total"></p>
+    <div id="list"></div>
   </div>
   <script>
+    function parseCSV(text) {
+      const rows = text.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim());
+      const split = (line) => {
+        const out = []; let cur = ""; let q = false;
+        for (const ch of line) {
+          if (ch === '"') q = !q;
+          else if ((ch === "," || ch === ";") && !q) { out.push(cur.trim()); cur = ""; }
+          else cur += ch;
+        }
+        out.push(cur.trim()); return out;
+      };
+      const head = split(rows.shift()).map((h) => h.toLowerCase());
+      return rows.map((r) => { const c = split(r); return Object.fromEntries(head.map((h, i) => [h, c[i] || ""])); });
+    }
     const base = new URL("./", location.href).href;
-    const out = document.getElementById("out");
-    const wa = document.getElementById("wa");
-    document.getElementById("gen").onclick = () => {
-      const u = new URL(base);
-      u.searchParams.set("familia", document.getElementById("fam").value.trim());
-      u.searchParams.set("pases", document.getElementById("pas").value);
-      out.value = u.toString();
-      const msg = `¡Hola! 💌 Con mucha alegría te compartimos la invitación a nuestra boda. Ábrela aquí:\n${out.value}`;
-      wa.href = "https://wa.me/?text=" + encodeURIComponent(msg);
-    };
-    document.getElementById("copy").onclick = () => navigator.clipboard.writeText(out.value);
+    fetch("invitados.csv", { cache: "no-store" })
+      .then((r) => r.text())
+      .then((t) => {
+        const guests = parseCSV(t).filter((g) => g.codigo);
+        const totalPases = guests.reduce((s, g) => s + (parseInt(g.pases, 10) || 0), 0);
+        document.getElementById("total").textContent = `${guests.length} invitaciones · ${totalPases} pases en total`;
+        const list = document.getElementById("list");
+        guests.forEach((g) => {
+          const url = `${base}?i=${encodeURIComponent(g.codigo)}`;
+          const n = parseInt(g.pases, 10) || 0;
+          const msg = `¡Hola ${g.familia}! 💌 Con mucha alegría te compartimos la invitación a nuestra boda (válida para ${n} ${n === 1 ? "persona" : "personas"}). Ábrela aquí:\n${url}`;
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="top"><span class="name"></span><span class="pases"></span></div>
+            <div class="url"></div>
+            <div class="row"><button class="copy">Copiar enlace</button><a class="wa" target="_blank" rel="noopener">WhatsApp</a></div>`;
+          card.querySelector(".name").textContent = g.familia;
+          card.querySelector(".pases").textContent = `${n} ${n === 1 ? "pase" : "pases"}`;
+          card.querySelector(".url").textContent = url;
+          card.querySelector(".wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+          const btn = card.querySelector(".copy");
+          btn.onclick = () => navigator.clipboard.writeText(url).then(() => { btn.textContent = "¡Copiado!"; setTimeout(() => btn.textContent = "Copiar enlace", 1500); });
+          list.appendChild(card);
+        });
+      })
+      .catch(() => { document.getElementById("list").innerHTML = '<p class="err">No se pudo leer invitados.csv</p>'; });
   </script>
 </body>
 </html>

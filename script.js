@@ -39,25 +39,49 @@ function fillDates() {
   });
 }
 
-/* ---------- Invitado personalizado (?familia=...&pases=...) ---------- */
-function fillGuest() {
-  const familia = (params.get("familia") || "").trim().slice(0, 80);
-  const pases = parseInt(params.get("pases"), 10);
+/* ---------- Invitado personalizado (?i=CODIGO → invitados.csv) ---------- */
+function parseCSV(text) {
+  const rows = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim());
+  const split = (line) => {
+    const out = []; let cur = ""; let q = false;
+    for (const ch of line) {
+      if (ch === '"') q = !q;
+      else if ((ch === "," || ch === ";") && !q) { out.push(cur.trim()); cur = ""; }
+      else cur += ch;
+    }
+    out.push(cur.trim());
+    return out;
+  };
+  const head = split(rows.shift()).map((h) => h.toLowerCase());
+  return rows.map((r) => {
+    const cols = split(r);
+    return Object.fromEntries(head.map((h, i) => [h, cols[i] || ""]));
+  });
+}
 
-  if (familia) {
-    $("#guestName").textContent = familia;
-    const intro = $("#introGuest");
-    intro.textContent = familia;
-    intro.hidden = false;
-  }
-  if (pases > 0 && pases < 100) {
+async function fillGuest() {
+  $("#rsvpBtn").href = CONFIG.googleForm;
+
+  const code = (params.get("i") || "").trim().toUpperCase();
+  if (!code) return;
+
+  let guest;
+  try {
+    const res = await fetch("invitados.csv", { cache: "no-store" });
+    guest = parseCSV(await res.text()).find((g) => g.codigo.toUpperCase() === code);
+  } catch { return; }
+  if (!guest) return;
+
+  const pases = parseInt(guest.pases, 10);
+  $("#guestName").textContent = guest.familia;
+  const intro = $("#introGuest");
+  intro.textContent = guest.familia;
+  intro.hidden = false;
+  if (pases > 0) {
     $("#passesNum").textContent = pases;
     $("#passesText").textContent = pases === 1 ? "pase reservado" : "pases reservados";
     $("#passesBox").hidden = false;
   }
-
-  // Google Form: si tu formulario tiene campos pre-rellenables, puedes añadirlos aquí
-  $("#rsvpBtn").href = CONFIG.googleForm;
 }
 
 /* ---------- Sobre + música ---------- */
