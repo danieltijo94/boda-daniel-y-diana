@@ -259,9 +259,53 @@
       <h2 class="section-title reveal">Confirma tu asistencia</h2>
       <p class="reveal">Por favor confírmanos antes del <strong data-cfg="rsvpDeadline">15 de noviembre de 2026</strong>.</p>
       <p class="rsvp-adults reveal">Evento solo para adultos</p>
-      <a class="btn btn-big reveal" id="rsvpBtn" href="#" target="_blank" rel="noopener">
-        Confirmar asistencia
-      </a>
+
+      <form class="rsvp-form reveal" id="rsvpForm" novalidate>
+        <label class="field">
+          <span class="field-label">Nombre</span>
+          <input type="text" name="nombre" id="rsvpName" autocomplete="name" placeholder="Tu nombre o el de tu familia" required maxlength="80">
+        </label>
+
+        <fieldset class="field">
+          <legend class="field-label">¿Nos acompañarás?</legend>
+          <div class="choice-group">
+            <label class="choice">
+              <input type="radio" name="asistencia" value="Sí" required>
+              <span class="choice-box"><span class="choice-emoji">💃</span>¡Sí, ahí estaré!</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="asistencia" value="No">
+              <span class="choice-box"><span class="choice-emoji">💌</span>No podré asistir</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="field" id="peopleField" hidden>
+          <legend class="field-label">¿Cuántas personas asistirán?</legend>
+          <div class="people-group" id="peopleGroup"></div>
+          <p class="field-hint" id="peopleHint"></p>
+        </fieldset>
+
+        <label class="field">
+          <span class="field-label">Mensaje para los novios <small>(opcional)</small></span>
+          <textarea name="mensaje" rows="3" maxlength="500" placeholder="Alergias, restricciones alimentarias o unas palabras para nosotros ❤"></textarea>
+        </label>
+
+        <p class="form-error" id="rsvpError" role="alert" hidden></p>
+        <button type="submit" class="btn btn-big" id="rsvpSubmit">
+          <span class="btn-label">Enviar confirmación</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <div class="rsvp-done" id="rsvpDone" hidden>
+        <div class="done-heart" aria-hidden="true">
+          <svg viewBox="0 0 64 64"><path d="M32 56S6 40 6 22A13 13 0 0 1 32 16a13 13 0 0 1 26 6c0 18-26 34-26 34z"/></svg>
+        </div>
+        <h3 id="rsvpDoneTitle">¡Gracias por confirmar!</h3>
+        <p id="rsvpDoneText">Te esperamos con mucha ilusión.</p>
+        <button type="button" class="btn btn-ghost btn-small" id="rsvpAgain">Cambiar mi respuesta</button>
+      </div>
     </section>
 
     <footer class="footer">
