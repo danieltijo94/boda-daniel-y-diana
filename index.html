@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daniel &amp; Diana · Nuestra Boda</title>
+  <meta name="description" content="Invitación a la boda de Daniel y Diana">
+  <meta property="og:title" content="Daniel & Diana · Nuestra Boda">
+  <meta property="og:description" content="¡Nos casamos! Estás invitado a celebrar con nosotros.">
+  <meta name="theme-color" content="#f7efe9">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="locked">
+
+  <!-- Sprite de flores reutilizable -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="rose" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="var(--rose-light)"/>
+        <path d="M50 14c14 6 30 18 30 36S66 82 50 86 20 70 20 52 36 20 50 14z" fill="var(--rose)"/>
+        <path d="M50 28c10 4 20 12 20 24s-10 20-20 22-20-8-20-20 10-22 20-26z" fill="var(--rose-deep)" opacity=".75"/>
+        <path d="M50 40c6 2 11 7 11 13s-5 10-11 11-11-5-11-11 5-11 11-13z" fill="var(--rose-dark)" opacity=".8"/>
+        <path d="M44 50c2-4 8-5 11-1" stroke="var(--rose-light)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="leaf" viewBox="0 0 60 120">
+        <path d="M30 118C30 80 30 40 30 4" stroke="var(--sage-dark)" stroke-width="2" fill="none"/>
+        <path d="M30 100C12 94 4 80 6 66c14 2 24 14 24 34z" fill="var(--sage)"/>
+        <path d="M30 100c18-6 26-20 24-34-14 2-24 14-24 34z" fill="var(--sage-light)"/>
+        <path d="M30 70C14 64 8 50 10 38c12 2 20 14 20 32z" fill="var(--sage-light)"/>
+        <path d="M30 70c16-6 22-20 20-32-12 2-20 14-20 32z" fill="var(--sage)"/>
+        <path d="M30 42C18 36 14 26 16 16c10 2 14 12 14 26z" fill="var(--sage)"/>
+        <path d="M30 42c12-6 16-16 14-26-10 2-14 12-14 26z" fill="var(--sage-light)"/>
+      </symbol>
+      <symbol id="bud" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="14" fill="var(--blush)"/>
+        <circle cx="20" cy="20" r="8" fill="var(--rose)"/>
+        <circle cx="20" cy="20" r="3" fill="var(--gold)"/>
+      </symbol>
+      <symbol id="bouquet" viewBox="0 0 300 160">
+        <use href="#leaf" x="20" y="10" width="60" height="120" transform="rotate(-50 50 70)"/>
+        <use href="#leaf" x="220" y="10" width="60" height="120" transform="rotate(50 250 70)"/>
+        <use href="#leaf" x="70" y="-10" width="50" height="100" transform="rotate(-20 95 40)"/>
+        <use href="#leaf" x="180" y="-10" width="50" height="100" transform="rotate(20 205 40)"/>
+        <use href="#rose" x="105" y="40" width="90" height="90"/>
+        <use href="#rose" x="60" y="70" width="60" height="60"/>
+        <use href="#rose" x="180" y="70" width="60" height="60"/>
+        <use href="#bud" x="40" y="100" width="30" height="30"/>
+        <use href="#bud" x="230" y="100" width="30" height="30"/>
+        <use href="#bud" x="135" y="20" width="30" height="30"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ========== SOBRE DE APERTURA ========== -->
+  <div id="intro" class="intro" role="dialog" aria-label="Abrir invitación">
+    <div class="intro-petals" aria-hidden="true"></div>
+    <p class="intro-hint">Tienes una invitación especial</p>
+    <button class="envelope" id="envelope" aria-label="Abrir el sobre">
+      <span class="env-back"></span>
+      <span class="env-letter">
+        <span class="letter-script">Daniel &amp; Diana</span>
+        <span class="letter-small">¡Nos casamos!</span>
+      </span>
+      <span class="env-front"></span>
+      <span class="env-flap"></span>
+      <span class="seal"><span>D&amp;D</span></span>
+    </button>
+    <p class="intro-tap">Toca el sello para abrir <span class="tap-dot"></span></p>
+    <p class="intro-guest" id="introGuest" hidden></p>
+  </div>
+
+  <!-- Pétalos cayendo -->
+  <div class="petals" id="petals" aria-hidden="true"></div>
+
+  <!-- Control de música -->
+  <audio id="music" loop preload="none">
+    <source src="assets/cancion.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-btn" id="musicBtn" aria-label="Pausar o reproducir música" hidden>
+    <span class="bars"><i></i><i></i><i></i><i></i></span>
+  </button>
+
+  <main id="main">
+
+    <!-- ========== PORTADA ========== -->
+    <section class="hero" id="inicio">
+      <svg class="corner corner-tl" aria-hidden="true"><use href="#bouquet"/></svg>
+      <svg class="corner corner-br" aria-hidden="true"><use href="#bouquet"/></svg>
+      <div class="hero-inner">
+        <p class="eyebrow reveal">Con la bendición de Dios y nuestras familias</p>
+        <h1 class="names">
+          <span class="name reveal" data-delay="1">Daniel</span>
+          <span class="amp reveal" data-delay="2">&amp;</span>
+          <span class="name reveal" data-delay="3">Diana</span>
+        </h1>
+        <p class="hero-sub reveal" data-delay="4">¡Nos casamos!</p>
+        <div class="hero-date reveal" data-delay="5">
+          <span data-cfg="weekday">Sábado</span>
+          <span class="big" data-cfg="day">12</span>
+          <span data-cfg="monthYear">Diciembre 2026</span>
+        </div>
+        <a href="#invitado" class="scroll-down" aria-label="Bajar">
+          <span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== INVITADO PERSONALIZADO ========== -->
+    <section class="section guest" id="invitado">
+      <svg class="divider reveal" aria-hidden="true"><use href="#bouquet"/></svg>
+      <p class="quote reveal">"El amor es paciente, es bondadoso… todo lo sufre, todo lo cree, todo lo espera, todo lo soporta."</p>
+      <p class="quote-ref reveal">1 Corintios 13:4-7</p>
+
+      <div class="guest-card reveal">
+        <p class="guest-label">Esta invitación es para</p>
+        <p class="guest-name" id="guestName">Nuestra familia y amigos</p>
+        <div class="passes" id="passesBox" hidden>
+          <span class="passes-num" id="passesNum">2</span>
+          <span class="passes-text" id="passesText">pases reservados</span>
+        </div>
+        <p class="guest-note">Nos hará muy felices contar con tu presencia en este día tan especial.</p>
+      </div>
+
+      <div class="parents reveal">
+        <div>
+          <h3>Padres del novio</h3>
+          <p>Nombre del Padre<br>Nombre de la Madre</p>
+        </div>
+        <div>
+          <h3>Padres de la novia</h3>
+          <p>Nombre del Padre<br>Nombre de la Madre</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CUENTA REGRESIVA ========== -->
+    <section class="section countdown-section" id="cuenta">
+      <h2 class="section-title reveal">Faltan</h2>
+      <div class="countdown reveal" id="countdown">
+        <div class="cd-item"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Días</span></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-item"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Horas</span></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-item"><span class="cd-num" id="cdMins">00</span><span class="cd-label">Minutos</span></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-item"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">Segundos</span></div>
+      </div>
+      <p class="cd-done" id="cdDone" hidden>¡Hoy es el gran día! 💍</p>
+      <a class="btn btn-ghost reveal" id="calendarBtn" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10z"/></svg>
+        Agendar en mi calendario
+      </a>
+    </section>
+
+    <!-- ========== CEREMONIA Y RECEPCIÓN ========== -->
+    <section class="section places" id="lugares">
+      <h2 class="section-title reveal">¿Dónde y cuándo?</h2>
+      <div class="place-grid">
+        <article class="place-card reveal">
+          <div class="place-icon">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4l6 8h-4v6h10l-4 8h6v34H18V26h6l-4-8h10v-6h-4l6-8zm-6 40v16h12V44a6 6 0 0 0-12 0z"/></svg>
+          </div>
+          <h3>Ceremonia</h3>
+          <p class="place-time">4:00 p.m.</p>
+          <p class="place-name">Parroquia Nuestra Señora</p>
+          <p class="place-addr">Calle 00 # 00-00, Ciudad</p>
+          <a class="btn" href="https://maps.google.com/?q=Parroquia" target="_blank" rel="noopener">Ver ubicación</a>
+        </article>
+        <article class="place-card reveal" data-delay="2">
+          <div class="place-icon">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 6h8l-2 18a8 8 0 0 1-3 5.6V52h7v6H14v-6h7V29.6A8 8 0 0 1 18 24L16 6h4zm18 0h8l-2 18a8 8 0 0 1-3 5.6V52h7v6H32v-6h7V29.6A8 8 0 0 1 36 24L34 6h4z"/></svg>
+          </div>
+          <h3>Recepción</h3>
+          <p class="place-time">6:30 p.m.</p>
+          <p class="place-name">Hacienda Los Jardines</p>
+          <p class="place-addr">Km 0 vía Principal, Ciudad</p>
+          <a class="btn" href="https://maps.google.com/?q=Hacienda" target="_blank" rel="noopener">Ver ubicación</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== ITINERARIO ========== -->
+    <section class="section timeline-section" id="itinerario">
+      <h2 class="section-title reveal">Itinerario</h2>
+      <ol class="timeline">
+        <li class="reveal"><span class="t-time">4:00 p.m.</span><span class="t-dot">⛪</span><span class="t-text">Ceremonia religiosa</span></li>
+        <li class="reveal"><span class="t-time">5:30 p.m.</span><span class="t-dot">📸</span><span class="t-text">Fotos con los novios</span></li>
+        <li class="reveal"><span class="t-time">6:30 p.m.</span><span class="t-dot">🥂</span><span class="t-text">Cóctel de bienvenida</span></li>
+        <li class="reveal"><span class="t-time">7:30 p.m.</span><span class="t-dot">💃</span><span class="t-text">Primer baile</span></li>
+        <li class="reveal"><span class="t-time">8:00 p.m.</span><span class="t-dot">🍽️</span><span class="t-text">Cena</span></li>
+        <li class="reveal"><span class="t-time">9:00 p.m.</span><span class="t-dot">🎉</span><span class="t-text">¡A celebrar!</span></li>
+      </ol>
+    </section>
+
+    <!-- ========== GALERÍA ========== -->
+    <section class="section gallery-section" id="galeria">
+      <h2 class="section-title reveal">Nuestra historia</h2>
+      <p class="section-sub reveal">Cada momento nos trajo hasta aquí</p>
+      <div class="gallery" id="gallery">
+        <!-- Reemplaza estas tarjetas por <img src="assets/foto1.jpg" alt="..."> -->
+        <figure class="ph reveal"><span>Foto 1</span></figure>
+        <figure class="ph tall reveal" data-delay="1"><span>Foto 2</span></figure>
+        <figure class="ph reveal" data-delay="2"><span>Foto 3</span></figure>
+        <figure class="ph wide reveal"><span>Foto 4</span></figure>
+        <figure class="ph reveal" data-delay="1"><span>Foto 5</span></figure>
+        <figure class="ph reveal" data-delay="2"><span>Foto 6</span></figure>
+      </div>
+    </section>
+
+    <!-- ========== CÓDIGO DE VESTIMENTA ========== -->
+    <section class="section dress" id="vestimenta">
+      <h2 class="section-title reveal">Código de vestimenta</h2>
+      <p class="dress-type reveal">Formal</p>
+      <div class="dress-icons reveal">
+        <div>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 4l10 8 10-8 8 6-6 10 4 40H16l4-40-6-10 8-6zm10 12l-3 6 3 26 3-26-3-6z"/></svg>
+          <span>Caballeros<br><small>Traje</small></span>
+        </div>
+        <div>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M26 4h12l-2 8 6 8-4 8 12 32H14l12-32-4-8 6-8-2-8z"/></svg>
+          <span>Damas<br><small>Vestido largo</small></span>
+        </div>
+      </div>
+      <p class="dress-note reveal">Con cariño te pedimos reservar el color <strong>blanco</strong> para la novia.</p>
+      <div class="palette reveal" aria-label="Colores sugeridos">
+        <span style="--c:#c98b8b" title="Rosa palo"></span>
+        <span style="--c:#9caf88" title="Verde salvia"></span>
+        <span style="--c:#d8b4a0" title="Durazno"></span>
+        <span style="--c:#8b9dc3" title="Azul empolvado"></span>
+        <span style="--c:#b39cc4" title="Lavanda"></span>
+      </div>
+      <p class="palette-label reveal">Paleta sugerida</p>
+    </section>
+
+    <!-- ========== REGALOS ========== -->
+    <section class="section gifts" id="regalos">
+      <h2 class="section-title reveal">Regalos</h2>
+      <div class="gift-icon reveal">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 18h48v12H8zM12 30h40v28H12zM30 18h4v40h-4zM32 18c-4-10-16-12-16-4 0 4 8 4 16 4zm0 0c4-10 16-12 16-4 0 4-8 4-16 4z"/></svg>
+      </div>
+      <p class="gift-text reveal">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, tendremos <strong>lluvia de sobres</strong> el día del evento.</p>
+      <button class="btn btn-ghost reveal" id="bankToggle" aria-expanded="false">Ver datos bancarios</button>
+      <div class="bank" id="bank" hidden>
+        <p><strong>Banco:</strong> Nombre del banco</p>
+        <p><strong>Tipo:</strong> Cuenta de ahorros</p>
+        <p><strong>Número:</strong> <span id="accNum">000-000000-00</span></p>
+        <p><strong>Titular:</strong> Daniel Tijo</p>
+        <button class="btn btn-small" id="copyBtn">Copiar número</button>
+      </div>
+    </section>
+
+    <!-- ========== CONFIRMACIÓN ========== -->
+    <section class="section rsvp" id="confirmar">
+      <svg class="divider reveal" aria-hidden="true"><use href="#bouquet"/></svg>
+      <h2 class="section-title reveal">Confirma tu asistencia</h2>
+      <p class="reveal">Por favor confírmanos antes del <strong data-cfg="rsvpDeadline">15 de noviembre de 2026</strong>.</p>
+      <p class="rsvp-adults reveal">Evento solo para adultos</p>
+      <a class="btn btn-big reveal" id="rsvpBtn" href="#" target="_blank" rel="noopener">
+        Confirmar asistencia
+      </a>
+    </section>
+
+    <footer class="footer">
+      <svg class="footer-flower" aria-hidden="true"><use href="#bouquet"/></svg>
+      <p class="footer-names">Daniel &amp; Diana</p>
+      <p class="footer-date" data-cfg="shortDate">12 · 12 · 2026</p>
+      <p class="footer-thanks">¡Gracias por ser parte de nuestra historia!</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

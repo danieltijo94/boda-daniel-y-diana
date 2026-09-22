@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Generador de enlaces</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Montserrat, sans-serif; background: #fbf6f1; color: #5a4448; margin: 0; padding: 24px 16px; }
+    .box { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 12px 30px -18px rgba(120,60,70,.5); }
+    h1 { font-family: "Great Vibes", cursive; font-weight: normal; color: #a8646a; font-size: 44px; margin: 0 0 8px; text-align: center; }
+    label { display: block; font-size: 13px; margin: 14px 0 6px; }
+    input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #e2a9a4; border-radius: 10px; font: inherit; }
+    button { margin-top: 18px; width: 100%; padding: 14px; border: 0; border-radius: 30px; background: #a8646a; color: #fff; font: inherit; cursor: pointer; }
+    textarea { width: 100%; box-sizing: border-box; margin-top: 18px; min-height: 90px; padding: 12px; border-radius: 10px; border: 1px dashed #c98b8b; font: inherit; font-size: 13px; }
+    .row { display: flex; gap: 10px; margin-top: 10px; }
+    .row a, .row button { flex: 1; margin: 0; text-align: center; padding: 12px; border-radius: 30px; text-decoration: none; font-size: 14px; }
+    .wa { background: #25d366; color: #fff; }
+    small { color: #8a7074; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Enlaces de invitación</h1>
+    <small>Crea el enlace personalizado para cada familia y envíalo por WhatsApp.</small>
+    <label for="fam">Nombre de la familia o invitado</label>
+    <input id="fam" placeholder="Ej: Familia Pérez Gómez">
+    <label for="pas">Número de pases</label>
+    <input id="pas" type="number" min="1" max="20" value="2">
+    <button id="gen">Generar enlace</button>
+    <textarea id="out" readonly placeholder="Aquí aparecerá el enlace"></textarea>
+    <div class="row">
+      <button id="copy">Copiar</button>
+      <a id="wa" class="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+    </div>
+  </div>
+  <script>
+    const base = new URL("./", location.href).href;
+    const out = document.getElementById("out");
+    const wa = document.getElementById("wa");
+    document.getElementById("gen").onclick = () => {
+      const u = new URL(base);
+      u.searchParams.set("familia", document.getElementById("fam").value.trim());
+      u.searchParams.set("pases", document.getElementById("pas").value);
+      out.value = u.toString();
+      const msg = `¡Hola! 💌 Con mucha alegría te compartimos la invitación a nuestra boda. Ábrela aquí:\n${out.value}`;
+      wa.href = "https://wa.me/?text=" + encodeURIComponent(msg);
+    };
+    document.getElementById("copy").onclick = () => navigator.clipboard.writeText(out.value);
+  </script>
+</body>
+</html>

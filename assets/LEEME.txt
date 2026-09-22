@@ -1,0 +1,3 @@
+Pon aquí:
+- cancion.mp3  -> la canción que sonará al abrir el sobre
+- tus fotos (foto1.jpg, foto2.jpg, ...) para la galería
