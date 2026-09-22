@@ -2,7 +2,7 @@
    Daniel & Diana — Invitación floral romántica
    ========================================================= */
 :root {
-  color-scheme: only light;
+  color-scheme: light dark;
   --cream: #fbf6f1;
   --paper: #f7efe9;
   --blush: #f3d9d3;
@@ -24,6 +24,36 @@
 
   --ease: cubic-bezier(.22, .8, .24, 1);
 }
+/* Samsung Internet y otros navegadores fuerzan su modo oscuro si la página no
+   declara uno propio. Declaramos un "tema oscuro" con la misma paleta clara para
+   que la invitación se vea igual en cualquier modo. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light dark;
+    --cream: #fbf6f1;
+    --paper: #f7efe9;
+    --blush: #f3d9d3;
+    --rose-light: #f6e1dc;
+    --rose: #e2a9a4;
+    --rose-deep: #c98b8b;
+    --rose-dark: #a8646a;
+    --sage-light: #c5d3b5;
+    --sage: #9caf88;
+    --sage-dark: #6f8660;
+    --gold: #c8a46a;
+    --gold-light: #e4cc9f;
+    --ink: #5a4448;
+    --ink-soft: #8a7074;
+  
+    --script: "Great Vibes", cursive;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Montserrat", system-ui, sans-serif;
+  
+    --ease: cubic-bezier(.22, .8, .24, 1);
+  }
+  html, body { background: #fbf6f1; color: #5a4448; }
+}
+
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }

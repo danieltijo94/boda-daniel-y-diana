@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="only light">
-  <meta name="supported-color-schemes" content="light">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
   <meta name="robots" content="noindex">
   <title>Enlaces de invitados</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: only light; }
+    :root { color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) { :root { color-scheme: light dark; } body { background: #fbf6f1; color: #5a4448; } }
     body { font-family: Montserrat, sans-serif; background: #fbf6f1; color: #5a4448; margin: 0; padding: 24px 16px; }
     .wrap { max-width: 720px; margin: 0 auto; }
     h1 { font-family: "Great Vibes", cursive; font-weight: normal; color: #a8646a; font-size: 44px; margin: 0; text-align: center; }
