@@ -14,7 +14,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=202609222207">
+  <script>
+    // Samsung Internet oscurece la página a la fuerza en modo oscuro.
+    // Invertimos los colores para que, al oscurecerlos, vuelvan a verse rosas.
+    if (/SamsungBrowser/i.test(navigator.userAgent) && matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.classList.add("samsung-dark");
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css?v=202609222214">
 </head>
 <body class="locked">
 
@@ -189,12 +196,12 @@
     <section class="section timeline-section" id="itinerario">
       <h2 class="section-title reveal">Itinerario</h2>
       <ol class="timeline">
-        <li class="reveal"><span class="t-time">4:00 p.m.</span><span class="t-dot">⛪</span><span class="t-text">Ceremonia religiosa</span></li>
-        <li class="reveal"><span class="t-time">5:30 p.m.</span><span class="t-dot">📸</span><span class="t-text">Fotos con los novios</span></li>
-        <li class="reveal"><span class="t-time">6:30 p.m.</span><span class="t-dot">🥂</span><span class="t-text">Cóctel de bienvenida</span></li>
-        <li class="reveal"><span class="t-time">7:30 p.m.</span><span class="t-dot">💃</span><span class="t-text">Primer baile</span></li>
-        <li class="reveal"><span class="t-time">8:00 p.m.</span><span class="t-dot">🍽️</span><span class="t-text">Cena</span></li>
-        <li class="reveal"><span class="t-time">9:00 p.m.</span><span class="t-dot">🎉</span><span class="t-text">¡A celebrar!</span></li>
+        <li class="reveal"><span class="t-time">4:00 p.m.</span><span class="t-dot"><span class="emo">⛪</span></span><span class="t-text">Ceremonia religiosa</span></li>
+        <li class="reveal"><span class="t-time">5:30 p.m.</span><span class="t-dot"><span class="emo">📸</span></span><span class="t-text">Fotos con los novios</span></li>
+        <li class="reveal"><span class="t-time">6:30 p.m.</span><span class="t-dot"><span class="emo">🥂</span></span><span class="t-text">Cóctel de bienvenida</span></li>
+        <li class="reveal"><span class="t-time">7:30 p.m.</span><span class="t-dot"><span class="emo">💃</span></span><span class="t-text">Primer baile</span></li>
+        <li class="reveal"><span class="t-time">8:00 p.m.</span><span class="t-dot"><span class="emo">🍽️</span></span><span class="t-text">Cena</span></li>
+        <li class="reveal"><span class="t-time">9:00 p.m.</span><span class="t-dot"><span class="emo">🎉</span></span><span class="t-text">¡A celebrar!</span></li>
       </ol>
     </section>
 
@@ -273,11 +280,11 @@
           <div class="choice-group">
             <label class="choice">
               <input type="radio" name="asistencia" value="Sí" required>
-              <span class="choice-box"><span class="choice-emoji">💃</span>¡Sí, ahí estaré!</span>
+              <span class="choice-box"><span class="choice-emoji emo">💃</span>¡Sí, ahí estaré!</span>
             </label>
             <label class="choice">
               <input type="radio" name="asistencia" value="No">
-              <span class="choice-box"><span class="choice-emoji">💌</span>No podré asistir</span>
+              <span class="choice-box"><span class="choice-emoji emo">💌</span>No podré asistir</span>
             </label>
           </div>
         </fieldset>
@@ -320,6 +327,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=202609222207"></script>
+  <script src="script.js?v=202609222214"></script>
 </body>
 </html>

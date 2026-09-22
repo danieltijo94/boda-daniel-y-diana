@@ -541,3 +541,10 @@ main {
   0% { opacity: 1; transform: translate(0, 0) scale(.4); }
   100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.2) rotate(var(--rot)); }
 }
+
+/* =================== SAMSUNG INTERNET (modo oscuro forzado) =================== */
+html.samsung-dark { filter: invert(1) hue-rotate(180deg); }
+/* Samsung no oscurece fotos ni emojis: los volvemos a invertir para dejarlos igual */
+html.samsung-dark img,
+html.samsung-dark .emo,
+html.samsung-dark .heart-burst { filter: invert(1) hue-rotate(180deg); }
