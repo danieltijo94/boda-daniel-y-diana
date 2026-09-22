@@ -8,7 +8,7 @@ Si una familia vuelve a confirmar (por ejemplo, para cambiar su respuesta), se *
 
 ## Pasos (una sola vez, unos 5 minutos)
 
-1. Entra a [sheets.new](https://sheets.new) con tu cuenta de Gmail y ponle de nombre **"Confirmaciones Boda"**.
+1. Abre la hoja **[Confirmaciones Boda Daniel y Diana](https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit)** (ya está creada en tu Drive).
 2. En el menú: **Extensiones → Apps Script**.
 3. Borra lo que aparece y pega todo el contenido de [`google-apps-script/Code.gs`](google-apps-script/Code.gs).
    - Si quieres que a Diana también le llegue el correo, pon su correo en `CORREOS_EXTRA`, por ejemplo `["diana@gmail.com"]`.

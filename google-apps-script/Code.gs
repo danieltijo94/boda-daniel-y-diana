@@ -46,7 +46,7 @@ function doPost(e) {
 
 function obtenerHoja() {
   const libro = SpreadsheetApp.getActiveSpreadsheet();
-  const hoja = libro.getSheetByName("Confirmaciones") || libro.insertSheet("Confirmaciones");
+  const hoja = libro.getSheetByName("Confirmaciones") || libro.getSheets()[0];
   if (hoja.getLastRow() === 0) {
     hoja.appendRow(COLUMNAS);
     hoja.getRange(1, 1, 1, COLUMNAS.length).setFontWeight("bold").setBackground("#f3d9d3");
