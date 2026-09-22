@@ -354,7 +354,24 @@ function heartBurst(origin) {
   }
 }
 
+/* ---------- Aviso para Samsung Internet ---------- */
+function setupChromeGate() {
+  const gate = $("#chromeGate");
+  if (!document.documentElement.classList.contains("samsung")) return;
+  // Enlace de Android que abre esta misma página en Chrome (si no está instalado, sigue aquí)
+  const here = location.href;
+  const intent = "intent://" + location.host + location.pathname + location.search +
+    "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" +
+    encodeURIComponent(here) + ";end";
+  $("#openChrome").href = intent;
+  $("#stayHere").addEventListener("click", () => {
+    try { sessionStorage.setItem("seguirEnSamsung", "1"); } catch { /* ignorar */ }
+    document.documentElement.classList.remove("samsung");
+  });
+}
+
 /* ---------- Inicio ---------- */
+setupChromeGate();
 fillDates();
 fillGuest().then(setupRSVP);
 setupIntro();
