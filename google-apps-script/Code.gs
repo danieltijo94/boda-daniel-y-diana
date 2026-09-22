@@ -14,6 +14,10 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const p = (e && e.parameter) || {};
+    if (!p.nombre || !p.asistencia) {
+      return ContentService.createTextOutput(JSON.stringify({ ok: false, error: "faltan datos" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
     const pases = toInt(p.pases, 1);
     const asiste = p.asistencia === "Sí";
     const personas = asiste ? Math.min(Math.max(toInt(p.personas, 1), 1), pases) : 0;

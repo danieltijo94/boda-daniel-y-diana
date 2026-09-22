@@ -7,7 +7,7 @@ const CONFIG = {
   // Fecha límite para confirmar
   fechaLimiteConfirmacion: "15 de noviembre de 2026",
   // URL de tu Google Apps Script (ver CONFIGURAR-CORREO.md). Vacío = modo de prueba.
-  rsvpEndpoint: "",
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzUn2L-ukmTA2qxZPqtL_NP07KkcwTBhho45IDfBYrYjcCo_oL6x7sbNQ4qjci7HAtZnQ/exec",
   // Máximo de personas que puede confirmar alguien que entra sin código de invitado
   pasesSinCodigo: 1,
   // Lugar para el evento de calendario
