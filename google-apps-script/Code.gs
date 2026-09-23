@@ -7,6 +7,10 @@
 // Correos adicionales que también deben recibir el aviso (opcional)
 const CORREOS_EXTRA = []; // ej: ["diana@gmail.com"]
 
+// ID de la playlist de YouTube donde se agregan las canciones sugeridas (ver PLAYLIST.md).
+// Vacío = no se agrega a ninguna playlist.
+const PLAYLIST_ID = "";
+
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
 
 function doPost(e) {
@@ -42,7 +46,8 @@ function doPost(e) {
       hoja.appendRow(fila);
     }
 
-    enviarCorreo(fila, Boolean(existente), hoja);
+    const enPlaylist = agregarAPlaylist(p.cancion);
+    enviarCorreo(fila, Boolean(existente), hoja, enPlaylist);
     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
       .setMimeType(ContentService.MimeType.JSON);
   } finally {
@@ -70,7 +75,7 @@ function buscarFila(hoja, codigo) {
   return 0;
 }
 
-function enviarCorreo(fila, actualizado, hoja) {
+function enviarCorreo(fila, actualizado, hoja, enPlaylist) {
   const [, codigo, familia, asistencia, personas, pases, asistentes, restricciones, cancion] = fila;
   const totales = totalConfirmados(hoja);
   const asunto = asistencia === "Sí"
@@ -85,7 +90,7 @@ function enviarCorreo(fila, actualizado, hoja) {
     `Personas: ${personas} de ${pases}`,
     `Asistentes: ${asistentes || "—"}`,
     `Restricciones / alergias: ${restricciones || "—"}`,
-    `Canción: ${cancion || "—"}`,
+    `Canción: ${cancion || "—"}${enPlaylist ? " (agregada a la playlist ✓)" : ""}`,
     "",
     `Total hasta ahora: ${totales.personas} personas confirmadas (${totales.si} sí · ${totales.no} no).`,
     `Ver la lista completa: ${hoja.getParent().getUrl()}`,
@@ -93,6 +98,30 @@ function enviarCorreo(fila, actualizado, hoja) {
 
   const destinatarios = [Session.getEffectiveUser().getEmail()].concat(CORREOS_EXTRA).join(",");
   MailApp.sendEmail(destinatarios, asunto, cuerpo);
+}
+
+/* ---------- Playlist de YouTube ---------- */
+function idDeYouTube(url) {
+  const m = String(url || "").match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/);
+  return m ? m[1] : "";
+}
+
+// Agrega la canción a la playlist (una sola vez por canción). Nunca hace fallar la confirmación.
+function agregarAPlaylist(url) {
+  const videoId = idDeYouTube(url);
+  if (!PLAYLIST_ID || !videoId || typeof YouTube === "undefined") return false;
+  const props = PropertiesService.getScriptProperties();
+  if (props.getProperty("yt:" + videoId)) return true;
+  try {
+    YouTube.PlaylistItems.insert({
+      snippet: { playlistId: PLAYLIST_ID, resourceId: { kind: "youtube#video", videoId: videoId } },
+    }, "snippet");
+    props.setProperty("yt:" + videoId, "1");
+    return true;
+  } catch (err) {
+    console.error("No se pudo agregar a la playlist: " + err);
+    return false;
+  }
 }
 
 function totalConfirmados(hoja) {
@@ -116,10 +145,16 @@ function limpiar(v) {
   return /^[=+\-@]/.test(s) ? "'" + s : s;
 }
 
+// Ejecuta esta función una vez para autorizar YouTube y comprobar que la playlist funciona
+function probarPlaylist() {
+  const ok = agregarAPlaylist("https://youtu.be/2Vv-BfVoq4g");
+  console.log(ok ? "¡Canción agregada a la playlist!" : "No se agregó: revisa PLAYLIST_ID y el servicio YouTube Data API.");
+}
+
 // Ejecuta esta función una vez desde el editor para autorizar el envío de correos
 function probar() {
   doPost({ parameter: {
     codigo: "PRUEBA", nombre: "Familia Prueba", asistencia: "Sí", personas: "2", pases: "2",
-    asistentes: "Invitado Uno, Invitado Dos", restricciones: "Vegetariano", cancion: "https://youtu.be/dQw4w9WgXcQ",
+    asistentes: "Invitado Uno, Invitado Dos", restricciones: "Vegetariano", cancion: "",
   } });
 }

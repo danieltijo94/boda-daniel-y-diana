@@ -44,7 +44,7 @@ function fillDates() {
 
 /* ---------- Invitado personalizado (?i=CODIGO → invitados.csv) ---------- */
 function parseCSV(text) {
-  const rows = text.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim());
+  const rows = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim());
   const split = (line) => {
     const out = []; let cur = ""; let q = false;
     for (const ch of line) {
@@ -225,11 +225,13 @@ function toast(msg) {
 }
 
 /* ---------- Confirmación de asistencia ---------- */
+// Acepta links de YouTube con un video (youtu.be, watch?v=, shorts, music.youtube.com…)
 function isYouTube(url) {
   try {
     const u = new URL(url);
-    return /(^|\.)youtube\.com$|(^|\.)youtu\.be$/i.test(u.hostname);
+    if (!/(^|\.)youtube\.com$|(^|\.)youtu\.be$/i.test(u.hostname)) return false;
   } catch { return false; }
+  return /(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)[\w-]{11}/.test(url);
 }
 
 function setupRSVP() {
@@ -311,7 +313,7 @@ function setupRSVP() {
     if (!guest && !nombre) return fail("Por favor escribe tu nombre.");
     if (!asistencia) return fail("Cuéntanos si podrás acompañarnos.");
     if (asiste && guest && asistentes.length === 0) return fail("Marca quiénes asistirán.");
-    if (cancion && !isYouTube(cancion)) return fail("El link de la canción debe ser de YouTube.");
+    if (cancion && !isYouTube(cancion)) return fail("Pega el link de una canción de YouTube (por ejemplo: https://youtu.be/…).");
 
     const pases = guest ? names.length : 1;
     const payload = new URLSearchParams({

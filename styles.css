@@ -324,8 +324,6 @@ main {
 .passes-text { font-family: var(--caps); font-size: 11px; letter-spacing: .25em; text-transform: uppercase; margin-top: 12px; color: var(--gold); }
 .guest-note { font-style: italic; color: var(--ink-soft); font-size: 18px; }
 
-.parents { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; margin-top: 56px; }
-.parents h3 { font-family: var(--caps); font-weight: 400; font-size: 12px; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
 
 /* Cuenta regresiva */
 .countdown-section { max-width: none; background: linear-gradient(180deg, transparent, rgba(244, 220, 220, .45), transparent); }
@@ -570,3 +568,14 @@ html.samsung .chrome-gate {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .petals { display: none; }
 }
+
+/* =================== BOTONES DE MAPA Y FOTOS =================== */
+.map-btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 0 12px; }
+.photos p { max-width: 480px; margin: 0 auto; }
+.qr-card {
+  width: 230px; margin: 28px auto 6px; padding: 22px 22px 14px; background: #fff; border-radius: 14px;
+  border: 1px solid rgba(184, 145, 79, .6);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+}
+.qr-card img { width: 100%; height: auto; }
+.qr-card span { display: block; margin-top: 8px; font-family: var(--caps); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }

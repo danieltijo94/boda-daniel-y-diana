@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Fotos · Daniel Alejandro &amp; Diana Carolina</title>
+  <meta name="description" content="Sube tus fotos y videos de la boda de Daniel Alejandro y Diana Carolina">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; padding: 16px;
+      background: radial-gradient(ellipse at center, #fffdfa 0%, var(--champagne) 60%, var(--blush) 100%); }
+    .card { max-width: 440px; width: 100%; text-align: center; padding: 40px 26px; background: #fff; border-radius: 18px;
+      border: 1px solid rgba(184,145,79,.6);
+      box-shadow: 0 24px 44px -28px rgba(90,31,51,.45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+      animation: fadeUp .8s both; }
+    .names { font-family: var(--script); font-size: 38px; color: var(--wine); line-height: 1.15; }
+    .names i { font-family: var(--serif); color: var(--gold); font-size: .8em; }
+    .card .section-title { font-size: 46px; margin: 18px 0 14px; }
+    .steps { text-align: left; margin: 20px auto 6px; max-width: 320px; list-style: none; counter-reset: s; }
+    .steps li { counter-increment: s; position: relative; padding-left: 40px; margin-bottom: 12px; line-height: 1.4; }
+    .steps li::before { content: counter(s); position: absolute; left: 0; top: -2px; width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid var(--gold); display: grid; place-items: center; font-family: var(--caps); font-size: 13px; color: var(--wine); }
+    .soon { font-style: italic; color: var(--ink-soft); margin-top: 18px; }
+    .back { display: block; margin-top: 22px; font-size: 16px; color: var(--ink-soft); }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p class="names">Daniel Alejandro<br><i>&amp;</i> Diana Carolina</p>
+    <h1 class="section-title">Comparte tus fotos</h1>
+    <p>Gracias por ayudarnos a guardar cada momento. Sube aquí las fotos y videos que tomes durante la celebración.</p>
+
+    <div id="ready" hidden>
+      <ol class="steps">
+        <li>Toca <strong>Abrir álbum</strong>.</li>
+        <li>Inicia sesión con tu cuenta de Google si te lo pide.</li>
+        <li>Toca el ícono <strong>+</strong> o <strong>Agregar fotos</strong> y elige las tuyas.</li>
+      </ol>
+      <a class="btn btn-big" id="albumBtn" href="#" target="_blank" rel="noopener">Abrir álbum</a>
+    </div>
+    <p class="soon" id="soon">El álbum se habilitará muy pronto. ¡Vuelve el día de la boda!</p>
+
+    <a class="back" href="./">Ver la invitación</a>
+  </main>
+  <script>
+    // Pega aquí el enlace del álbum compartido de Google Fotos (ver FOTOS.md)
+    const ALBUM_URL = "";
+
+    if (ALBUM_URL) {
+      document.getElementById("albumBtn").href = ALBUM_URL;
+      document.getElementById("ready").hidden = false;
+      document.getElementById("soon").hidden = true;
+    }
+  </script>
+</body>
+</html>
