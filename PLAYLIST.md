@@ -23,6 +23,9 @@ canciones. No la subas al repositorio.
 2. Borra lo que aparece y pega el contenido de `google-apps-script/Playlist-pareja.gs`.
 3. Escribe la palabra secreta en `const CLAVE = "…";` y revisa que `PLAYLIST_ID` sea el de la playlist. Guarda.
 4. Junto a **Servicios** pulsa **+** → **YouTube Data API v3** → **Añadir**.
+   Si esa ventana sale vacía: ⚙️ **Configuración del proyecto** → activa *"Mostrar el archivo de manifiesto
+   appsscript.json en el editor"* → vuelve al editor (**< >**), abre `appsscript.json`, reemplaza todo su
+   contenido por el de `google-apps-script/appsscript-pareja.json` y guarda.
 5. Elige la función **`probar`** → **▶ Ejecutar** → acepta los permisos. Debe decir *"¡Canción agregada a la playlist!"*.
 6. **Implementar → Nueva implementación → ⚙️ Aplicación web** · Ejecutar como: **Yo** · Acceso: **Cualquier usuario** →
    **Implementar**. Copia la URL (termina en `/exec`).
