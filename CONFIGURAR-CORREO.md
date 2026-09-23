@@ -30,3 +30,10 @@ Si una familia vuelve a confirmar (por ejemplo, para cambiar su respuesta), se *
 ¡Listo! A partir de ahí cada confirmación llega a tu correo y a la hoja.
 
 > Si más adelante cambias el código del script, usa **Implementar → Gestionar implementaciones → ✏️ → Versión: nueva** para que la URL siga siendo la misma.
+
+## Actualizar el script (cuando cambie `Code.gs`)
+
+1. Abre la hoja → **Extensiones → Apps Script**, borra todo y pega el nuevo contenido de `google-apps-script/Code.gs`. Guarda.
+2. **Implementar → Gestionar implementaciones → ✏️ (editar) → Versión: "Nueva versión" → Implementar.**
+
+La URL sigue siendo la misma, así que no hay que cambiar nada en la invitación.

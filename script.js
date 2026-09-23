@@ -2,16 +2,14 @@
    CONFIGURACIÓN — cambia aquí los datos principales
    ========================================================= */
 const CONFIG = {
-  // Fecha y hora de la ceremonia (formato: AAAA-MM-DDTHH:MM:SS, hora local)
-  fecha: "2026-12-12T16:00:00",
+  // Fecha y hora de la boda (hora de Colombia, UTC-5)
+  fecha: "2027-06-19T16:00:00-05:00",
   // Fecha límite para confirmar
-  fechaLimiteConfirmacion: "15 de noviembre de 2026",
+  fechaLimiteConfirmacion: "30 de abril de 2027",
   // URL de tu Google Apps Script (ver CONFIGURAR-CORREO.md). Vacío = modo de prueba.
   rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzUn2L-ukmTA2qxZPqtL_NP07KkcwTBhho45IDfBYrYjcCo_oL6x7sbNQ4qjci7HAtZnQ/exec",
-  // Máximo de personas que puede confirmar alguien que entra sin código de invitado
-  pasesSinCodigo: 1,
   // Lugar para el evento de calendario
-  lugarCalendario: "Parroquia Nuestra Señora, Ciudad",
+  lugarCalendario: "Hacienda Chic, Bogotá",
   // Duración aproximada del evento (horas) para el calendario
   duracionHoras: 8,
 };
@@ -24,15 +22,18 @@ const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
 const DIAS = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 const weddingDate = new Date(CONFIG.fecha);
 
-/* ---------- Fechas en la página ---------- */
+/* ---------- Fechas en la página (siempre en hora de Colombia) ---------- */
 function fillDates() {
-  const d = weddingDate;
+  // Día, mes y año de la boda en Colombia, sin importar el país del invitado
+  const [y, m, d] = CONFIG.fecha.slice(0, 10).split("-").map(Number);
+  const weekday = DIAS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
   const pad = (n) => String(n).padStart(2, "0");
   const values = {
-    weekday: DIAS[d.getDay()],
-    day: d.getDate(),
-    monthYear: `${MESES[d.getMonth()]} ${d.getFullYear()}`,
-    shortDate: `${pad(d.getDate())} · ${pad(d.getMonth() + 1)} · ${d.getFullYear()}`,
+    weekday,
+    day: d,
+    monthYear: `${MESES[m - 1]} ${y}`,
+    longDate: `${weekday} ${d} de ${MESES[m - 1].toLowerCase()} de ${y}`,
+    shortDate: `${pad(d)} · ${pad(m)} · ${y}`,
     rsvpDeadline: CONFIG.fechaLimiteConfirmacion,
   };
   document.querySelectorAll("[data-cfg]").forEach((el) => {
@@ -43,7 +44,7 @@ function fillDates() {
 
 /* ---------- Invitado personalizado (?i=CODIGO → invitados.csv) ---------- */
 function parseCSV(text) {
-  const rows = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim());
+  const rows = text.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim());
   const split = (line) => {
     const out = []; let cur = ""; let q = false;
     for (const ch of line) {
@@ -61,6 +62,14 @@ function parseCSV(text) {
   });
 }
 
+// Nombres de cada invitado de la tarjeta (columna "invitados", separados por |)
+function guestNames(g) {
+  const names = (g.invitados || "").split("|").map((n) => n.trim()).filter(Boolean);
+  if (names.length) return names;
+  const n = Math.max(1, parseInt(g.pases, 10) || 1);
+  return Array.from({ length: n }, (_, i) => `Invitado ${i + 1}`);
+}
+
 let guest = null;
 
 async function fillGuest() {
@@ -73,16 +82,15 @@ async function fillGuest() {
   } catch { return; }
   if (!guest) return;
 
-  const pases = parseInt(guest.pases, 10);
+  guest.nombres = guestNames(guest);
+  const pases = guest.nombres.length;
   $("#guestName").textContent = guest.familia;
   const intro = $("#introGuest");
   intro.textContent = guest.familia;
   intro.hidden = false;
-  if (pases > 0) {
-    $("#passesNum").textContent = pases;
-    $("#passesText").textContent = pases === 1 ? "pase reservado" : "pases reservados";
-    $("#passesBox").hidden = false;
-  }
+  $("#passesNum").textContent = pases;
+  $("#passesText").textContent = pases === 1 ? "pase reservado" : "pases reservados";
+  $("#passesBox").hidden = false;
 }
 
 /* ---------- Sobre + música ---------- */
@@ -119,17 +127,17 @@ function setupIntro() {
   });
 }
 
-/* ---------- Pétalos ---------- */
+/* ---------- Pétalos de orquídea y destellos dorados ---------- */
 function makePetal(container, { fromTop = true } = {}) {
   const p = document.createElement("span");
-  p.className = "petal" + (Math.random() < 0.25 ? " leafy" : "");
+  p.className = "petal" + (Math.random() < 0.3 ? " spark" : "");
   const size = 10 + Math.random() * 12;
   p.style.left = Math.random() * 100 + "vw";
   p.style.width = size + "px";
-  p.style.height = size * 1.25 + "px";
+  p.style.height = size * 1.3 + "px";
   p.style.setProperty("--sway", (20 + Math.random() * 60) + "px");
-  p.style.animationDuration = (7 + Math.random() * 7) + "s";
-  p.style.opacity = 0.5 + Math.random() * 0.4;
+  p.style.animationDuration = (8 + Math.random() * 7) + "s";
+  p.style.opacity = 0.55 + Math.random() * 0.4;
   if (!fromTop) p.style.animationDelay = -(Math.random() * 6) + "s";
   container.appendChild(p);
   p.addEventListener("animationend", () => p.remove());
@@ -144,9 +152,9 @@ function startPetals() {
   const container = $("#petals");
   for (let i = 0; i < 8; i++) makePetal(container, { fromTop: false });
   setInterval(() => {
-    if (document.hidden || container.childElementCount > 25) return;
+    if (document.hidden || container.childElementCount > 22) return;
     makePetal(container);
-  }, 900);
+  }, 1000);
 }
 
 /* ---------- Animaciones al hacer scroll ---------- */
@@ -201,30 +209,11 @@ function setupCalendar() {
   const end = new Date(weddingDate.getTime() + CONFIG.duracionHoras * 36e5);
   const url = new URL("https://calendar.google.com/calendar/render");
   url.searchParams.set("action", "TEMPLATE");
-  url.searchParams.set("text", "Boda de Daniel & Diana 💍");
+  url.searchParams.set("text", "Boda de Daniel Alejandro & Diana Carolina 💍");
   url.searchParams.set("dates", `${fmt(weddingDate)}/${fmt(end)}`);
   url.searchParams.set("location", CONFIG.lugarCalendario);
-  url.searchParams.set("details", "¡Te esperamos para celebrar nuestro amor!");
+  url.searchParams.set("details", "¡Te esperamos para celebrar nuestro amor! Ubicación: https://maps.app.goo.gl/DuaCmXVdwyJRUusX6");
   $("#calendarBtn").href = url.toString();
-}
-
-/* ---------- Regalos ---------- */
-function setupGifts() {
-  const toggle = $("#bankToggle");
-  const bank = $("#bank");
-  toggle.addEventListener("click", () => {
-    bank.hidden = !bank.hidden;
-    toggle.setAttribute("aria-expanded", String(!bank.hidden));
-    toggle.textContent = bank.hidden ? "Ver datos bancarios" : "Ocultar datos bancarios";
-  });
-  $("#copyBtn").addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText($("#accNum").textContent.trim());
-      toast("¡Número copiado!");
-    } catch {
-      toast("No se pudo copiar");
-    }
-  });
 }
 
 function toast(msg) {
@@ -236,34 +225,51 @@ function toast(msg) {
 }
 
 /* ---------- Confirmación de asistencia ---------- */
+function isYouTube(url) {
+  try {
+    const u = new URL(url);
+    return /(^|\.)youtube\.com$|(^|\.)youtu\.be$/i.test(u.hostname);
+  } catch { return false; }
+}
+
 function setupRSVP() {
   const form = $("#rsvpForm");
   const done = $("#rsvpDone");
-  const nameInput = $("#rsvpName");
-  const peopleField = $("#peopleField");
-  const peopleGroup = $("#peopleGroup");
+  const yesOnly = $("#yesOnly");
   const error = $("#rsvpError");
-  const max = guest ? Math.max(1, parseInt(guest.pases, 10) || 1) : CONFIG.pasesSinCodigo;
+  const list = $("#peopleList");
+  const names = guest ? guest.nombres : [];
   const storeKey = "rsvp:" + (guest ? guest.codigo : "general");
 
   if (guest) {
-    nameInput.value = guest.familia;
-    nameInput.readOnly = true;
+    // Con código: el nombre ya lo sabemos; se eligen los asistentes de la tarjeta
+    $("#nameField").hidden = true;
+    $("#formFamily").textContent = guest.familia;
+    $("#formFamily").hidden = false;
+    names.forEach((n) => {
+      const label = document.createElement("label");
+      label.className = "person";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "asistentes";
+      input.value = n;
+      const box = document.createElement("span");
+      box.className = "person-box";
+      box.textContent = n;
+      label.append(input, box);
+      list.appendChild(label);
+    });
+    if (names.length === 1) list.querySelector("input").checked = true;
+    $("#peopleHint").textContent = names.length === 1
+      ? "Tu invitación es para 1 persona."
+      : `Tu invitación es válida para ${names.length} personas. Marca quiénes asistirán.`;
+  } else {
+    // Sin código: solo pedimos el nombre de quien confirma
+    $("#peopleField").hidden = true;
   }
-
-  for (let i = 1; i <= max; i++) {
-    const label = document.createElement("label");
-    label.className = "people-choice";
-    label.innerHTML = `<input type="radio" name="personas" value="${i}"><span>${i}</span>`;
-    peopleGroup.appendChild(label);
-  }
-  if (max === 1) peopleGroup.querySelector("input").checked = true;
-  $("#peopleHint").textContent = max === 1
-    ? "Tu invitación es para 1 persona."
-    : `Tu invitación es válida para máximo ${max} personas.`;
 
   form.addEventListener("change", (e) => {
-    if (e.target.name === "asistencia") peopleField.hidden = e.target.value !== "Sí";
+    if (e.target.name === "asistencia") yesOnly.hidden = e.target.value !== "Sí";
     error.hidden = true;
   });
 
@@ -295,21 +301,34 @@ function setupRSVP() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = new FormData(form);
-    const nombre = (data.get("nombre") || "").trim();
     const asistencia = data.get("asistencia");
-    const personas = asistencia === "Sí" ? parseInt(data.get("personas"), 10) : 0;
+    const nombre = guest ? guest.familia : (data.get("nombre") || "").trim();
+    const asiste = asistencia === "Sí";
+    const asistentes = asiste ? (guest ? data.getAll("asistentes") : [nombre]) : [];
+    const restricciones = asiste ? (data.get("restricciones") || "").trim() : "";
+    const cancion = asiste ? (data.get("cancion") || "").trim() : "";
 
-    if (!nombre) return fail("Por favor escribe tu nombre.");
+    if (!guest && !nombre) return fail("Por favor escribe tu nombre.");
     if (!asistencia) return fail("Cuéntanos si podrás acompañarnos.");
-    if (asistencia === "Sí" && !(personas >= 1 && personas <= max)) return fail("Elige cuántas personas asistirán.");
+    if (asiste && guest && asistentes.length === 0) return fail("Marca quiénes asistirán.");
+    if (cancion && !isYouTube(cancion)) return fail("El link de la canción debe ser de YouTube.");
 
+    const pases = guest ? names.length : 1;
     const payload = new URLSearchParams({
       codigo: guest ? guest.codigo : "",
       nombre,
-      pases: String(max),
+      pases: String(pases),
       asistencia,
-      personas: String(personas),
-      mensaje: (data.get("mensaje") || "").trim(),
+      personas: String(asistentes.length),
+      asistentes: asistentes.join(", "),
+      restricciones,
+      cancion,
+      // Resumen para versiones anteriores del script de Google
+      mensaje: [
+        asistentes.length ? "Asisten: " + asistentes.join(", ") : "",
+        restricciones ? "Restricciones: " + restricciones : "",
+        cancion ? "Canción: " + cancion : "",
+      ].filter(Boolean).join(" | "),
     });
 
     form.classList.add("sending");
@@ -321,9 +340,9 @@ function setupRSVP() {
         console.warn("Modo de prueba: configura CONFIG.rsvpEndpoint para recibir las confirmaciones.", Object.fromEntries(payload));
         await new Promise((r) => setTimeout(r, 800));
       }
-      try { localStorage.setItem(storeKey, JSON.stringify({ asistencia, personas })); } catch { /* ignorar */ }
-      showDone(asistencia === "Sí");
-      if (asistencia === "Sí") heartBurst($("#rsvpSubmit"));
+      try { localStorage.setItem(storeKey, JSON.stringify({ asistencia, asistentes })); } catch { /* ignorar */ }
+      showDone(asiste);
+      if (asiste) sparkleBurst($("#rsvpSubmit"));
     } catch {
       fail("No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.");
     } finally {
@@ -332,18 +351,19 @@ function setupRSVP() {
   });
 }
 
-function heartBurst(origin) {
+function sparkleBurst(origin) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const r = origin.getBoundingClientRect();
   const x = r.left + r.width / 2;
   const y = r.top + r.height / 2;
-  const icons = ["❤", "💕", "🌸", "✨", "💗"];
+  const icons = ["✦", "❤", "✧", "❀", "✦"];
   for (let i = 0; i < 26; i++) {
     const h = document.createElement("span");
     h.className = "heart-burst";
     h.textContent = icons[i % icons.length];
     h.style.left = x + "px";
     h.style.top = y + "px";
+    if (i % 5 === 1) h.style.color = "#b24a6c";
     const a = Math.random() * Math.PI * 2;
     const d = 80 + Math.random() * 160;
     h.style.setProperty("--dx", Math.cos(a) * d + "px");
@@ -356,7 +376,6 @@ function heartBurst(origin) {
 
 /* ---------- Aviso para Samsung Internet ---------- */
 function setupChromeGate() {
-  const gate = $("#chromeGate");
   if (!document.documentElement.classList.contains("samsung")) return;
   // Enlace de Android que abre esta misma página en Chrome (si no está instalado, sigue aquí)
   const here = location.href;
@@ -378,4 +397,3 @@ setupIntro();
 setupReveal();
 setupCountdown();
 setupCalendar();
-setupGifts();

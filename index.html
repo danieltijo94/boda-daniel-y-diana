@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta name="supported-color-schemes" content="light dark">
-  <title>Daniel &amp; Diana · Nuestra Boda</title>
-  <meta name="description" content="Invitación a la boda de Daniel y Diana">
-  <meta property="og:title" content="Daniel & Diana · Nuestra Boda">
-  <meta property="og:description" content="¡Nos casamos! Estás invitado a celebrar con nosotros.">
-  <meta name="theme-color" content="#f7efe9">
+  <title>Daniel Alejandro &amp; Diana Carolina · Nuestra Boda</title>
+  <meta name="description" content="Invitación a la boda de Daniel Alejandro y Diana Carolina · 19 de junio de 2027">
+  <meta property="og:title" content="Daniel Alejandro & Diana Carolina · Nuestra Boda">
+  <meta property="og:description" content="¡Nos casamos! 19 de junio de 2027 · Hacienda Chic, Bogotá">
+  <meta name="theme-color" content="#fbf6f0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
   <script>
     // Samsung Internet oscurece la invitación a la fuerza: le sugerimos abrirla en Chrome.
     if (/SamsungBrowser/i.test(navigator.userAgent)) {
@@ -22,45 +22,114 @@
       if (!seguirAqui) document.documentElement.classList.add("samsung");
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=202609222230">
+  <link rel="stylesheet" href="styles.css?v=202609230107">
 </head>
 <body class="locked">
 
-  <!-- Sprite de flores reutilizable -->
+  <!-- Sprite de orquídeas y adornos reutilizables -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <symbol id="rose" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="46" fill="var(--rose-light)"/>
-        <path d="M50 14c14 6 30 18 30 36S66 82 50 86 20 70 20 52 36 20 50 14z" fill="var(--rose)"/>
-        <path d="M50 28c10 4 20 12 20 24s-10 20-20 22-20-8-20-20 10-22 20-26z" fill="var(--rose-deep)" opacity=".75"/>
-        <path d="M50 40c6 2 11 7 11 13s-5 10-11 11-11-5-11-11 5-11 11-13z" fill="var(--rose-dark)" opacity=".8"/>
-        <path d="M44 50c2-4 8-5 11-1" stroke="var(--rose-light)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <radialGradient id="gPetal" cx="50%" cy="85%" r="90%">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset=".55" stop-color="#fbeff0"/>
+        <stop offset="1" stop-color="#efc9ce"/>
+      </radialGradient>
+      <radialGradient id="gPetalBlush" cx="50%" cy="85%" r="90%">
+        <stop offset="0" stop-color="#fdf3f3"/>
+        <stop offset=".6" stop-color="#f3d2d6"/>
+        <stop offset="1" stop-color="#e2a7b1"/>
+      </radialGradient>
+      <linearGradient id="gLip" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b24a6c"/>
+        <stop offset="1" stop-color="#6e2240"/>
+      </linearGradient>
+      <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#a47a36"/>
+        <stop offset=".35" stop-color="#ecd49c"/>
+        <stop offset=".6" stop-color="#b8914f"/>
+        <stop offset="1" stop-color="#f3e2b4"/>
+      </linearGradient>
+      <linearGradient id="gGoldH" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0">
+        <stop offset="0" stop-color="#e7cf9c" stop-opacity=".2"/>
+        <stop offset=".3" stop-color="#b8914f"/>
+        <stop offset=".5" stop-color="#ecd49c"/>
+        <stop offset=".7" stop-color="#b8914f"/>
+        <stop offset="1" stop-color="#e7cf9c" stop-opacity=".2"/>
+      </linearGradient>
+      <linearGradient id="gLeaf" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8fa274"/>
+        <stop offset="1" stop-color="#5e7249"/>
+      </linearGradient>
+
+      <!-- Orquídea (phalaenopsis) -->
+      <symbol id="orchid" viewBox="-50 -50 100 100">
+        <g stroke="#e6bcc3" stroke-width=".7">
+          <ellipse cx="0" cy="-23" rx="10" ry="22" fill="url(#gPetal)"/>
+          <ellipse cx="0" cy="-22" rx="9" ry="21" fill="url(#gPetal)" transform="rotate(128)"/>
+          <ellipse cx="0" cy="-22" rx="9" ry="21" fill="url(#gPetal)" transform="rotate(-128)"/>
+          <ellipse cx="0" cy="-21" rx="17" ry="20" fill="url(#gPetal)" transform="rotate(64)"/>
+          <ellipse cx="0" cy="-21" rx="17" ry="20" fill="url(#gPetal)" transform="rotate(-64)"/>
+        </g>
+        <g fill="#b24a6c" opacity=".45">
+          <circle cx="-9" cy="-4" r="1.2"/><circle cx="-13" cy="-7" r="1"/><circle cx="-7" cy="-9" r=".9"/>
+          <circle cx="9" cy="-4" r="1.2"/><circle cx="13" cy="-7" r="1"/><circle cx="7" cy="-9" r=".9"/>
+        </g>
+        <path d="M-10 3c-5 9-1 20 10 23 11-3 15-14 10-23-4 5-16 5-20 0z" fill="url(#gLip)"/>
+        <path d="M-10 3c-6-2-9 3-6 7 2 2 5 1 6-1zM10 3c6-2 9 3 6 7-2 2-5 1-6-1z" fill="#c9587b"/>
+        <ellipse cx="0" cy="-3" rx="4.5" ry="7" fill="#fffaf5"/>
+        <circle cx="0" cy="3" r="2.6" fill="#e9c45c"/>
       </symbol>
-      <symbol id="leaf" viewBox="0 0 60 120">
-        <path d="M30 118C30 80 30 40 30 4" stroke="var(--sage-dark)" stroke-width="2" fill="none"/>
-        <path d="M30 100C12 94 4 80 6 66c14 2 24 14 24 34z" fill="var(--sage)"/>
-        <path d="M30 100c18-6 26-20 24-34-14 2-24 14-24 34z" fill="var(--sage-light)"/>
-        <path d="M30 70C14 64 8 50 10 38c12 2 20 14 20 32z" fill="var(--sage-light)"/>
-        <path d="M30 70c16-6 22-20 20-32-12 2-20 14-20 32z" fill="var(--sage)"/>
-        <path d="M30 42C18 36 14 26 16 16c10 2 14 12 14 26z" fill="var(--sage)"/>
-        <path d="M30 42c12-6 16-16 14-26-10 2-14 12-14 26z" fill="var(--sage-light)"/>
+      <symbol id="orchidBlush" viewBox="-50 -50 100 100">
+        <g stroke="#dca4ad" stroke-width=".7">
+          <ellipse cx="0" cy="-23" rx="10" ry="22" fill="url(#gPetalBlush)"/>
+          <ellipse cx="0" cy="-22" rx="9" ry="21" fill="url(#gPetalBlush)" transform="rotate(128)"/>
+          <ellipse cx="0" cy="-22" rx="9" ry="21" fill="url(#gPetalBlush)" transform="rotate(-128)"/>
+          <ellipse cx="0" cy="-21" rx="17" ry="20" fill="url(#gPetalBlush)" transform="rotate(64)"/>
+          <ellipse cx="0" cy="-21" rx="17" ry="20" fill="url(#gPetalBlush)" transform="rotate(-64)"/>
+        </g>
+        <path d="M-10 3c-5 9-1 20 10 23 11-3 15-14 10-23-4 5-16 5-20 0z" fill="url(#gLip)"/>
+        <ellipse cx="0" cy="-3" rx="4.5" ry="7" fill="#fffaf5"/>
+        <circle cx="0" cy="3" r="2.6" fill="#e9c45c"/>
       </symbol>
-      <symbol id="bud" viewBox="0 0 40 40">
-        <circle cx="20" cy="20" r="14" fill="var(--blush)"/>
-        <circle cx="20" cy="20" r="8" fill="var(--rose)"/>
-        <circle cx="20" cy="20" r="3" fill="var(--gold)"/>
+      <symbol id="obud" viewBox="-10 -14 20 28">
+        <path d="M0-13C7-8 8 4 0 13-8 4-7-8 0-13z" fill="url(#gPetalBlush)" stroke="#dca4ad" stroke-width=".6"/>
       </symbol>
-      <symbol id="bouquet" viewBox="0 0 300 160">
-        <use href="#leaf" x="20" y="10" width="60" height="120" transform="rotate(-50 50 70)"/>
-        <use href="#leaf" x="220" y="10" width="60" height="120" transform="rotate(50 250 70)"/>
-        <use href="#leaf" x="70" y="-10" width="50" height="100" transform="rotate(-20 95 40)"/>
-        <use href="#leaf" x="180" y="-10" width="50" height="100" transform="rotate(20 205 40)"/>
-        <use href="#rose" x="105" y="40" width="90" height="90"/>
-        <use href="#rose" x="60" y="70" width="60" height="60"/>
-        <use href="#rose" x="180" y="70" width="60" height="60"/>
-        <use href="#bud" x="40" y="100" width="30" height="30"/>
-        <use href="#bud" x="230" y="100" width="30" height="30"/>
-        <use href="#bud" x="135" y="20" width="30" height="30"/>
+      <symbol id="oleaf" viewBox="0 0 120 50">
+        <path d="M2 40C30 4 90-2 118 14 92 36 40 50 2 40z" fill="url(#gLeaf)"/>
+        <path d="M6 38C40 26 80 16 114 15" stroke="#4e6040" stroke-width="1.2" fill="none" opacity=".6"/>
+      </symbol>
+
+      <!-- Vara de orquídeas arqueada (esquinas) -->
+      <symbol id="spray" viewBox="0 0 320 190">
+        <use href="#oleaf" x="0" y="130" width="130" height="54"/>
+        <use href="#oleaf" x="20" y="150" width="110" height="46" transform="rotate(-18 75 170)"/>
+        <path d="M40 160C70 90 150 40 300 44" stroke="#7d8f63" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <use href="#orchid" x="36" y="86" width="84" height="84"/>
+        <use href="#orchidBlush" x="104" y="46" width="78" height="78"/>
+        <use href="#orchid" x="172" y="26" width="66" height="66"/>
+        <use href="#orchidBlush" x="232" y="22" width="44" height="44"/>
+        <use href="#obud" x="278" y="32" width="14" height="20" transform="rotate(70 285 42)"/>
+        <use href="#obud" x="294" y="36" width="10" height="14" transform="rotate(80 299 43)"/>
+      </symbol>
+
+      <!-- Guirnalda centrada (separadores) -->
+      <symbol id="garland" viewBox="0 0 320 120">
+        <path d="M20 70C80 50 120 62 160 62S240 50 300 70" stroke="url(#gGold)" stroke-width="1.4" fill="none"/>
+        <use href="#obud" x="22" y="58" width="12" height="18" transform="rotate(-70 28 67)"/>
+        <use href="#obud" x="286" y="58" width="12" height="18" transform="rotate(70 292 67)"/>
+        <use href="#orchidBlush" x="44" y="42" width="44" height="44"/>
+        <use href="#orchidBlush" x="232" y="42" width="44" height="44"/>
+        <use href="#orchid" x="84" y="28" width="60" height="60"/>
+        <use href="#orchid" x="176" y="28" width="60" height="60"/>
+        <use href="#orchid" x="120" y="8" width="80" height="80"/>
+      </symbol>
+
+      <!-- Ornamento dorado -->
+      <symbol id="flourish" viewBox="0 0 200 20">
+        <path d="M0 10H80M120 10H200" stroke="url(#gGoldH)" stroke-width="1"/>
+        <path d="M100 2l8 8-8 8-8-8z" fill="none" stroke="url(#gGold)" stroke-width="1.2"/>
+        <circle cx="100" cy="10" r="2" fill="url(#gGold)"/>
+        <circle cx="84" cy="10" r="1.5" fill="url(#gGold)"/><circle cx="116" cy="10" r="1.5" fill="url(#gGold)"/>
       </symbol>
     </defs>
   </svg>
@@ -68,7 +137,7 @@
   <!-- ========== AVISO PARA SAMSUNG INTERNET ========== -->
   <div class="chrome-gate" id="chromeGate" role="dialog" aria-label="Abrir en Chrome">
     <div class="gate-card">
-      <p class="gate-names">Daniel &amp; Diana</p>
+      <p class="gate-names">Daniel Alejandro<br><span class="amp-i">&amp;</span> Diana Carolina</p>
       <p class="gate-text">Para ver la invitación con todos sus colores y animaciones, ábrela en <strong>Google Chrome</strong>.</p>
       <a class="gate-btn" id="openChrome" href="#">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
@@ -81,11 +150,14 @@
   <!-- ========== SOBRE DE APERTURA ========== -->
   <div id="intro" class="intro" role="dialog" aria-label="Abrir invitación">
     <div class="intro-petals" aria-hidden="true"></div>
+    <svg class="intro-orchid intro-orchid-l" aria-hidden="true"><use href="#spray"/></svg>
+    <svg class="intro-orchid intro-orchid-r" aria-hidden="true"><use href="#spray"/></svg>
     <p class="intro-hint">Tienes una invitación especial</p>
     <button class="envelope" id="envelope" aria-label="Abrir el sobre">
       <span class="env-back"></span>
       <span class="env-letter">
-        <span class="letter-script">Daniel &amp; Diana</span>
+        <svg class="letter-flourish" aria-hidden="true"><use href="#flourish"/></svg>
+        <span class="letter-script">Daniel Alejandro<br><span class="amp-i">&amp;</span> Diana Carolina</span>
         <span class="letter-small">¡Nos casamos!</span>
       </span>
       <span class="env-front"></span>
@@ -96,7 +168,7 @@
     <p class="intro-guest" id="introGuest" hidden></p>
   </div>
 
-  <!-- Pétalos cayendo -->
+  <!-- Pétalos y destellos cayendo -->
   <div class="petals" id="petals" aria-hidden="true"></div>
 
   <!-- Control de música -->
@@ -111,21 +183,24 @@
 
     <!-- ========== PORTADA ========== -->
     <section class="hero" id="inicio">
-      <svg class="corner corner-tl" aria-hidden="true"><use href="#bouquet"/></svg>
-      <svg class="corner corner-br" aria-hidden="true"><use href="#bouquet"/></svg>
+      <div class="hero-frame" aria-hidden="true"></div>
+      <svg class="corner corner-tl" aria-hidden="true"><use href="#spray"/></svg>
+      <svg class="corner corner-br" aria-hidden="true"><use href="#spray"/></svg>
       <div class="hero-inner">
-        <p class="eyebrow reveal">Con la bendición de Dios y nuestras familias</p>
+        <div class="monogram reveal" aria-hidden="true"><span>D</span><i>&amp;</i><span>D</span></div>
+        <p class="eyebrow reveal" data-delay="1">Con la bendición de Dios y de nuestras familias</p>
         <h1 class="names">
-          <span class="name reveal" data-delay="1">Daniel</span>
-          <span class="amp reveal" data-delay="2">&amp;</span>
-          <span class="name reveal" data-delay="3">Diana</span>
+          <span class="name reveal" data-delay="2">Daniel Alejandro</span>
+          <span class="amp foil reveal" data-delay="3">&amp;</span>
+          <span class="name reveal" data-delay="4">Diana Carolina</span>
         </h1>
         <p class="hero-sub reveal" data-delay="4">¡Nos casamos!</p>
         <div class="hero-date reveal" data-delay="5">
           <span data-cfg="weekday">Sábado</span>
-          <span class="big" data-cfg="day">12</span>
-          <span data-cfg="monthYear">Diciembre 2026</span>
+          <span class="big foil" data-cfg="day">19</span>
+          <span data-cfg="monthYear">Junio 2027</span>
         </div>
+        <p class="hero-place reveal" data-delay="5">Hacienda Chic · Bogotá</p>
         <a href="#invitado" class="scroll-down" aria-label="Bajar">
           <span></span>
         </a>
@@ -134,9 +209,9 @@
 
     <!-- ========== INVITADO PERSONALIZADO ========== -->
     <section class="section guest" id="invitado">
-      <svg class="divider reveal" aria-hidden="true"><use href="#bouquet"/></svg>
-      <p class="quote reveal">"El amor es paciente, es bondadoso… todo lo sufre, todo lo cree, todo lo espera, todo lo soporta."</p>
-      <p class="quote-ref reveal">1 Corintios 13:4-7</p>
+      <svg class="divider reveal" aria-hidden="true"><use href="#garland"/></svg>
+      <p class="quote reveal">«Las muchas aguas no podrán apagar el amor, ni lo ahogarán los ríos.»</p>
+      <p class="quote-ref reveal">Cantares 8:7</p>
 
       <div class="guest-card reveal">
         <p class="guest-label">Esta invitación es para</p>
@@ -165,57 +240,65 @@
       <h2 class="section-title reveal">Faltan</h2>
       <div class="countdown reveal" id="countdown">
         <div class="cd-item"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Días</span></div>
-        <div class="cd-sep">:</div>
         <div class="cd-item"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Horas</span></div>
-        <div class="cd-sep">:</div>
         <div class="cd-item"><span class="cd-num" id="cdMins">00</span><span class="cd-label">Minutos</span></div>
-        <div class="cd-sep">:</div>
         <div class="cd-item"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">Segundos</span></div>
       </div>
-      <p class="cd-done" id="cdDone" hidden>¡Hoy es el gran día! 💍</p>
+      <p class="cd-done" id="cdDone" hidden>¡Hoy es el gran día!</p>
       <a class="btn btn-ghost reveal" id="calendarBtn" href="#" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10z"/></svg>
         Agendar en mi calendario
       </a>
     </section>
 
-    <!-- ========== CEREMONIA Y RECEPCIÓN ========== -->
-    <section class="section places" id="lugares">
+    <!-- ========== LUGAR ========== -->
+    <section class="section places" id="lugar">
       <h2 class="section-title reveal">¿Dónde y cuándo?</h2>
-      <div class="place-grid">
-        <article class="place-card reveal">
-          <div class="place-icon">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4l6 8h-4v6h10l-4 8h6v34H18V26h6l-4-8h10v-6h-4l6-8zm-6 40v16h12V44a6 6 0 0 0-12 0z"/></svg>
-          </div>
-          <h3>Ceremonia</h3>
-          <p class="place-time">4:00 p.m.</p>
-          <p class="place-name">Parroquia Nuestra Señora</p>
-          <p class="place-addr">Calle 00 # 00-00, Ciudad</p>
-          <a class="btn" href="https://maps.google.com/?q=Parroquia" target="_blank" rel="noopener">Ver ubicación</a>
-        </article>
-        <article class="place-card reveal" data-delay="2">
-          <div class="place-icon">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 6h8l-2 18a8 8 0 0 1-3 5.6V52h7v6H14v-6h7V29.6A8 8 0 0 1 18 24L16 6h4zm18 0h8l-2 18a8 8 0 0 1-3 5.6V52h7v6H32v-6h7V29.6A8 8 0 0 1 36 24L34 6h4z"/></svg>
-          </div>
-          <h3>Recepción</h3>
-          <p class="place-time">6:30 p.m.</p>
-          <p class="place-name">Hacienda Los Jardines</p>
-          <p class="place-addr">Km 0 vía Principal, Ciudad</p>
-          <a class="btn" href="https://maps.google.com/?q=Hacienda" target="_blank" rel="noopener">Ver ubicación</a>
-        </article>
-      </div>
+      <article class="place-card reveal">
+        <svg class="place-orchid" aria-hidden="true"><use href="#orchid"/></svg>
+        <p class="place-kicker">Ceremonia &amp; Recepción</p>
+        <h3>Hacienda Chic</h3>
+        <p class="place-addr">Bogotá, Colombia</p>
+        <div class="place-when">
+          <span data-cfg="longDate">Sábado 19 de junio de 2027</span>
+          <span class="place-time">4:00 p.m.</span>
+        </div>
+        <a class="btn" href="https://maps.app.goo.gl/DuaCmXVdwyJRUusX6" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          Ver ubicación
+        </a>
+      </article>
     </section>
 
     <!-- ========== ITINERARIO ========== -->
     <section class="section timeline-section" id="itinerario">
       <h2 class="section-title reveal">Itinerario</h2>
       <ol class="timeline">
-        <li class="reveal"><span class="t-time">4:00 p.m.</span><span class="t-dot"><span class="emo">⛪</span></span><span class="t-text">Ceremonia religiosa</span></li>
-        <li class="reveal"><span class="t-time">5:30 p.m.</span><span class="t-dot"><span class="emo">📸</span></span><span class="t-text">Fotos con los novios</span></li>
-        <li class="reveal"><span class="t-time">6:30 p.m.</span><span class="t-dot"><span class="emo">🥂</span></span><span class="t-text">Cóctel de bienvenida</span></li>
-        <li class="reveal"><span class="t-time">7:30 p.m.</span><span class="t-dot"><span class="emo">💃</span></span><span class="t-text">Primer baile</span></li>
-        <li class="reveal"><span class="t-time">8:00 p.m.</span><span class="t-dot"><span class="emo">🍽️</span></span><span class="t-text">Cena</span></li>
-        <li class="reveal"><span class="t-time">9:00 p.m.</span><span class="t-dot"><span class="emo">🎉</span></span><span class="t-text">¡A celebrar!</span></li>
+        <li class="reveal">
+          <span class="t-time">4:00 p.m.</span>
+          <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 12h16v7a7 7 0 0 1-7 7h-2a7 7 0 0 1-7-7zM22 14h2a3 3 0 0 1 0 6h-2M10 4c-1 2 1 3 0 5M15 4c-1 2 1 3 0 5M4 29h22"/></svg></span>
+          <span class="t-text">Coffee time</span>
+        </li>
+        <li class="reveal">
+          <span class="t-time">5:00 p.m.</span>
+          <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="12" cy="19" r="7"/><circle cx="20" cy="19" r="7"/><path d="M13 8l3-4 3 4-3 3z"/></svg></span>
+          <span class="t-text">Ceremonia religiosa</span>
+        </li>
+        <li class="reveal">
+          <span class="t-time">6:00 p.m.</span>
+          <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4h6l-.5 8a2.5 2.5 0 0 1-5 0zM11 14.5V26M8 26h6M18 4h6l.5 8a2.5 2.5 0 0 1-5 0zM21 14.5V26M18 26h6"/></svg></span>
+          <span class="t-text">Brindis</span>
+        </li>
+        <li class="reveal">
+          <span class="t-time">6:30 p.m.</span>
+          <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="17" r="8"/><circle cx="16" cy="17" r="5"/><path d="M4 5v7a2 2 0 0 0 2 2v13M4 5v5M6 5v5M8 5v7a2 2 0 0 1-2 2M27 5c-3 1-3 7-3 9h3v13"/></svg></span>
+          <span class="t-text">Cena</span>
+        </li>
+        <li class="reveal">
+          <span class="t-time">7:30 p.m.</span>
+          <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 24V7l14-3v17"/><circle cx="9" cy="24" r="3"/><circle cx="23" cy="21" r="3"/><path d="M12 12l14-3"/></svg></span>
+          <span class="t-text">¡A celebrar!</span>
+        </li>
       </ol>
     </section>
 
@@ -238,55 +321,36 @@
     <section class="section dress" id="vestimenta">
       <h2 class="section-title reveal">Código de vestimenta</h2>
       <p class="dress-type reveal">Formal</p>
-      <div class="dress-icons reveal">
-        <div>
-          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 4l10 8 10-8 8 6-6 10 4 40H16l4-40-6-10 8-6zm10 12l-3 6 3 26 3-26-3-6z"/></svg>
-          <span>Caballeros<br><small>Traje</small></span>
-        </div>
-        <div>
-          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M26 4h12l-2 8 6 8-4 8 12 32H14l12-32-4-8 6-8-2-8z"/></svg>
-          <span>Damas<br><small>Vestido largo</small></span>
-        </div>
-      </div>
-      <p class="dress-note reveal">Con cariño te pedimos reservar el color <strong>blanco</strong> para la novia.</p>
-      <div class="palette reveal" aria-label="Colores sugeridos">
-        <span style="--c:#c98b8b" title="Rosa palo"></span>
-        <span style="--c:#9caf88" title="Verde salvia"></span>
-        <span style="--c:#d8b4a0" title="Durazno"></span>
-        <span style="--c:#8b9dc3" title="Azul empolvado"></span>
-        <span style="--c:#b39cc4" title="Lavanda"></span>
-      </div>
-      <p class="palette-label reveal">Paleta sugerida</p>
+      <p class="dress-note reveal">Con mucho cariño, les pedimos reservar estos colores:</p>
+      <ul class="reserved reveal">
+        <li><span class="swatch" style="--c:#ffffff"></span><strong>Blanco</strong><small>La novia</small></li>
+        <li><span class="swatch" style="--c:#6d1a2c"></span><strong>Burdeos</strong><small>Damas de honor</small></li>
+        <li><span class="swatch" style="--c:#1c2541"></span><strong>Azul noche</strong><small>El novio</small></li>
+      </ul>
     </section>
 
     <!-- ========== REGALOS ========== -->
     <section class="section gifts" id="regalos">
       <h2 class="section-title reveal">Regalos</h2>
       <div class="gift-icon reveal">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 18h48v12H8zM12 30h40v28H12zM30 18h4v40h-4zM32 18c-4-10-16-12-16-4 0 4 8 4 16 4zm0 0c4-10 16-12 16-4 0 4-8 4-16 4z"/></svg>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="16" width="52" height="34" rx="3"/><path d="M6 19l26 18 26-18"/><path d="M32 30c-3-6-12-7-12-2s9 4 12 2c3 2 12 3 12-2s-9-4-12 2z"/></svg>
       </div>
-      <p class="gift-text reveal">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, tendremos <strong>lluvia de sobres</strong> el día del evento.</p>
-      <button class="btn btn-ghost reveal" id="bankToggle" aria-expanded="false">Ver datos bancarios</button>
-      <div class="bank" id="bank" hidden>
-        <p><strong>Banco:</strong> Nombre del banco</p>
-        <p><strong>Tipo:</strong> Cuenta de ahorros</p>
-        <p><strong>Número:</strong> <span id="accNum">000-000000-00</span></p>
-        <p><strong>Titular:</strong> Daniel Tijo</p>
-        <button class="btn btn-small" id="copyBtn">Copiar número</button>
-      </div>
+      <p class="gift-text reveal">Compartir este día con ustedes es nuestro mayor regalo. Si desean tener un detalle con nosotros, con gratitud lo recibiremos en la <strong>lluvia de sobres</strong> durante la celebración.</p>
     </section>
 
     <!-- ========== CONFIRMACIÓN ========== -->
     <section class="section rsvp" id="confirmar">
-      <svg class="divider reveal" aria-hidden="true"><use href="#bouquet"/></svg>
+      <svg class="divider reveal" aria-hidden="true"><use href="#garland"/></svg>
       <h2 class="section-title reveal">Confirma tu asistencia</h2>
-      <p class="reveal">Por favor confírmanos antes del <strong data-cfg="rsvpDeadline">15 de noviembre de 2026</strong>.</p>
+      <p class="reveal">Por favor confírmanos antes del <strong data-cfg="rsvpDeadline">30 de abril de 2027</strong>.</p>
       <p class="rsvp-adults reveal">Evento solo para adultos</p>
 
       <form class="rsvp-form reveal" id="rsvpForm" novalidate>
-        <label class="field">
+        <p class="form-family" id="formFamily" hidden></p>
+
+        <label class="field" id="nameField">
           <span class="field-label">Nombre</span>
-          <input type="text" name="nombre" id="rsvpName" autocomplete="name" placeholder="Tu nombre o el de tu familia" required maxlength="80">
+          <input type="text" name="nombre" id="rsvpName" autocomplete="name" placeholder="Tu nombre completo" maxlength="80">
         </label>
 
         <fieldset class="field">
@@ -294,25 +358,42 @@
           <div class="choice-group">
             <label class="choice">
               <input type="radio" name="asistencia" value="Sí" required>
-              <span class="choice-box"><span class="choice-emoji emo">💃</span>¡Sí, ahí estaré!</span>
+              <span class="choice-box">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="12" cy="18" r="7"/><circle cx="20" cy="18" r="7"/><path d="M13 7l3-4 3 4-3 3z"/></svg>
+                ¡Sí, ahí estaré!
+              </span>
             </label>
             <label class="choice">
               <input type="radio" name="asistencia" value="No">
-              <span class="choice-box"><span class="choice-emoji emo">💌</span>No podré asistir</span>
+              <span class="choice-box">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="8" width="24" height="17" rx="2"/><path d="M4 10l12 8 12-8"/></svg>
+                No podré asistir
+              </span>
             </label>
           </div>
         </fieldset>
 
-        <fieldset class="field" id="peopleField" hidden>
-          <legend class="field-label">¿Cuántas personas asistirán?</legend>
-          <div class="people-group" id="peopleGroup"></div>
-          <p class="field-hint" id="peopleHint"></p>
-        </fieldset>
+        <div class="yes-only" id="yesOnly" hidden>
+          <fieldset class="field" id="peopleField">
+            <legend class="field-label">¿Quiénes asistirán?</legend>
+            <div class="people-list" id="peopleList"></div>
+            <p class="field-hint" id="peopleHint"></p>
+          </fieldset>
 
-        <label class="field">
-          <span class="field-label">Mensaje para los novios <small>(opcional)</small></span>
-          <textarea name="mensaje" rows="3" maxlength="500" placeholder="Alergias, restricciones alimentarias o unas palabras para nosotros ❤"></textarea>
-        </label>
+          <label class="field">
+            <span class="field-label">Restricciones alimenticias o alergias <small>(opcional)</small></span>
+            <textarea name="restricciones" rows="2" maxlength="300" placeholder="Ej: vegetariano, alergia al maní…"></textarea>
+          </label>
+
+          <label class="field">
+            <span class="field-label">La canción que no puede faltar <small>(opcional)</small></span>
+            <span class="song-input">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9l5.8 3.1z"/></svg>
+              <input type="url" name="cancion" id="songInput" inputmode="url" placeholder="Pega aquí el link de YouTube" maxlength="200">
+            </span>
+            <span class="field-hint">Nos encantará bailarla contigo.</span>
+          </label>
+        </div>
 
         <p class="form-error" id="rsvpError" role="alert" hidden></p>
         <button type="submit" class="btn btn-big" id="rsvpSubmit">
@@ -322,9 +403,7 @@
       </form>
 
       <div class="rsvp-done" id="rsvpDone" hidden>
-        <div class="done-heart" aria-hidden="true">
-          <svg viewBox="0 0 64 64"><path d="M32 56S6 40 6 22A13 13 0 0 1 32 16a13 13 0 0 1 26 6c0 18-26 34-26 34z"/></svg>
-        </div>
+        <svg class="done-orchid" aria-hidden="true"><use href="#orchid"/></svg>
         <h3 id="rsvpDoneTitle">¡Gracias por confirmar!</h3>
         <p id="rsvpDoneText">Te esperamos con mucha ilusión.</p>
         <button type="button" class="btn btn-ghost btn-small" id="rsvpAgain">Cambiar mi respuesta</button>
@@ -332,15 +411,16 @@
     </section>
 
     <footer class="footer">
-      <svg class="footer-flower" aria-hidden="true"><use href="#bouquet"/></svg>
-      <p class="footer-names">Daniel &amp; Diana</p>
-      <p class="footer-date" data-cfg="shortDate">12 · 12 · 2026</p>
+      <svg class="footer-flower" aria-hidden="true"><use href="#garland"/></svg>
+      <p class="footer-names">Daniel Alejandro<br><span class="amp-i">&amp;</span> Diana Carolina</p>
+      <svg class="footer-flourish" aria-hidden="true"><use href="#flourish"/></svg>
+      <p class="footer-date" data-cfg="shortDate">19 · 06 · 2027</p>
       <p class="footer-thanks">¡Gracias por ser parte de nuestra historia!</p>
     </footer>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=202609222230"></script>
+  <script src="script.js?v=202609230107"></script>
 </body>
 </html>

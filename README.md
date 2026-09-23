@@ -1,20 +1,21 @@
-# 💍 Daniel & Diana — Invitación de boda
+# 💍 Daniel Alejandro & Diana Carolina — Invitación de boda
 
-Invitación web floral con sobre animado, música, pétalos cayendo, cuenta regresiva,
+Invitación web con orquídeas, detalles dorados, sobre animado, música, pétalos cayendo, cuenta regresiva,
 ubicaciones, itinerario, galería, código de vestimenta, regalos y confirmación de asistencia dentro de la página (con aviso por correo, ver `CONFIGURAR-CORREO.md`).
 
 ## Invitados y pases
 La lista de invitados está en **`invitados.csv`** (se puede abrir con Excel o Google Sheets):
 
 ```
-codigo,familia,pases
-FP4M9,Familia Pérez Gómez,4
-TM8Q1,Tía Marta,1
+codigo,familia,invitados
+FP4M9,Familia Pérez Gómez,Carlos Pérez|María Gómez|Juan Pérez|Laura Pérez
+TM8Q1,Tía Marta,Marta Rodríguez
 ```
 
 - `codigo`: código único y corto de cada invitación (letras y números, sin espacios).
 - `familia`: el nombre tal como aparecerá en la invitación.
-- `pases`: cuántas personas incluye la invitación.
+- `invitados`: el nombre de cada persona incluida, separados por `|`. La cantidad de nombres es el número de pases,
+  y al confirmar cada familia marca quiénes asistirán. (No uses comas dentro de los nombres.)
 
 Cada invitado recibe un enlace con su código, por ejemplo
 `https://danieltijo94.github.io/boda-daniel-y-diana/?i=FP4M9`.

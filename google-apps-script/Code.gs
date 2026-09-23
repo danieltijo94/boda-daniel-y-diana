@@ -1,5 +1,5 @@
 /**
- * Confirmaciones de la boda de Daniel & Diana
+ * Confirmaciones de la boda de Daniel Alejandro & Diana Carolina
  * Guarda cada respuesta en esta hoja de cálculo y envía un correo de aviso.
  * Instrucciones: ver CONFIGURAR-CORREO.md en el repositorio.
  */
@@ -7,7 +7,7 @@
 // Correos adicionales que también deben recibir el aviso (opcional)
 const CORREOS_EXTRA = []; // ej: ["diana@gmail.com"]
 
-const COLUMNAS = ["Fecha", "Código", "Nombre", "Asistencia", "Personas", "Pases", "Mensaje"];
+const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -28,7 +28,9 @@ function doPost(e) {
       asiste ? "Sí" : "No",
       personas,
       pases,
-      limpiar(p.mensaje),
+      limpiar(p.asistentes),
+      limpiar(p.restricciones),
+      limpiar(p.cancion),
     ];
 
     const hoja = obtenerHoja();
@@ -51,11 +53,10 @@ function doPost(e) {
 function obtenerHoja() {
   const libro = SpreadsheetApp.getActiveSpreadsheet();
   const hoja = libro.getSheetByName("Confirmaciones") || libro.getSheets()[0];
-  if (hoja.getLastRow() === 0) {
-    hoja.appendRow(COLUMNAS);
-    hoja.getRange(1, 1, 1, COLUMNAS.length).setFontWeight("bold").setBackground("#f3d9d3");
-    hoja.setFrozenRows(1);
-  }
+  // Encabezados siempre al día (también si la hoja venía de una versión anterior)
+  hoja.getRange(1, 1, 1, COLUMNAS.length).setValues([COLUMNAS])
+    .setFontWeight("bold").setBackground("#f4dcdc");
+  hoja.setFrozenRows(1);
   return hoja;
 }
 
@@ -70,19 +71,21 @@ function buscarFila(hoja, codigo) {
 }
 
 function enviarCorreo(fila, actualizado, hoja) {
-  const [, codigo, nombre, asistencia, personas, pases, mensaje] = fila;
+  const [, codigo, familia, asistencia, personas, pases, asistentes, restricciones, cancion] = fila;
   const totales = totalConfirmados(hoja);
   const asunto = asistencia === "Sí"
-    ? `💍 ${nombre} confirmó: ${personas} de ${pases} ${pases === 1 ? "persona" : "personas"}`
-    : `💌 ${nombre} no podrá asistir`;
+    ? `💍 ${familia} confirmó: ${personas} de ${pases} ${pases === 1 ? "persona" : "personas"}`
+    : `💌 ${familia} no podrá asistir`;
   const cuerpo = [
     actualizado ? "(Actualizó su respuesta anterior)" : "¡Nueva confirmación!",
     "",
-    `Nombre: ${nombre}`,
+    `Familia: ${familia}`,
     `Código: ${codigo || "sin código"}`,
     `¿Asiste?: ${asistencia}`,
     `Personas: ${personas} de ${pases}`,
-    `Mensaje: ${mensaje || "—"}`,
+    `Asistentes: ${asistentes || "—"}`,
+    `Restricciones / alergias: ${restricciones || "—"}`,
+    `Canción: ${cancion || "—"}`,
     "",
     `Total hasta ahora: ${totales.personas} personas confirmadas (${totales.si} sí · ${totales.no} no).`,
     `Ver la lista completa: ${hoja.getParent().getUrl()}`,
@@ -97,7 +100,7 @@ function totalConfirmados(hoja) {
   const r = { personas: 0, si: 0, no: 0 };
   if (n < 1) return r;
   hoja.getRange(2, 4, n, 2).getValues().forEach(([asiste, personas]) => {
-    if (asiste === "Sí") { r.si++; r.personas += Number(personas) || 0; } else { r.no++; }
+    if (asiste === "Sí") { r.si++; r.personas += Number(personas) || 0; } else if (asiste === "No") { r.no++; }
   });
   return r;
 }
@@ -115,5 +118,8 @@ function limpiar(v) {
 
 // Ejecuta esta función una vez desde el editor para autorizar el envío de correos
 function probar() {
-  doPost({ parameter: { codigo: "PRUEBA", nombre: "Prueba", asistencia: "Sí", personas: "2", pases: "2", mensaje: "Esto es una prueba" } });
+  doPost({ parameter: {
+    codigo: "PRUEBA", nombre: "Familia Prueba", asistencia: "Sí", personas: "2", pases: "2",
+    asistentes: "Invitado Uno, Invitado Dos", restricciones: "Vegetariano", cancion: "https://youtu.be/dQw4w9WgXcQ",
+  } });
 }
