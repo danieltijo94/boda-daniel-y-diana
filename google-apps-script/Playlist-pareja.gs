@@ -19,16 +19,19 @@ function doPost(e) {
   return responder({ ok: agregar(p.video) });
 }
 
-// Agrega el video a la playlist (una sola vez por canción)
+// ¿La canción ya está en la playlist? (se revisa la playlist real, por si alguien la borró)
+function yaEsta(videoId) {
+  const r = YouTube.PlaylistItems.list("id", { playlistId: PLAYLIST_ID, videoId: videoId, maxResults: 1 });
+  return (r.items || []).length > 0;
+}
+
+// Agrega el video a la playlist si todavía no está
 function agregar(videoId) {
-  const props = PropertiesService.getScriptProperties();
-  const clave = "yt:" + PLAYLIST_ID + ":" + videoId;
-  if (props.getProperty(clave)) return true;
   try {
+    if (yaEsta(videoId)) return true;
     YouTube.PlaylistItems.insert({
       snippet: { playlistId: PLAYLIST_ID, resourceId: { kind: "youtube#video", videoId: videoId } },
     }, "snippet");
-    props.setProperty(clave, "1");
     return true;
   } catch (err) {
     console.error("No se pudo agregar a la playlist: " + err);
