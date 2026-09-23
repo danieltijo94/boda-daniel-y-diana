@@ -4,24 +4,32 @@ Cuando un invitado confirma y pega el link de YouTube de su canción, el script 
 automáticamente a una playlist tuya de YouTube (sin repetir canciones). También queda anotada en la hoja
 y en el correo de aviso.
 
-## Configurarla (una sola vez, unos 5 minutos)
+## Cómo funciona
 
-> La playlist debe pertenecer a la **misma cuenta de Google** dueña del script (la de la hoja de
-> confirmaciones). Si es de otra cuenta, YouTube responde "Forbidden".
+La playlist pertenece a **otra cuenta de Google** (no a la del script de confirmaciones), y YouTube solo
+deja agregar canciones a la persona dueña. Por eso hay dos scripts:
 
-1. Asegúrate de que tu cuenta tenga canal de YouTube: [youtube.com](https://www.youtube.com) → tu foto →
-   **Crear un canal** (si ya lo tienes, sáltate este paso).
-2. Abre tu hoja de confirmaciones → **Extensiones → Apps Script** y pega la última versión de
-   `google-apps-script/Code.gs`. Guarda.
-3. En el menú de la izquierda, junto a **Servicios**, pulsa **+** → **YouTube Data API v3** → **Añadir**
-   (si ya lo agregaste, no hace falta repetirlo).
-4. Arriba elige la función **`crearPlaylist`** y pulsa **▶ Ejecutar**. En el registro aparece el link de la
-   nueva playlist *"Boda Daniel Alejandro & Diana Carolina 💍"* (no listada). Queda configurada sola.
-5. (Opcional) Elige **`probarPlaylist`** y ejecútala: debe decir *"¡Canción agregada a la playlist!"*.
-6. **Implementar → Gestionar implementaciones → ✏️ → Versión: Nueva versión → Implementar.**
+1. **`google-apps-script/Playlist-pareja.gs`**: vive en la cuenta **dueña de la playlist**. Recibe cada
+   canción y la agrega.
+2. **`google-apps-script/Code.gs`** (el de las confirmaciones): al recibir una canción, se la envía al
+   script anterior.
 
-¿Algo falla? Ejecuta **`diagnosticoPlaylist`**: muestra qué canal usa el script y sus playlists.
+Los dos comparten una **palabra secreta** (`CLAVE` / `PLAYLIST_CLAVE`) para que nadie más pueda agregar
+canciones. No la subas al repositorio.
 
-### Que otra persona también pueda agregar canciones
-En YouTube abre la playlist → **⋮ → Colaborar** → activa *"Los colaboradores pueden añadir videos"* y
-comparte el link de invitación.
+## Parte A: en la cuenta dueña de la playlist
+
+1. Entra a [script.google.com](https://script.google.com) → **Nuevo proyecto**. Ponle de nombre *"Playlist boda"*.
+2. Borra lo que aparece y pega el contenido de `google-apps-script/Playlist-pareja.gs`.
+3. Escribe la palabra secreta en `const CLAVE = "…";` y revisa que `PLAYLIST_ID` sea el de la playlist. Guarda.
+4. Junto a **Servicios** pulsa **+** → **YouTube Data API v3** → **Añadir**.
+5. Elige la función **`probar`** → **▶ Ejecutar** → acepta los permisos. Debe decir *"¡Canción agregada a la playlist!"*.
+6. **Implementar → Nueva implementación → ⚙️ Aplicación web** · Ejecutar como: **Yo** · Acceso: **Cualquier usuario** →
+   **Implementar**. Copia la URL (termina en `/exec`).
+
+## Parte B: en la cuenta de las confirmaciones
+
+1. Abre la hoja de confirmaciones → **Extensiones → Apps Script** y pega la última versión de `Code.gs`.
+2. Pega la URL de la parte A en `PLAYLIST_WEBAPP_URL` y la misma palabra secreta en `PLAYLIST_CLAVE`. Guarda.
+3. Elige **`probarPlaylist`** → **▶ Ejecutar** → acepta el nuevo permiso ("conectarse a un servicio externo").
+4. **Implementar → Gestionar implementaciones → ✏️ → Versión: Nueva versión → Implementar.**
