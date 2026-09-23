@@ -9,7 +9,7 @@ const CORREOS_EXTRA = []; // ej: ["diana@gmail.com"]
 
 // ID de la playlist de YouTube donde se agregan las canciones sugeridas (ver PLAYLIST.md).
 // Vacío = no se agrega a ninguna playlist.
-const PLAYLIST_ID = "";
+const PLAYLIST_ID = "PLSZ7h_cwdW9k";
 
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
 
