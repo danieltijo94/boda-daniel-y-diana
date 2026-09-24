@@ -22,3 +22,20 @@ Responde siempre **en español** y con explicaciones sencillas (el usuario no es
   (Implementar → Gestionar implementaciones → ✏️ → Nueva versión).
 - Prueba los cambios visuales con Playwright en tamaño celular (390×844) antes de subirlos.
 - Trabaja y publica en la rama `claude/tender-cerf-3qmwm1` (es la que usa GitHub Pages).
+
+## Cómo trabajamos (acordado con el usuario)
+- **Antes de empezar, lee `CLAUDE_BODA_INVITACION.md`**, en especial la sección 3 "🛠️ Plan de trabajo".
+- Las funciones del plan se hacen **una a una, en orden** (1 llegada y transporte → 2 clima en vivo →
+  3 plano de mesas → 4 pase QR de entrada → 5 modo "día de la boda" → 6 página de agradecimiento →
+  7 panel de los novios). Al terminar una: probarla, subirla, actualizar su estado en la tabla del plan
+  (✅ Hecho) y **esperar a que el usuario la pruebe y dé el visto bueno** antes de empezar la siguiente.
+- Antes de programar una función, confirma los datos que falten (por ejemplo, coordenadas de Hacienda Chic
+  para el clima y Waze) o usa un valor provisional y dilo.
+- Pendiente abierto: confirmar que la playlist funciona desde la invitación (el correo dice
+  "(agregada a la playlist ✓)" o el motivo del fallo).
+
+## Notas del entorno de pruebas
+- Desde el contenedor no se puede acceder a Google, YouTube ni github.io (red bloqueada): los scripts de
+  Google los prueba el usuario.
+- Para ver las fuentes reales en Playwright, instálalas con `npm pack @fontsource/pinyon-script
+  @fontsource/cinzel @fontsource/cormorant-garamond` y sírvelas interceptando `fonts.googleapis.com`.

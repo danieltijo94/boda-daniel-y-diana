@@ -241,7 +241,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `2f16850` | 2026-09-24 | Documento de seguimiento del proyecto (este archivo) |
 | `7ecc05d` | 2026-09-24 | Regla en `CLAUDE.md`: actualizar este documento con cada cambio |
 | `cf5c79a` | 2026-09-24 | Plan de trabajo de nuevas funciones (llegada, clima, mesas, pase QR, modo boda, agradecimiento) |
-| — | 2026-09-24 | El panel de los novios entra al plan como último punto |
+| `8401fcd` | 2026-09-24 | El panel de los novios entra al plan como último punto |
+| — | 2026-09-24 | Forma de trabajo acordada guardada en `CLAUDE.md` |
 
 ---
 
