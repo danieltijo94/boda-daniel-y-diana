@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 24 de septiembre de 2026 (punto 3: editor de mesas sobre la pestaña "Lista de Invitados")
+> **Última actualización:** 25 de septiembre de 2026 (★ confirmación por persona)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -56,10 +56,14 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 12. **Regalos**: texto de lluvia de sobres.
 13. **Comparte tus fotos**: QR + botón hacia `fotos.html`.
 14. **Confirma tu asistencia** (formulario dentro de la invitación):
-    - ¿Nos acompañarás? → "¡Sí, ahí estaré!" / "No podré asistir".
-    - Si es "Sí": casillas con **el nombre de cada invitado de la tarjeta** para marcar quiénes asisten,
-      **restricciones alimenticias o alergias** y **link de YouTube de la canción que no puede faltar**.
-    - Al enviar: destellos, mensaje de gracias y opción "Cambiar mi respuesta".
+    - **Con código:** una tarjeta por persona con **Asistirá / No podrá** (atajos "Todos asistiremos" /
+      "Ninguno podrá asistir" si son 2 o más). Hay que marcar a todos antes de enviar.
+    - Quien asiste: **restricción alimenticia propia** (Vegetariano, Vegano, Sin gluten, Sin lactosa, Alergia + detalle;
+      si marca Alergia debe escribir a qué). Los "Acompañante de …" pueden escribir su nombre.
+    - **Resumen** antes de enviar ("Asistirán 2 de 3: … · No asistirá: …") y **link de YouTube** de la canción (uno por familia).
+    - **Sin código:** nombre + "¿Nos acompañarás?" + restricción.
+    - Al enviar: destellos y gracias con nombres ("Te esperamos a Carlos y María. Extrañaremos a Juan.");
+      **"Cambiar mi respuesta"** vuelve a cargar lo marcado.
 15. **Pie**: nombres, fecha 19 · 06 · 2027 y agradecimiento.
 
 **Estilo:** fondo marfil y rosa, orquídeas phalaenopsis (SVG propias), detalles dorados, letras Pinyon Script
@@ -99,7 +103,8 @@ Hoja "Confirmaciones Boda Daniel y Diana" — pestañas:
 |---|---|
 | **Lista de Invitados** (creada por el usuario, ~100 personas) | `Nombre` · `Pases` · `Numero de Mesa` + `Familia` · `Código` (las agrega `prepararHojas` al final) |
 | **Mesas** | `Mesa` (número o texto, ej. `Novios`) · `Sillas` |
-| **Confirmaciones** | respuestas del formulario (la hoja cuyo A1 es "Fecha" se renombra así; si no hay, se crea) |
+| **Confirmaciones** | una fila por invitación: Fecha, Código, Familia, Asistencia, Personas, Pases, Asistentes, Restricciones (con nombre), Canción, **No asisten** (la hoja cuyo A1 es "Fecha" se renombra así; si no hay, se crea) |
+| **Asistencia por persona** | una fila por persona: `Código` · `Familia` · `Invitado` · `Nombre indicado` (acompañante) · `¿Asiste?` · `Restricción` · `Actualizado` (se reemplazan las filas de esa invitación en cada respuesta) |
 
 - Las columnas se reconocen **por su título** (sin tildes ni mayúsculas), no por su posición.
 - **Familia**: filas con el mismo texto = una sola invitación. Vacía = invitación individual (se muestra el Nombre).
@@ -110,6 +115,8 @@ Hoja "Confirmaciones Boda Daniel y Diana" — pestañas:
   con acompañantes, mesa), su confirmación y las mesas. Guardar el plano es un POST en JSON
   `{accion:"guardarMesas", clave, mesas, asignaciones}`; cada fila se reconoce por `código|nombre`.
 - Al confirmar, el script toma los **pases y el nombre de la familia de la Lista de Invitados** (no del navegador).
+- La invitación envía `detalle` (JSON: nombre, nombre indicado, asiste, restricción por persona); el script solo acepta
+  nombres de esa invitación. `listaCompleta` usa **Asistencia por persona** para ✓/✗ y restricciones (🍽 en el plano).
 - La mesa se asigna **por persona** (una fila). En la invitación todavía no se muestra: aparecerá el día de la
   boda (punto 5) y en el pase QR (punto 4).
 - `invitados.csv` se eliminó del repositorio: la lista ya no es pública. **Nunca subir la lista real al repositorio.**
@@ -124,7 +131,8 @@ Script de confirmaciones (Code.gs, cuenta de Daniel)
    ├─ guarda / actualiza la fila en la hoja "Confirmaciones Boda Daniel y Diana"
    ├─ si hay canción → la envía al script de la pareja (con palabra secreta)
    │        └─ Playlist-pareja.gs agrega el video a la playlist PLSZ7h_cwdW9k (si no está)
-   └─ envía correo: familia, asistentes, restricciones, canción (✓ agregada / ⚠️ motivo) y totales
+   ├─ guarda cada persona en la pestaña "Asistencia por persona"
+   └─ envía correo: familia, ✓/✗ de cada persona con su restricción, canción (✓ agregada / ⚠️ motivo) y totales
 ```
 - Si una familia vuelve a confirmar, **se actualiza su fila** (no se duplica).
 - La **palabra secreta** compartida entre los dos scripts **no se guarda en el repositorio** (es público):
@@ -167,8 +175,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 1 | Información de llegada y transporte | ✅ Hecho (aprobado) |
 | 2 | Clima en vivo | ✅ Hecho (aprobado) |
 | 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (aprobado) |
-| ★ | **Confirmación por persona** (prioridad) | 📝 Propuesta (esperando aprobación) |
-| 4 | Pase QR de entrada por familia | 🔜 Después de ★ |
+| ★ | **Confirmación por persona** (prioridad) | ✅ Hecho (esperando visto bueno) |
+| 4 | Pase QR de entrada por familia | ⏳ Siguiente |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
 | 7 | Panel de los novios | 🔜 Por hacer (al final) |
@@ -195,7 +203,7 @@ la boda", porque ambos muestran la mesa de cada familia.
   (actualiza la hoja) e **Imprimir**. Se sienta **por persona**; mesas en **cuadrícula**.
 - La mesa se muestra en la invitación **solo el día de la boda** (ver punto 5) y en el pase QR.
 
-**★ Confirmación por persona** *(prioridad, pedida por el usuario; va antes del punto 4)*
+**★ Confirmación por persona** *(prioridad, pedida por el usuario; va antes del punto 4)* — ✅ programada
 - En invitaciones de varios pases, cada persona se confirma por separado: **Asistirá ✓ / No podrá ✗**, con atajos
   "Todos asistiremos" / "Ninguno podrá asistir". Hay que marcar a todos antes de enviar.
 - Restricción alimenticia **por persona** (solo para quienes asisten): opciones rápidas (Vegetariano, Vegano,
@@ -253,6 +261,7 @@ la boda", porque ambos muestran la mesa de cada familia.
   **Google Sheets** (pestaña Invitados, una fila por persona); `invitados.csv` se eliminó.
 - **Plano de mesas:** editor en `mesas.html` que guarda en la hoja; asignación **por persona**; mesas en **cuadrícula**
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
+- **Confirmación por persona** (no por familia): cada invitado de la tarjeta marca si va y su propia restricción.
 - Se usa la pestaña que creó el usuario (**Lista de Invitados**) en vez de una nueva; el script solo le agrega
   las columnas Familia y Código. Las invitaciones se agrupan por la columna **Familia**.
 - **Modo oscuro:** Chrome se controla con `color-scheme`; **Samsung Internet no se puede controlar** → aviso "Abrir en Chrome". El truco de invertir colores se probó y se retiró.
@@ -296,8 +305,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `7bfe280` | 2026-09-24 | Punto 3 rehecho: lista de invitados en Google Sheets (pestañas Invitados y Mesas), editor interactivo `mesas.html`, `panel.js` con clave, `enlaces.html` con confirmaciones; se elimina `invitados.csv` |
 | `a1a1bc7` | 2026-09-24 | El script usa la pestaña del usuario **Lista de Invitados** (Nombre, Pases, Numero de Mesa) y le agrega Familia y Código; acompañantes por Pases; códigos unificados por familia |
 | `16ecebd` | 2026-09-24 | Documento de seguimiento: nombre de la pestaña Lista de Invitados |
-| — | 2026-09-24 | Punto 3 aprobado por el usuario |
-| — | 2026-09-24 | Nueva prioridad ★ en el plan: confirmación por persona (propuesta) |
+| `f90ca73` | 2026-09-24 | Punto 3 aprobado; nueva prioridad ★ (confirmación por persona) en el plan |
+| — | 2026-09-25 | ★ Confirmación por persona: tarjetas Asistirá/No podrá, restricción por persona, nombre de acompañantes, resumen y gracias con nombres; script con columna "No asisten", pestaña "Asistencia por persona" y correo detallado; 🍽 en el plano |
 
 ---
 
@@ -339,7 +348,10 @@ const CLAVE_NOVIOS = "";
 // Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
 const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
-const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
+const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción", "No asisten"];
+// Una fila por persona: quién va, quién no y su restricción (para el catering y el plano de mesas)
+const HOJA_PERSONAS = "Asistencia por persona";
+const COL_PERSONAS = ["Código", "Familia", "Invitado", "Nombre indicado", "¿Asiste?", "Restricción", "Actualizado"];
 
 function responder(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -373,8 +385,10 @@ function doPost(e) {
     // Los pases y el nombre de la familia salen de la lista de invitados
     const inv = p.codigo ? buscarInvitado(p.codigo) : null;
     const pases = inv && inv.ok ? inv.invitados.length : toInt(p.pases, 1);
-    const asiste = p.asistencia === "Sí";
-    const personas = asiste ? Math.min(Math.max(toInt(p.personas, 1), 1), pases) : 0;
+    const detalle = leerDetalle(p, inv);
+    const asiste = detalle ? detalle.some((x) => x.asiste) : p.asistencia === "Sí";
+    const personas = detalle ? detalle.filter((x) => x.asiste).length
+      : asiste ? Math.min(Math.max(toInt(p.personas, 1), 1), pases) : 0;
     const fila = [
       new Date(),
       limpiar(p.codigo),
@@ -384,7 +398,8 @@ function doPost(e) {
       pases,
       limpiar(p.asistentes),
       limpiar(p.restricciones),
-      limpiar(p.cancion),
+      limpiar(asiste ? p.cancion : ""),
+      limpiar(p.noAsisten),
     ];
 
     const hoja = obtenerHoja();
@@ -396,8 +411,9 @@ function doPost(e) {
       hoja.appendRow(fila);
     }
 
-    const errorPlaylist = p.cancion ? agregarAPlaylist(p.cancion) : null;
-    enviarCorreo(fila, Boolean(existente), hoja, errorPlaylist);
+    if (detalle) guardarPorPersona(fila[1], fila[2], detalle);
+    const errorPlaylist = asiste && p.cancion ? agregarAPlaylist(p.cancion) : null;
+    enviarCorreo(fila, Boolean(existente), hoja, errorPlaylist, detalle);
     return responder({ ok: true });
   } finally {
     lock.releaseLock();
@@ -431,7 +447,42 @@ function buscarFila(hoja, codigo) {
   return 0;
 }
 
-function enviarCorreo(fila, actualizado, hoja, errorPlaylist) {
+// Confirmación por persona que envía la invitación: [{ nombre, dado, asiste, restriccion }]
+// Solo se aceptan los nombres de esa invitación (o la persona que confirma sin código).
+function leerDetalle(p, inv) {
+  let lista;
+  try { lista = JSON.parse(p.detalle || "null"); } catch (err) { return null; }
+  if (!Array.isArray(lista) || !lista.length) return null;
+  const validos = inv && inv.ok ? inv.invitados : null;
+  const vistos = {};
+  const out = lista.filter((x) => {
+    if (!x || vistos[x.nombre] || (validos && validos.indexOf(x.nombre) < 0)) return false;
+    vistos[x.nombre] = true;
+    return true;
+  }).map((x) => ({
+      nombre: limpiar(validos ? x.nombre : x.nombre || p.nombre).slice(0, 80),
+      dado: limpiar(x.dado).slice(0, 60),
+      asiste: x.asiste === true,
+      restriccion: x.asiste === true ? limpiar(x.restriccion).slice(0, 150) : "",
+    }));
+  return out.length ? out.slice(0, validos ? validos.length : 1) : null;
+}
+
+// Reemplaza las filas de esa invitación en la pestaña "Asistencia por persona"
+function guardarPorPersona(codigo, familia, detalle) {
+  const hoja = hojaCon(HOJA_PERSONAS, COL_PERSONAS);
+  const clave = (c, f) => (c ? String(c).toUpperCase() : "sin código|" + sinTildes(f));
+  const yo = clave(codigo, familia);
+  const n = hoja.getLastRow() - 1;
+  const otras = n > 0 ? hoja.getRange(2, 1, n, COL_PERSONAS.length).getValues().filter((r) => clave(r[0], r[1]) !== yo) : [];
+  const ahora = new Date();
+  const nuevas = detalle.map((x) => [codigo, familia, x.nombre, x.dado, x.asiste ? "Sí" : "No", x.restriccion, ahora]);
+  const filas = otras.concat(nuevas);
+  if (n > 0) hoja.getRange(2, 1, n, COL_PERSONAS.length).clearContent();
+  hoja.getRange(2, 1, filas.length, COL_PERSONAS.length).setValues(filas);
+}
+
+function enviarCorreo(fila, actualizado, hoja, errorPlaylist, detalle) {
   const [, codigo, familia, asistencia, personas, pases, asistentes, restricciones, cancion] = fila;
   const totales = totalConfirmados(hoja);
   const asunto = asistencia === "Sí"
@@ -444,14 +495,18 @@ function enviarCorreo(fila, actualizado, hoja, errorPlaylist) {
     `Código: ${codigo || "sin código"}`,
     `¿Asiste?: ${asistencia}`,
     `Personas: ${personas} de ${pases}`,
+  ].concat(detalle && codigo ? [""].concat(detalle.map((x) =>
+    `${x.asiste ? "✓" : "✗"} ${x.dado ? `${x.dado} (${x.nombre})` : x.nombre}${x.restriccion ? " — " + x.restriccion : ""}`)) : [
     `Asistentes: ${asistentes || "—"}`,
     `Restricciones / alergias: ${restricciones || "—"}`,
+  ]).concat([
+    "",
     `Canción: ${cancion || "—"}` + (errorPlaylist === "" ? " (agregada a la playlist ✓)"
       : errorPlaylist ? ` (⚠️ no se agregó a la playlist: ${errorPlaylist})` : ""),
     "",
     `Total hasta ahora: ${totales.personas} personas confirmadas (${totales.si} sí · ${totales.no} no).`,
     `Ver la lista completa: ${hoja.getParent().getUrl()}`,
-  ].join("\n");
+  ]).join("\n");
 
   const destinatarios = [Session.getEffectiveUser().getEmail()].concat(CORREOS_EXTRA).join(",");
   MailApp.sendEmail(destinatarios, asunto, cuerpo);
@@ -627,7 +682,23 @@ function listaCompleta() {
   if (n > 0) {
     hc.getRange(2, 1, n, COLUMNAS.length).getValues().forEach((r) => {
       const c = String(r[1]).trim().toUpperCase();
-      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean) };
+      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean), restricciones: {} };
+    });
+  }
+  // La asistencia por persona (formulario nuevo) manda sobre el resumen de la fila
+  const hp = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(HOJA_PERSONAS);
+  const np = hp ? hp.getLastRow() - 1 : 0;
+  if (np > 0) {
+    const porCodigo = {};
+    hp.getRange(2, 1, np, COL_PERSONAS.length).getValues().forEach((r) => {
+      const c = String(r[0]).trim().toUpperCase();
+      if (!c) return;
+      porCodigo[c] = porCodigo[c] || { asistentes: [], restricciones: {} };
+      if (r[4] === "Sí") porCodigo[c].asistentes.push(String(r[2]));
+      if (r[5]) porCodigo[c].restricciones[String(r[2])] = String(r[5]);
+    });
+    Object.keys(porCodigo).forEach((c) => {
+      conf[c] = { asistencia: porCodigo[c].asistentes.length ? "Sí" : "No", ...porCodigo[c] };
     });
   }
   const familias = [];
@@ -637,7 +708,10 @@ function listaCompleta() {
       indice[x.codigo] = { codigo: x.codigo, familia: x.familia, personas: [], confirmacion: conf[x.codigo] || null };
       familias.push(indice[x.codigo]);
     }
-    indice[x.codigo].personas.push({ nombre: x.nombre, pases: x.pases, nombres: conAcompanantes(x), mesa: x.mesa });
+    const nombres = conAcompanantes(x);
+    const r = conf[x.codigo] ? conf[x.codigo].restricciones : {};
+    const restricciones = nombres.filter((nm) => r[nm]).map((nm) => (nombres.length > 1 ? `${nm}: ${r[nm]}` : r[nm]));
+    indice[x.codigo].personas.push({ nombre: x.nombre, pases: x.pases, nombres, mesa: x.mesa, restricciones });
   });
   return { ok: true, familias, mesas: leerMesas() };
 }

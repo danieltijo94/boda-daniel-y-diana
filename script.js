@@ -225,59 +225,178 @@ function isYouTube(url) {
   return /(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)[\w-]{11}/.test(url);
 }
 
+/* ---------- Confirmación por persona ---------- */
+const DIETAS = ["Vegetariano", "Vegano", "Sin gluten", "Sin lactosa", "Alergia"];
+const esAcompanante = (n) => /^Acompañante\b/i.test(n);
+const juntar = (lista) => lista.length < 2 ? lista.join("") : `${lista.slice(0, -1).join(", ")} y ${lista[lista.length - 1]}`;
+
+// Bloque de restricción alimenticia: opciones rápidas + detalle escrito
+function dietBlock(id) {
+  const box = document.createElement("div");
+  box.className = "diet";
+  box.innerHTML = `<span class="mini-label">Restricción alimenticia <small>(opcional)</small></span>
+    <div class="diet-chips">${DIETAS.map((d) =>
+      `<label class="diet-chip"><input type="checkbox" value="${d}"><span>${d}</span></label>`).join("")}</div>
+    <input type="text" class="diet-detail" maxlength="120" aria-label="Detalle de la restricción"
+      placeholder="Detalle (ej: alergia al maní)" id="${id}">`;
+  return box;
+}
+function readDiet(box) {
+  const chips = [...box.querySelectorAll(".diet-chips input:checked")].map((i) => i.value);
+  const detalle = box.querySelector(".diet-detail").value.trim();
+  const partes = chips.filter((c) => c !== "Alergia");
+  if (chips.includes("Alergia")) partes.push("Alergia" + (detalle ? `: ${detalle}` : ""));
+  else if (detalle) partes.push(detalle);
+  return { chips, detalle, texto: partes.join(", "), alergiaSinDetalle: chips.includes("Alergia") && !detalle };
+}
+function fillDiet(box, prev) {
+  if (!prev) return;
+  box.querySelectorAll(".diet-chips input").forEach((i) => { i.checked = (prev.chips || []).includes(i.value); });
+  box.querySelector(".diet-detail").value = prev.detalle || "";
+}
+
 function setupRSVP() {
   const form = $("#rsvpForm");
   const done = $("#rsvpDone");
   const yesOnly = $("#yesOnly");
   const error = $("#rsvpError");
   const list = $("#peopleList");
+  const summary = $("#rsvpSummary");
   const names = guest ? guest.nombres : [];
   const storeKey = "rsvp:" + (guest ? guest.codigo : "general");
+  let soloDiet = null;
 
   if (guest) {
-    // Con código: el nombre ya lo sabemos; se eligen los asistentes de la tarjeta
+    // Con código: una tarjeta por persona con "Asistirá / No podrá" y su restricción
     $("#nameField").hidden = true;
+    $("#globalField").hidden = true;
     $("#formFamily").textContent = guest.familia;
     $("#formFamily").hidden = false;
-    names.forEach((n) => {
-      const label = document.createElement("label");
-      label.className = "person";
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      input.name = "asistentes";
-      input.value = n;
-      const box = document.createElement("span");
-      box.className = "person-box";
-      box.textContent = n;
-      label.append(input, box);
-      list.appendChild(label);
-    });
-    if (names.length === 1) list.querySelector("input").checked = true;
-    $("#peopleHint").textContent = names.length === 1
-      ? "Tu invitación es para 1 persona."
-      : `Tu invitación es válida para ${names.length} personas. Marca quiénes asistirán.`;
+    $("#peopleField").hidden = false;
+    $("#quickAll").hidden = names.length < 2;
+    list.replaceChildren(...names.map((n, i) => {
+      const card = document.createElement("div");
+      card.className = "rsvp-person";
+      card.dataset.nombre = n;
+      card.innerHTML = `<div class="gc-head"><span class="gc-name"></span>
+        <div class="gc-toggle" role="radiogroup">
+          <label><input type="radio" name="p${i}" value="si"><span>Asistirá</span></label>
+          <label><input type="radio" name="p${i}" value="no"><span>No podrá</span></label>
+        </div></div><div class="gc-extra" hidden></div>`;
+      card.querySelector(".gc-name").textContent = n;
+      const extra = card.querySelector(".gc-extra");
+      if (esAcompanante(n)) {
+        const rename = document.createElement("input");
+        rename.type = "text";
+        rename.className = "gc-rename";
+        rename.maxLength = 60;
+        rename.placeholder = "Nombre de tu acompañante (opcional)";
+        rename.setAttribute("aria-label", "Nombre del acompañante");
+        extra.appendChild(rename);
+      }
+      extra.appendChild(dietBlock(`diet${i}`));
+      return card;
+    }));
   } else {
-    // Sin código: solo pedimos el nombre de quien confirma
+    // Sin código: nombre + sí/no + restricción
     $("#peopleField").hidden = true;
+    soloDiet = dietBlock("dietSolo");
+    $("#soloDiet").appendChild(soloDiet);
   }
 
-  form.addEventListener("change", (e) => {
-    if (e.target.name === "asistencia") yesOnly.hidden = e.target.value !== "Sí";
-    error.hidden = true;
-  });
-
-  const showDone = (asiste) => {
-    form.hidden = true;
-    done.hidden = false;
-    $("#rsvpDoneTitle").textContent = asiste ? "¡Gracias por confirmar!" : "¡Gracias por avisarnos!";
-    $("#rsvpDoneText").textContent = asiste
-      ? "Te esperamos con mucha ilusión para celebrar juntos."
-      : "Te vamos a extrañar. Gracias por acompañarnos con tu cariño.";
+  // Lo que se ha marcado hasta ahora
+  const leer = () => {
+    if (!guest) {
+      const r = form.querySelector('input[name="asistencia"]:checked');
+      const nombre = ($("#rsvpName").value || "").trim();
+      const dieta = readDiet(soloDiet);
+      return [{ nombre, visible: nombre || "Tú", asiste: r ? r.value === "Sí" : null, dieta: r && r.value === "Sí" ? dieta : null }];
+    }
+    return [...list.querySelectorAll(".rsvp-person")].map((card) => {
+      const r = card.querySelector(".gc-toggle input:checked");
+      const asiste = r ? r.value === "si" : null;
+      const rename = card.querySelector(".gc-rename");
+      const dado = rename ? rename.value.trim() : "";
+      return {
+        nombre: card.dataset.nombre, dado,
+        visible: dado ? `${dado} (${card.dataset.nombre.toLowerCase()})` : card.dataset.nombre,
+        asiste, dieta: asiste ? readDiet(card.querySelector(".diet")) : null,
+      };
+    });
   };
 
+  const actualizar = () => {
+    const ps = leer();
+    list.querySelectorAll(".rsvp-person").forEach((card, i) => {
+      card.classList.toggle("yes", ps[i].asiste === true);
+      card.classList.toggle("no", ps[i].asiste === false);
+      card.querySelector(".gc-extra").hidden = ps[i].asiste !== true;
+    });
+    if (!guest) $("#soloDiet").hidden = ps[0].asiste !== true;
+    const van = ps.filter((p) => p.asiste === true);
+    yesOnly.hidden = van.length === 0;
+    // Resumen (solo cuando la invitación es de varias personas)
+    if (!guest || names.length < 2 || ps.every((p) => p.asiste === null)) { summary.hidden = true; return; }
+    const noVan = ps.filter((p) => p.asiste === false);
+    const faltan = ps.filter((p) => p.asiste === null);
+    const conDieta = (p) => p.visible + (p.dieta && p.dieta.texto ? ` <em>(${p.dieta.texto})</em>` : "");
+    const esc = (t) => t.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    summary.innerHTML = [
+      van.length ? `<p><b>Asistirán ${van.length} de ${ps.length}:</b> ${van.map((p) => conDieta({ ...p, visible: esc(p.visible), dieta: p.dieta && { texto: esc(p.dieta.texto) } })).join(", ")}</p>` : "",
+      noVan.length ? `<p><b>No ${noVan.length === 1 ? "asistirá" : "asistirán"}:</b> ${noVan.map((p) => esc(p.visible)).join(", ")}</p>` : "",
+      faltan.length ? `<p class="missing">Falta marcar a: ${faltan.map((p) => esc(p.visible)).join(", ")}</p>` : "",
+    ].join("");
+    summary.hidden = false;
+  };
+
+  form.addEventListener("change", () => { error.hidden = true; actualizar(); });
+  form.addEventListener("input", (e) => { if (e.target.matches(".diet-detail, .gc-rename")) actualizar(); });
+  $("#quickAll").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-all]");
+    if (!b) return;
+    list.querySelectorAll(`.gc-toggle input[value="${b.dataset.all}"]`).forEach((i) => { i.checked = true; });
+    error.hidden = true;
+    actualizar();
+  });
+
+  const showDone = (ps) => {
+    const van = ps.filter((p) => p.asiste).map((p) => p.dado || p.nombre);
+    const noVan = ps.filter((p) => !p.asiste).map((p) => p.dado || p.nombre);
+    form.hidden = true;
+    done.hidden = false;
+    $("#rsvpDoneTitle").textContent = van.length ? "¡Gracias por confirmar!" : "¡Gracias por avisarnos!";
+    $("#rsvpDoneText").textContent = !van.length
+      ? "Te vamos a extrañar. Gracias por acompañarnos con tu cariño."
+      : !guest ? "Te esperamos con mucha ilusión para celebrar juntos."
+      : `Te esperamos con mucha ilusión a ${juntar(van)}.` + (noVan.length ? ` Extrañaremos a ${juntar(noVan)}.` : "");
+  };
+
+  // Respuesta anterior guardada en este celular: se muestra el gracias y se precarga el formulario
   try {
     const prev = JSON.parse(localStorage.getItem(storeKey) || "null");
-    if (prev) showDone(prev.asistencia === "Sí");
+    if (prev && prev.personas) {
+      if (guest) {
+        prev.personas.forEach((pp) => {
+          const card = [...list.querySelectorAll(".rsvp-person")].find((c) => c.dataset.nombre === pp.nombre);
+          if (!card || pp.asiste == null) return;
+          card.querySelector(`.gc-toggle input[value="${pp.asiste ? "si" : "no"}"]`).checked = true;
+          if (card.querySelector(".gc-rename")) card.querySelector(".gc-rename").value = pp.dado || "";
+          fillDiet(card.querySelector(".diet"), pp.dieta);
+        });
+      } else {
+        const pp = prev.personas[0];
+        $("#rsvpName").value = pp.nombre || "";
+        const r = form.querySelector(`input[name="asistencia"][value="${pp.asiste ? "Sí" : "No"}"]`);
+        if (r) r.checked = true;
+        fillDiet(soloDiet, pp.dieta);
+      }
+      $("#songInput").value = prev.cancion || "";
+      actualizar();
+      showDone(prev.personas);
+    } else if (prev) {
+      // Respuesta de la versión anterior del formulario
+      showDone([{ nombre: "", asiste: prev.asistencia === "Sí" }]);
+    }
   } catch { /* sin almacenamiento */ }
 
   $("#rsvpAgain").addEventListener("click", () => {
@@ -293,32 +412,37 @@ function setupRSVP() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const data = new FormData(form);
-    const asistencia = data.get("asistencia");
-    const nombre = guest ? guest.familia : (data.get("nombre") || "").trim();
-    const asiste = asistencia === "Sí";
-    const asistentes = asiste ? (guest ? data.getAll("asistentes") : [nombre]) : [];
-    const restricciones = asiste ? (data.get("restricciones") || "").trim() : "";
-    const cancion = asiste ? (data.get("cancion") || "").trim() : "";
+    const ps = leer();
+    const nombre = guest ? guest.familia : ps[0].nombre;
+    const cancion = ($("#songInput").value || "").trim();
+    const van = ps.filter((p) => p.asiste);
 
     if (!guest && !nombre) return fail("Por favor escribe tu nombre.");
-    if (!asistencia) return fail("Cuéntanos si podrás acompañarnos.");
-    if (asiste && guest && asistentes.length === 0) return fail("Marca quiénes asistirán.");
-    if (cancion && !isYouTube(cancion)) return fail("Pega el link de una canción de YouTube (por ejemplo: https://youtu.be/…).");
+    if (!guest && ps[0].asiste === null) return fail("Cuéntanos si podrás acompañarnos.");
+    const faltan = ps.filter((p) => p.asiste === null);
+    if (faltan.length) return fail(`Marca si ${juntar(faltan.map((p) => p.visible))} ${faltan.length === 1 ? "asistirá" : "asistirán"} o no.`);
+    const alergia = van.find((p) => p.dieta && p.dieta.alergiaSinDetalle);
+    if (alergia) return fail(`Cuéntanos a qué es alérgico(a) ${alergia.dado || alergia.nombre} (en "Detalle").`);
+    if (van.length && cancion && !isYouTube(cancion)) return fail("Pega el link de una canción de YouTube (por ejemplo: https://youtu.be/…).");
 
-    const pases = guest ? names.length : 1;
+    const nombreVisible = (p) => (p.dado ? `${p.dado} (${p.nombre})` : p.nombre);
+    const restricciones = van.filter((p) => p.dieta.texto)
+      .map((p) => (guest ? `${nombreVisible(p)}: ${p.dieta.texto}` : p.dieta.texto)).join(" · ");
+    const detalle = ps.map((p) => ({ nombre: p.nombre, dado: p.dado || "", asiste: p.asiste, restriccion: p.asiste ? p.dieta.texto : "" }));
     const payload = new URLSearchParams({
       codigo: guest ? guest.codigo : "",
       nombre,
-      pases: String(pases),
-      asistencia,
-      personas: String(asistentes.length),
-      asistentes: asistentes.join(", "),
+      pases: String(guest ? names.length : 1),
+      asistencia: van.length ? "Sí" : "No",
+      personas: String(van.length),
+      asistentes: van.map(nombreVisible).join(", "),
+      noAsisten: guest ? ps.filter((p) => !p.asiste).map(nombreVisible).join(", ") : "",
       restricciones,
-      cancion,
+      cancion: van.length ? cancion : "",
+      detalle: JSON.stringify(detalle),
       // Resumen para versiones anteriores del script de Google
       mensaje: [
-        asistentes.length ? "Asisten: " + asistentes.join(", ") : "",
+        van.length ? "Asisten: " + van.map(nombreVisible).join(", ") : "",
         restricciones ? "Restricciones: " + restricciones : "",
         cancion ? "Canción: " + cancion : "",
       ].filter(Boolean).join(" | "),
@@ -333,9 +457,10 @@ function setupRSVP() {
         console.warn("Modo de prueba: configura CONFIG.rsvpEndpoint para recibir las confirmaciones.", Object.fromEntries(payload));
         await new Promise((r) => setTimeout(r, 800));
       }
-      try { localStorage.setItem(storeKey, JSON.stringify({ asistencia, asistentes })); } catch { /* ignorar */ }
-      showDone(asiste);
-      if (asiste) sparkleBurst($("#rsvpSubmit"));
+      const guardado = ps.map((p) => ({ nombre: p.nombre, dado: p.dado || "", asiste: p.asiste, dieta: p.dieta && { chips: p.dieta.chips, detalle: p.dieta.detalle } }));
+      try { localStorage.setItem(storeKey, JSON.stringify({ personas: guardado, cancion })); } catch { /* ignorar */ }
+      showDone(ps);
+      if (van.length) sparkleBurst($("#rsvpSubmit"));
     } catch {
       fail("No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.");
     } finally {

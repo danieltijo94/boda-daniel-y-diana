@@ -22,7 +22,7 @@
       if (!seguirAqui) document.documentElement.classList.add("samsung");
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=202609240400">
+  <link rel="stylesheet" href="styles.css?v=202609250200">
 </head>
 <body class="locked">
 
@@ -402,11 +402,12 @@
           <input type="text" name="nombre" id="rsvpName" autocomplete="name" placeholder="Tu nombre completo" maxlength="80">
         </label>
 
-        <fieldset class="field">
+        <!-- Sin código: una sola persona responde sí o no -->
+        <fieldset class="field" id="globalField">
           <legend class="field-label">¿Nos acompañarás?</legend>
           <div class="choice-group">
             <label class="choice">
-              <input type="radio" name="asistencia" value="Sí" required>
+              <input type="radio" name="asistencia" value="Sí">
               <span class="choice-box">
                 <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="12" cy="18" r="7"/><circle cx="20" cy="18" r="7"/><path d="M13 7l3-4 3 4-3 3z"/></svg>
                 ¡Sí, ahí estaré!
@@ -420,20 +421,20 @@
               </span>
             </label>
           </div>
+          <div class="diet-slot" id="soloDiet" hidden></div>
+        </fieldset>
+
+        <!-- Con código: cada persona de la invitación confirma por separado -->
+        <fieldset class="field" id="peopleField" hidden>
+          <legend class="field-label">¿Quiénes nos acompañarán?</legend>
+          <div class="quick-all" id="quickAll">
+            <button type="button" class="quick-btn" data-all="si">Todos asistiremos</button>
+            <button type="button" class="quick-btn" data-all="no">Ninguno podrá asistir</button>
+          </div>
+          <div class="people-list" id="peopleList"></div>
         </fieldset>
 
         <div class="yes-only" id="yesOnly" hidden>
-          <fieldset class="field" id="peopleField">
-            <legend class="field-label">¿Quiénes asistirán?</legend>
-            <div class="people-list" id="peopleList"></div>
-            <p class="field-hint" id="peopleHint"></p>
-          </fieldset>
-
-          <label class="field">
-            <span class="field-label">Restricciones alimenticias o alergias <small>(opcional)</small></span>
-            <textarea name="restricciones" rows="2" maxlength="300" placeholder="Ej: vegetariano, alergia al maní…"></textarea>
-          </label>
-
           <label class="field">
             <span class="field-label">La canción que no puede faltar <small>(opcional)</small></span>
             <span class="song-input">
@@ -444,6 +445,7 @@
           </label>
         </div>
 
+        <div class="rsvp-summary" id="rsvpSummary" hidden></div>
         <p class="form-error" id="rsvpError" role="alert" hidden></p>
         <button type="submit" class="btn btn-big" id="rsvpSubmit">
           <span class="btn-label">Enviar confirmación</span>
@@ -470,6 +472,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=202609240400"></script>
+  <script src="script.js?v=202609250200"></script>
 </body>
 </html>

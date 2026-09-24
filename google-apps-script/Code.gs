@@ -23,7 +23,10 @@ const CLAVE_NOVIOS = "";
 // Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
 const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
-const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
+const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción", "No asisten"];
+// Una fila por persona: quién va, quién no y su restricción (para el catering y el plano de mesas)
+const HOJA_PERSONAS = "Asistencia por persona";
+const COL_PERSONAS = ["Código", "Familia", "Invitado", "Nombre indicado", "¿Asiste?", "Restricción", "Actualizado"];
 
 function responder(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -57,8 +60,10 @@ function doPost(e) {
     // Los pases y el nombre de la familia salen de la lista de invitados
     const inv = p.codigo ? buscarInvitado(p.codigo) : null;
     const pases = inv && inv.ok ? inv.invitados.length : toInt(p.pases, 1);
-    const asiste = p.asistencia === "Sí";
-    const personas = asiste ? Math.min(Math.max(toInt(p.personas, 1), 1), pases) : 0;
+    const detalle = leerDetalle(p, inv);
+    const asiste = detalle ? detalle.some((x) => x.asiste) : p.asistencia === "Sí";
+    const personas = detalle ? detalle.filter((x) => x.asiste).length
+      : asiste ? Math.min(Math.max(toInt(p.personas, 1), 1), pases) : 0;
     const fila = [
       new Date(),
       limpiar(p.codigo),
@@ -68,7 +73,8 @@ function doPost(e) {
       pases,
       limpiar(p.asistentes),
       limpiar(p.restricciones),
-      limpiar(p.cancion),
+      limpiar(asiste ? p.cancion : ""),
+      limpiar(p.noAsisten),
     ];
 
     const hoja = obtenerHoja();
@@ -80,8 +86,9 @@ function doPost(e) {
       hoja.appendRow(fila);
     }
 
-    const errorPlaylist = p.cancion ? agregarAPlaylist(p.cancion) : null;
-    enviarCorreo(fila, Boolean(existente), hoja, errorPlaylist);
+    if (detalle) guardarPorPersona(fila[1], fila[2], detalle);
+    const errorPlaylist = asiste && p.cancion ? agregarAPlaylist(p.cancion) : null;
+    enviarCorreo(fila, Boolean(existente), hoja, errorPlaylist, detalle);
     return responder({ ok: true });
   } finally {
     lock.releaseLock();
@@ -115,7 +122,42 @@ function buscarFila(hoja, codigo) {
   return 0;
 }
 
-function enviarCorreo(fila, actualizado, hoja, errorPlaylist) {
+// Confirmación por persona que envía la invitación: [{ nombre, dado, asiste, restriccion }]
+// Solo se aceptan los nombres de esa invitación (o la persona que confirma sin código).
+function leerDetalle(p, inv) {
+  let lista;
+  try { lista = JSON.parse(p.detalle || "null"); } catch (err) { return null; }
+  if (!Array.isArray(lista) || !lista.length) return null;
+  const validos = inv && inv.ok ? inv.invitados : null;
+  const vistos = {};
+  const out = lista.filter((x) => {
+    if (!x || vistos[x.nombre] || (validos && validos.indexOf(x.nombre) < 0)) return false;
+    vistos[x.nombre] = true;
+    return true;
+  }).map((x) => ({
+      nombre: limpiar(validos ? x.nombre : x.nombre || p.nombre).slice(0, 80),
+      dado: limpiar(x.dado).slice(0, 60),
+      asiste: x.asiste === true,
+      restriccion: x.asiste === true ? limpiar(x.restriccion).slice(0, 150) : "",
+    }));
+  return out.length ? out.slice(0, validos ? validos.length : 1) : null;
+}
+
+// Reemplaza las filas de esa invitación en la pestaña "Asistencia por persona"
+function guardarPorPersona(codigo, familia, detalle) {
+  const hoja = hojaCon(HOJA_PERSONAS, COL_PERSONAS);
+  const clave = (c, f) => (c ? String(c).toUpperCase() : "sin código|" + sinTildes(f));
+  const yo = clave(codigo, familia);
+  const n = hoja.getLastRow() - 1;
+  const otras = n > 0 ? hoja.getRange(2, 1, n, COL_PERSONAS.length).getValues().filter((r) => clave(r[0], r[1]) !== yo) : [];
+  const ahora = new Date();
+  const nuevas = detalle.map((x) => [codigo, familia, x.nombre, x.dado, x.asiste ? "Sí" : "No", x.restriccion, ahora]);
+  const filas = otras.concat(nuevas);
+  if (n > 0) hoja.getRange(2, 1, n, COL_PERSONAS.length).clearContent();
+  hoja.getRange(2, 1, filas.length, COL_PERSONAS.length).setValues(filas);
+}
+
+function enviarCorreo(fila, actualizado, hoja, errorPlaylist, detalle) {
   const [, codigo, familia, asistencia, personas, pases, asistentes, restricciones, cancion] = fila;
   const totales = totalConfirmados(hoja);
   const asunto = asistencia === "Sí"
@@ -128,14 +170,18 @@ function enviarCorreo(fila, actualizado, hoja, errorPlaylist) {
     `Código: ${codigo || "sin código"}`,
     `¿Asiste?: ${asistencia}`,
     `Personas: ${personas} de ${pases}`,
+  ].concat(detalle && codigo ? [""].concat(detalle.map((x) =>
+    `${x.asiste ? "✓" : "✗"} ${x.dado ? `${x.dado} (${x.nombre})` : x.nombre}${x.restriccion ? " — " + x.restriccion : ""}`)) : [
     `Asistentes: ${asistentes || "—"}`,
     `Restricciones / alergias: ${restricciones || "—"}`,
+  ]).concat([
+    "",
     `Canción: ${cancion || "—"}` + (errorPlaylist === "" ? " (agregada a la playlist ✓)"
       : errorPlaylist ? ` (⚠️ no se agregó a la playlist: ${errorPlaylist})` : ""),
     "",
     `Total hasta ahora: ${totales.personas} personas confirmadas (${totales.si} sí · ${totales.no} no).`,
     `Ver la lista completa: ${hoja.getParent().getUrl()}`,
-  ].join("\n");
+  ]).join("\n");
 
   const destinatarios = [Session.getEffectiveUser().getEmail()].concat(CORREOS_EXTRA).join(",");
   MailApp.sendEmail(destinatarios, asunto, cuerpo);
@@ -311,7 +357,23 @@ function listaCompleta() {
   if (n > 0) {
     hc.getRange(2, 1, n, COLUMNAS.length).getValues().forEach((r) => {
       const c = String(r[1]).trim().toUpperCase();
-      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean) };
+      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean), restricciones: {} };
+    });
+  }
+  // La asistencia por persona (formulario nuevo) manda sobre el resumen de la fila
+  const hp = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(HOJA_PERSONAS);
+  const np = hp ? hp.getLastRow() - 1 : 0;
+  if (np > 0) {
+    const porCodigo = {};
+    hp.getRange(2, 1, np, COL_PERSONAS.length).getValues().forEach((r) => {
+      const c = String(r[0]).trim().toUpperCase();
+      if (!c) return;
+      porCodigo[c] = porCodigo[c] || { asistentes: [], restricciones: {} };
+      if (r[4] === "Sí") porCodigo[c].asistentes.push(String(r[2]));
+      if (r[5]) porCodigo[c].restricciones[String(r[2])] = String(r[5]);
+    });
+    Object.keys(porCodigo).forEach((c) => {
+      conf[c] = { asistencia: porCodigo[c].asistentes.length ? "Sí" : "No", ...porCodigo[c] };
     });
   }
   const familias = [];
@@ -321,7 +383,10 @@ function listaCompleta() {
       indice[x.codigo] = { codigo: x.codigo, familia: x.familia, personas: [], confirmacion: conf[x.codigo] || null };
       familias.push(indice[x.codigo]);
     }
-    indice[x.codigo].personas.push({ nombre: x.nombre, pases: x.pases, nombres: conAcompanantes(x), mesa: x.mesa });
+    const nombres = conAcompanantes(x);
+    const r = conf[x.codigo] ? conf[x.codigo].restricciones : {};
+    const restricciones = nombres.filter((nm) => r[nm]).map((nm) => (nombres.length > 1 ? `${nm}: ${r[nm]}` : r[nm]));
+    indice[x.codigo].personas.push({ nombre: x.nombre, pases: x.pases, nombres, mesa: x.mesa, restricciones });
   });
   return { ok: true, familias, mesas: leerMesas() };
 }

@@ -59,6 +59,8 @@
     .chip.sel { background: #f6e3b4; box-shadow: 0 0 0 2px var(--gold); }
     .chip.st-no { opacity: .55; text-decoration: line-through; }
     .chip .mk { font-size: 12px; color: var(--gold); }
+    .chip .diet-mk { font-size: 13px; cursor: help; }
+    .diet-print { display: none; }
     .chip.st-no .mk { color: var(--red); }
     .chip .x { border: 0; background: none; color: var(--ink-soft); font-size: 15px; line-height: 1; padding: 0 0 0 2px; }
     .chip .x:hover { color: var(--red); }
@@ -110,6 +112,7 @@
       .t-name { border: 0; }
       .chip { border: 0; background: none; padding: 0 4px; cursor: default; font-size: 14px; }
       .chip.st-no { display: none; }
+      .diet-print { display: inline; font-size: 12px; font-style: italic; }
       @page { margin: 12mm; }
     }
   </style>
@@ -135,7 +138,7 @@
       <p class="hint">Arrastra a una persona (o el nombre de la familia) hasta una mesa. También puedes tocarlas para
         seleccionarlas y luego tocar la mesa.</p>
       <div id="freeList"></div>
-      <p class="legend">✓ confirmó · ✗ no asiste · sin marca: aún no responde</p>
+      <p class="legend">✓ confirmó · ✗ no asiste · sin marca: aún no responde · 🍽 tiene restricción alimenticia (pasa el mouse para verla)</p>
     </aside>
     <main class="grid" id="grid"><p class="loading">Cargando la lista de invitados…</p></main>
   </div>
@@ -199,8 +202,9 @@
     }
     function chip(p, quitar) {
       const mk = p.estado === "si" ? "✓" : p.estado === "no" ? "✗" : "";
-      return `<span class="chip st-${p.estado}${sel.has(p.key) ? " sel" : ""}" draggable="true" data-key="${esc(p.key)}" title="${esc(p.familia)}">` +
-        `${esc(p.nombre)}${p.puestos > 1 ? ` <b>+${p.puestos - 1}</b>` : ""}${mk ? `<span class="mk">${mk}</span>` : ""}${quitar ? `<button class="x" type="button" title="Quitar de la mesa" data-quitar="${esc(p.key)}">×</button>` : ""}</span>`;
+      const dieta = p.restricciones.length ? `Restricción: ${p.restricciones.join(" · ")}` : "";
+      return `<span class="chip st-${p.estado}${sel.has(p.key) ? " sel" : ""}" draggable="true" data-key="${esc(p.key)}" title="${esc(p.familia + (dieta ? "\n" + dieta : ""))}">` +
+        `${esc(p.nombre)}${p.puestos > 1 ? ` <b>+${p.puestos - 1}</b>` : ""}${dieta ? `<span class="diet-mk" aria-label="${esc(dieta)}">🍽</span><span class="diet-print">(${esc(p.restricciones.join(" · "))})</span>` : ""}${mk ? `<span class="mk">${mk}</span>` : ""}${quitar ? `<button class="x" type="button" title="Quitar de la mesa" data-quitar="${esc(p.key)}">×</button>` : ""}</span>`;
     }
     // Agrupa por familia, respetando el orden de la hoja
     function porFamilia(lista) {
@@ -252,6 +256,7 @@
         puestos(van) - sentados ? `<span class="pill warn">${puestos(van) - sentados} sin mesa</span>` : "",
         noSentados ? `<span class="pill warn">${noSentados} que no asisten ocupan silla</span>` : "",
         `<span class="pill">${personas.reduce((s, p) => s + p.confirmados, 0)} confirmados</span>`,
+        personas.some((p) => p.restricciones.length) ? `<span class="pill">🍽 ${personas.reduce((s, p) => s + p.restricciones.length, 0)} con restricción</span>` : "",
       ].join("");
     }
 
@@ -404,7 +409,8 @@
           if (p.mesa && !m) { m = { id: nextId++, nombre: p.mesa, sillas: SILLAS }; mesas.push(m); }
           personas.push({ key: `${f.codigo}|${p.nombre}`, codigo: f.codigo, familia: f.familia, nombre: p.nombre,
             puestos: Math.max(1, p.pases || 1), mesa: m ? m.id : null, estado,
-            confirmados: estado === "si" ? nombres.filter((n) => c.asistentes.includes(n)).length : 0 });
+            confirmados: estado === "si" ? nombres.filter((n) => c.asistentes.includes(n)).length : 0,
+            restricciones: p.restricciones || [] });
         });
       });
       // Si una mesa quedó con más invitados que sillas, se agregan sillas

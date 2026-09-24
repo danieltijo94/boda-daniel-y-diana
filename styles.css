@@ -455,7 +455,7 @@ main {
 .song-input input { padding-left: 46px !important; }
 
 .choice-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.choice input, .person input { position: absolute; opacity: 0; pointer-events: none; }
+.choice input { position: absolute; opacity: 0; pointer-events: none; }
 .choice-box {
   display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
   padding: 16px 8px; border-radius: 14px; cursor: pointer; font-size: 17px; line-height: 1.2;
@@ -469,25 +469,68 @@ main {
   box-shadow: 0 10px 22px -14px rgba(90, 31, 51, .8);
 }
 .choice input:checked + .choice-box svg { transform: scale(1.18) rotate(-6deg); stroke: var(--wine); }
-.choice input:focus-visible + .choice-box, .person input:focus-visible + .person-box { outline: 1px dashed var(--wine); outline-offset: 3px; }
+.choice input:focus-visible + .choice-box { outline: 1px dashed var(--wine); outline-offset: 3px; }
 
 .yes-only:not([hidden]) { animation: fadeUp .5s var(--ease); }
-.people-list { display: grid; gap: 8px; }
-.person-box {
-  display: flex; align-items: center; gap: 12px; cursor: pointer;
-  padding: 12px 14px; border-radius: 12px; background: #fff; font-size: 18px;
-  border: 1px solid rgba(184, 145, 79, .4); transition: all .3s var(--ease);
+.people-list { display: grid; gap: 10px; }
+.quick-all { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.quick-btn {
+  font: inherit; font-size: 15px; padding: 9px 8px; border-radius: 999px; cursor: pointer;
+  border: 1px dashed rgba(184, 145, 79, .7); background: transparent; color: var(--wine); transition: all .3s var(--ease);
 }
-.person-box::before {
-  content: ""; flex: none; width: 22px; height: 22px; border-radius: 6px;
-  border: 1px solid var(--gold); background: #fff center / 14px no-repeat;
-  transition: all .3s var(--ease);
+.quick-btn:hover { background: #fff; border-style: solid; }
+
+/* Tarjeta de cada invitado */
+.rsvp-person {
+  background: #fff; border: 1px solid rgba(184, 145, 79, .4); border-radius: 14px; padding: 12px 14px;
+  transition: border-color .3s, background .3s, box-shadow .3s;
 }
-.person input:checked + .person-box { border-color: var(--wine); background: var(--rose-light); color: var(--wine); }
-.person input:checked + .person-box::before {
-  background-color: var(--wine); border-color: var(--wine);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+.rsvp-person.yes { border-color: var(--wine); box-shadow: 0 10px 22px -18px rgba(90, 31, 51, .8); }
+.rsvp-person.no { background: #faf6f3; }
+.rsvp-person.no .gc-name { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: rgba(134,105,110,.5); }
+.gc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.gc-name { font-size: 19px; line-height: 1.25; flex: 1 1 140px; }
+.gc-toggle { display: inline-flex; border: 1px solid rgba(184, 145, 79, .5); border-radius: 999px; padding: 3px; background: var(--ivory); }
+.gc-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.gc-toggle span {
+  display: block; padding: 6px 13px; border-radius: 999px; cursor: pointer; font-size: 15px; white-space: nowrap;
+  color: var(--ink-soft); transition: all .3s var(--ease);
 }
+.gc-toggle input[value="si"]:checked + span { background: var(--wine); color: #fff; }
+.gc-toggle input[value="no"]:checked + span { background: #e9dfda; color: var(--ink); }
+.gc-toggle input:focus-visible + span { outline: 1px dashed var(--wine); outline-offset: 2px; }
+.gc-extra { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(184, 145, 79, .22); }
+.gc-extra:not([hidden]), .diet-slot:not([hidden]) { animation: fadeUp .45s var(--ease); }
+.gc-rename, .diet-detail {
+  width: 100%; font: inherit; font-size: 17px; color: var(--ink); background: var(--ivory);
+  border: 1px solid rgba(184, 145, 79, .45); border-radius: 10px; padding: 9px 12px; transition: border-color .3s, box-shadow .3s;
+}
+.gc-rename { margin-bottom: 12px; }
+.gc-rename:focus, .diet-detail:focus { outline: 0; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(231, 207, 156, .35); }
+
+/* Restricción alimenticia */
+.diet-slot { margin-top: 14px; }
+.mini-label { display: block; font-family: var(--caps); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.mini-label small { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--ink-soft); }
+.diet-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.diet-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.diet-chip span {
+  display: inline-block; padding: 5px 12px; border-radius: 999px; cursor: pointer; font-size: 15px;
+  border: 1px solid rgba(184, 145, 79, .45); background: #fff; transition: all .25s var(--ease);
+}
+.diet-chip input:checked + span { background: var(--rose-light); border-color: var(--wine); color: var(--wine); }
+.diet-chip input:focus-visible + span { outline: 1px dashed var(--wine); outline-offset: 2px; }
+
+/* Resumen antes de enviar */
+.rsvp-summary {
+  margin: -4px 0 18px; padding: 12px 14px; border-radius: 12px; font-size: 16px; line-height: 1.45;
+  background: rgba(248, 232, 231, .55); border: 1px solid rgba(122, 46, 69, .18);
+}
+.rsvp-summary:not([hidden]) { animation: fadeUp .45s var(--ease); }
+.rsvp-summary p + p { margin-top: 4px; }
+.rsvp-summary b { font-family: var(--caps); font-weight: 500; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--wine); }
+.rsvp-summary em { color: var(--ink-soft); }
+.rsvp-summary .missing { color: #a3263f; font-style: italic; }
 
 .form-error { color: #a3263f; font-size: 16px; margin-bottom: 12px; text-align: center; }
 .rsvp-form .btn-big { display: flex; width: 100%; justify-content: center; margin-top: 4px; }

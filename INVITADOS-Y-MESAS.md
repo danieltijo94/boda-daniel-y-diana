@@ -8,6 +8,7 @@ La lista oficial de invitados vive en la hoja de Google
 | **Lista de Invitados** | Una fila por persona: `Nombre` · `Pases` · `Numero de Mesa` · `Familia` · `Código` |
 | **Mesas** | Una fila por mesa: `Mesa` (número o nombre, ej. `Novios`) · `Sillas` |
 | **Confirmaciones** | Las respuestas de la invitación (se llena sola) |
+| **Asistencia por persona** | Una fila por invitado: si asiste y su restricción alimenticia (se llena sola; ideal para el catering) |
 
 Columnas de la **Lista de Invitados** (el script las reconoce por su título, sin importar el orden):
 - **Nombre**: como aparecerá en la invitación.
@@ -36,7 +37,8 @@ Columnas de la **Lista de Invitados** (el script las reconoce por su título, si
   - **+ Agregar mesa**, cambiar su nombre (toca el nombre), sillas con **−** y **+**, 🗑 para eliminarla.
   - Arrastra a una persona, o el nombre de su familia para mover a todos, desde **Sin mesa** hasta una mesa.
     También puedes tocar personas para seleccionarlas y luego tocar la mesa. La **×** devuelve a alguien a "Sin mesa".
-  - Marcas: ✓ confirmó · ✗ no asiste (tachado) · sin marca = aún no responde · **+2** = trae 2 acompañantes.
+  - Marcas: ✓ confirmó · ✗ no asiste (tachado) · sin marca = aún no responde · **+2** = trae 2 acompañantes ·
+    🍽 = tiene restricción alimenticia (pasa el mouse para verla; al imprimir sale escrita).
   - **Guardar cambios** escribe la pestaña **Mesas** y la columna **Numero de Mesa**.
   - **Imprimir** saca el plano limpio (tres mesas por fila).
 - **Enlaces para WhatsApp:** https://danieltijo94.github.io/boda-daniel-y-diana/enlaces.html
