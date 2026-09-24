@@ -47,8 +47,8 @@ function doPost(e) {
       hoja.appendRow(fila);
     }
 
-    const enPlaylist = agregarAPlaylist(p.cancion);
-    enviarCorreo(fila, Boolean(existente), hoja, enPlaylist);
+    const errorPlaylist = p.cancion ? agregarAPlaylist(p.cancion) : null;
+    enviarCorreo(fila, Boolean(existente), hoja, errorPlaylist);
     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
       .setMimeType(ContentService.MimeType.JSON);
   } finally {
@@ -76,7 +76,7 @@ function buscarFila(hoja, codigo) {
   return 0;
 }
 
-function enviarCorreo(fila, actualizado, hoja, enPlaylist) {
+function enviarCorreo(fila, actualizado, hoja, errorPlaylist) {
   const [, codigo, familia, asistencia, personas, pases, asistentes, restricciones, cancion] = fila;
   const totales = totalConfirmados(hoja);
   const asunto = asistencia === "Sí"
@@ -91,7 +91,8 @@ function enviarCorreo(fila, actualizado, hoja, enPlaylist) {
     `Personas: ${personas} de ${pases}`,
     `Asistentes: ${asistentes || "—"}`,
     `Restricciones / alergias: ${restricciones || "—"}`,
-    `Canción: ${cancion || "—"}${enPlaylist ? " (agregada a la playlist ✓)" : ""}`,
+    `Canción: ${cancion || "—"}` + (errorPlaylist === "" ? " (agregada a la playlist ✓)"
+      : errorPlaylist ? ` (⚠️ no se agregó a la playlist: ${errorPlaylist})` : ""),
     "",
     `Total hasta ahora: ${totales.personas} personas confirmadas (${totales.si} sí · ${totales.no} no).`,
     `Ver la lista completa: ${hoja.getParent().getUrl()}`,
@@ -108,19 +109,27 @@ function idDeYouTube(url) {
 }
 
 // Envía la canción al script de la cuenta dueña de la playlist. Nunca hace fallar la confirmación.
+// Devuelve "" si se agregó, o el motivo por el que no se pudo.
 function agregarAPlaylist(url) {
   const videoId = idDeYouTube(url);
-  if (!PLAYLIST_WEBAPP_URL || !PLAYLIST_CLAVE || !videoId) return false;
+  if (!videoId) return "el link no es de un video de YouTube";
+  if (!PLAYLIST_WEBAPP_URL || !PLAYLIST_CLAVE) return "falta PLAYLIST_WEBAPP_URL o PLAYLIST_CLAVE en la versión publicada";
   try {
     const res = UrlFetchApp.fetch(PLAYLIST_WEBAPP_URL, {
       method: "post",
       payload: { clave: PLAYLIST_CLAVE, video: videoId },
       muteHttpExceptions: true,
     });
-    return JSON.parse(res.getContentText()).ok === true;
+    const texto = res.getContentText();
+    let r;
+    try { r = JSON.parse(texto); } catch (e) {
+      return "el script de la playlist respondió algo inesperado (código " + res.getResponseCode() + "). Revisa que su acceso sea 'Cualquier usuario'";
+    }
+    if (r.ok === true) return "";
+    if (r.error === "clave") return "la clave no coincide con la del script de la playlist";
+    return "el script de la playlist no pudo agregarla (" + (r.error || "sin detalle") + ")";
   } catch (err) {
-    console.error("No se pudo enviar la canción a la playlist: " + err);
-    return false;
+    return "no se pudo conectar con el script de la playlist: " + err;
   }
 }
 
@@ -147,8 +156,8 @@ function limpiar(v) {
 
 // Ejecuta esta función para comprobar que las canciones llegan a la playlist
 function probarPlaylist() {
-  const ok = agregarAPlaylist("https://youtu.be/2Vv-BfVoq4g");
-  console.log(ok ? "¡Canción agregada a la playlist!" : "No se agregó: revisa PLAYLIST_WEBAPP_URL y que la clave sea igual en los dos scripts.");
+  const error = agregarAPlaylist("https://youtu.be/2Vv-BfVoq4g");
+  console.log(error ? "No se agregó: " + error : "¡Canción agregada a la playlist!");
 }
 
 // Ejecuta esta función una vez desde el editor para autorizar el envío de correos

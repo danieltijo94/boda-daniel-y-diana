@@ -16,7 +16,8 @@ function doPost(e) {
     .setMimeType(ContentService.MimeType.JSON);
   if (!CLAVE || p.clave !== CLAVE) return responder({ ok: false, error: "clave" });
   if (!/^[\w-]{11}$/.test(p.video || "")) return responder({ ok: false, error: "video" });
-  return responder({ ok: agregar(p.video) });
+  const error = agregar(p.video);
+  return responder(error ? { ok: false, error: error } : { ok: true });
 }
 
 // ¿La canción ya está en la playlist? (se revisa la playlist real, por si alguien la borró)
@@ -25,21 +26,22 @@ function yaEsta(videoId) {
   return (r.items || []).length > 0;
 }
 
-// Agrega el video a la playlist si todavía no está
+// Agrega el video a la playlist si todavía no está. Devuelve "" si todo salió bien, o el error.
 function agregar(videoId) {
   try {
-    if (yaEsta(videoId)) return true;
+    if (yaEsta(videoId)) return "";
     YouTube.PlaylistItems.insert({
       snippet: { playlistId: PLAYLIST_ID, resourceId: { kind: "youtube#video", videoId: videoId } },
     }, "snippet");
-    return true;
+    return "";
   } catch (err) {
     console.error("No se pudo agregar a la playlist: " + err);
-    return false;
+    return String(err).slice(0, 200);
   }
 }
 
 // Ejecuta esta función una vez para dar permisos y comprobar que funciona
 function probar() {
-  console.log(agregar("2Vv-BfVoq4g") ? "¡Canción agregada a la playlist!" : "No se agregó: revisa PLAYLIST_ID y el servicio YouTube Data API.");
+  const error = agregar("2Vv-BfVoq4g");
+  console.log(error ? "No se agregó: " + error : "¡Canción agregada a la playlist!");
 }
