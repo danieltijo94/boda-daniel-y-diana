@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="robots" content="noindex">
+  <title>Plano de mesas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ivory: #fdf9f4; --wine: #7a2e45; --gold: #b8914f; --ink: #4a3338; --ink-soft: #86696e; --line: rgba(184,145,79,.45);
+    }
+    @media (prefers-color-scheme: dark) { html, body { background: #fdf9f4; color: #4a3338; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+    body { font-family: "Cormorant Garamond", serif; font-variant-numeric: lining-nums; background: var(--ivory); color: var(--ink); padding: 28px 16px 40px; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { font-family: "Pinyon Script", cursive; font-weight: normal; color: var(--wine); font-size: 54px; text-align: center; line-height: 1.2; }
+    .sub { text-align: center; font-family: Cinzel, serif; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin: 4px 0 18px; }
+    .summary { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .chip { font-size: 16px; padding: 4px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); }
+    .chip.warn { color: #a3272f; border-color: #e5a4a8; background: #fff5f5; }
+    .bar { position: sticky; top: 0; z-index: 2; background: var(--ivory); padding: 10px 0 4px; margin: 0 -16px 6px; padding-left: 16px; padding-right: 16px; }
+    .tools { display: flex; gap: 10px; max-width: 520px; margin: 0 auto 8px; }
+    .tools input { flex: 1; font: inherit; font-size: 18px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+    .tools button { font-family: Cinzel, serif; font-size: 12px; letter-spacing: .15em; text-transform: uppercase; padding: 0 18px; border-radius: 999px; border: 0; background: var(--wine); color: #fff; cursor: pointer; }
+    .found { text-align: center; min-height: 28px; font-size: 19px; color: var(--wine); margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+    .table {
+      scroll-margin-top: 130px;
+      background: #fff; border-radius: 16px; padding: 16px 16px 18px; text-align: center;
+      border: 1px solid var(--line); box-shadow: 0 18px 30px -24px rgba(90,31,51,.5); break-inside: avoid;
+      transition: opacity .3s, box-shadow .3s;
+    }
+    .table.head { grid-column: 1 / -1; max-width: 460px; width: 100%; justify-self: center; border-color: var(--gold); }
+    .table.dim { opacity: .3; }
+    .table.hit { box-shadow: 0 0 0 3px var(--gold), 0 18px 30px -24px rgba(90,31,51,.5); }
+    .table svg { width: 130px; height: 130px; display: block; margin: 0 auto 6px; }
+    .t-count { font-size: 15px; color: var(--ink-soft); }
+    .t-count.over { color: #a3272f; font-weight: 600; }
+    .fam { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(184,145,79,.2); }
+    .fam b { display: block; font-family: Cinzel, serif; font-weight: 500; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--wine); }
+    .fam span { display: block; font-size: 16px; line-height: 1.35; }
+    .fam mark { background: #f6e3b4; color: inherit; border-radius: 4px; padding: 0 2px; }
+    .none { margin-top: 26px; }
+    .none h2 { font-family: Cinzel, serif; font-weight: 500; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; color: #a3272f; text-align: center; margin-bottom: 10px; }
+    .none .table { max-width: 460px; margin: 0 auto; }
+    .help { margin: 30px auto 0; max-width: 620px; font-size: 16px; color: var(--ink-soft); line-height: 1.5; text-align: center; }
+    .help code { font-size: 14px; background: #fff; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line); }
+    .err { color: #a3272f; text-align: center; font-size: 18px; }
+    @media print {
+      body { padding: 0; background: #fff; }
+      .bar, .help { display: none; }
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .table { box-shadow: none; padding: 10px; }
+      .table.dim { opacity: 1; }
+      .table svg { width: 100px; height: 100px; }
+      @page { margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Plano de mesas</h1>
+    <p class="sub">Daniel Alejandro &amp; Diana Carolina · 19 · 06 · 2027</p>
+    <div class="summary" id="summary"></div>
+    <div class="bar">
+      <div class="tools">
+        <input id="search" type="search" placeholder="Buscar un invitado…" autocomplete="off">
+        <button id="print" type="button">Imprimir</button>
+      </div>
+      <p class="found" id="found"></p>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="none" id="none" hidden><h2>Sin mesa asignada</h2><div id="noneList"></div></div>
+    <p class="help">
+      Las mesas salen de la columna <code>mesa</code> del archivo <b>invitados.csv</b> (un número, o <code>Novios</code>
+      para la mesa principal). Cada mesa tiene <span id="seats"></span> puestos; los puntos dorados son los puestos ocupados.
+    </p>
+  </div>
+  <script>
+    // Puestos por mesa (cámbialo si el lugar usa mesas de otro tamaño)
+    const PUESTOS_POR_MESA = 10;
+
+    function parseCSV(text) {
+      const rows = text.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.trim());
+      const split = (line) => {
+        const out = []; let cur = ""; let q = false;
+        for (const ch of line) {
+          if (ch === '"') q = !q;
+          else if ((ch === "," || ch === ";") && !q) { out.push(cur.trim()); cur = ""; }
+          else cur += ch;
+        }
+        out.push(cur.trim()); return out;
+      };
+      const head = split(rows.shift()).map((h) => h.toLowerCase());
+      return rows.map((r) => { const c = split(r); return Object.fromEntries(head.map((h, i) => [h, c[i] || ""])); });
+    }
+    const names = (g) => {
+      const n = (g.invitados || "").split("|").map((x) => x.trim()).filter(Boolean);
+      return n.length ? n : Array.from({ length: parseInt(g.pases, 10) || 1 }, (_, i) => `${g.familia} (${i + 1})`);
+    };
+    const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+    // Mesa redonda con sus sillas: doradas las ocupadas, vacías las libres, rojas las que sobran
+    function drawTable(label, used, seats) {
+      const total = Math.max(seats, used);
+      let chairs = "";
+      for (let i = 0; i < total; i++) {
+        const a = (i / total) * Math.PI * 2 - Math.PI / 2;
+        const x = 65 + Math.cos(a) * 54, y = 65 + Math.sin(a) * 54;
+        const fill = i >= seats ? "#c2414b" : i < used ? "#b8914f" : "#fff";
+        chairs += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="${fill}" stroke="#b8914f" stroke-width="1.2"/>`;
+      }
+      const big = /^\d+$/.test(label);
+      return `<svg viewBox="0 0 130 130" aria-hidden="true">${chairs}
+        <circle cx="65" cy="65" r="38" fill="#fdf9f4" stroke="#b8914f" stroke-width="1.4"/>
+        <circle cx="65" cy="65" r="33" fill="none" stroke="#b8914f" stroke-opacity=".35"/>
+        ${big ? `<text x="65" y="56" text-anchor="middle" font-family="Cinzel" font-size="9" letter-spacing="2" fill="#b8914f">MESA</text>
+        <text x="65" y="82" text-anchor="middle" font-family="Cormorant Garamond" font-weight="600" font-size="30" fill="#7a2e45">${esc(label)}</text>`
+        : `<text x="65" y="74" text-anchor="middle" font-family="Pinyon Script" font-size="24" fill="#7a2e45">${esc(label)}</text>`}
+      </svg>`;
+    }
+
+    function card(label, fams, seats, extra = "") {
+      const used = fams.reduce((s, f) => s + f.people.length, 0);
+      const div = document.createElement("div");
+      div.className = "table " + extra;
+      div.innerHTML = (label ? drawTable(label, used, seats) : "") +
+        `<p class="t-count ${used > seats ? "over" : ""}">${used} de ${seats} puestos${used > seats ? " · ¡sobran " + (used - seats) + "!" : ""}</p>` +
+        fams.map((f) => `<div class="fam"><b>${esc(f.familia)}</b>${f.people.map((p) => `<span data-n="${esc(norm(p))}">${esc(p)}</span>`).join("")}</div>`).join("");
+      div.dataset.label = label;
+      return div;
+    }
+
+    document.getElementById("seats").textContent = PUESTOS_POR_MESA;
+    document.getElementById("print").onclick = () => window.print();
+
+    fetch("invitados.csv", { cache: "no-store" })
+      .then((r) => r.text())
+      .then((t) => {
+        const guests = parseCSV(t).filter((g) => g.codigo).map((g) => ({ ...g, people: names(g), mesa: (g.mesa || "").trim() }));
+        const mesas = new Map();
+        guests.filter((g) => g.mesa).forEach((g) => {
+          if (!mesas.has(g.mesa)) mesas.set(g.mesa, []);
+          mesas.get(g.mesa).push(g);
+        });
+        // Primero la mesa principal (texto, ej. "Novios") y luego las numeradas en orden
+        const labels = [...mesas.keys()].sort((a, b) => {
+          const na = /^\d+$/.test(a), nb = /^\d+$/.test(b);
+          return na !== nb ? (na ? 1 : -1) : na ? a - b : a.localeCompare(b);
+        });
+        const grid = document.getElementById("grid");
+        labels.forEach((l) => {
+          const fams = mesas.get(l);
+          const used = fams.reduce((s, f) => s + f.people.length, 0);
+          const head = !/^\d+$/.test(l);
+          grid.appendChild(card(l, fams, head ? Math.max(PUESTOS_POR_MESA, used) : PUESTOS_POR_MESA, head ? "head" : ""));
+        });
+        const sin = guests.filter((g) => !g.mesa);
+        if (sin.length) {
+          document.getElementById("none").hidden = false;
+          const c = card("", sin, sin.reduce((s, f) => s + f.people.length, 0));
+          c.querySelector(".t-count").textContent = `${sin.reduce((s, f) => s + f.people.length, 0)} invitados por ubicar`;
+          document.getElementById("noneList").appendChild(c);
+        }
+        const people = guests.reduce((s, g) => s + g.people.length, 0);
+        const over = labels.filter((l) => /^\d+$/.test(l) && mesas.get(l).reduce((s, f) => s + f.people.length, 0) > PUESTOS_POR_MESA);
+        const sinN = sin.reduce((s, g) => s + g.people.length, 0);
+        document.getElementById("summary").innerHTML =
+          `<span class="chip">${labels.length} ${labels.length === 1 ? "mesa" : "mesas"}</span>` +
+          `<span class="chip">${people} invitados</span>` +
+          (sinN ? `<span class="chip warn">${sinN} sin mesa</span>` : "") +
+          (over.length ? `<span class="chip warn">Mesa ${over.join(", ")} con puestos de más</span>` : "");
+
+        // Buscador: resalta a la persona y dice en qué mesa está
+        const found = document.getElementById("found");
+        document.getElementById("search").addEventListener("input", (e) => {
+          const q = norm(e.target.value.trim());
+          const hits = [];
+          document.querySelectorAll(".table").forEach((tb) => {
+            let hit = false;
+            tb.querySelectorAll(".fam span").forEach((s) => {
+              const m = q && s.dataset.n.includes(q);
+              s.innerHTML = m ? `<mark>${esc(s.textContent)}</mark>` : esc(s.textContent);
+              if (m) { hit = true; hits.push([s.textContent, tb.dataset.label]); }
+            });
+            tb.classList.toggle("hit", hit);
+            tb.classList.toggle("dim", Boolean(q) && !hit);
+          });
+          const mesaTxt = (l) => l ? `Mesa ${l}` : "sin mesa asignada";
+          found.textContent = !q ? "" : !hits.length ? "No se encontró a nadie con ese nombre"
+            : hits.slice(0, 3).map(([n, l]) => `${n} → ${mesaTxt(l)}`).join(" · ") + (hits.length > 3 ? " …" : "");
+          const first = document.querySelector(".table.hit");
+          if (first) first.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      })
+      .catch(() => { document.getElementById("grid").innerHTML = '<p class="err">No se pudo leer invitados.csv</p>'; });
+  </script>
+</body>
+</html>

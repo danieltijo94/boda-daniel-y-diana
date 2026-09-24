@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 24 de septiembre de 2026 (punto 2: clima en vivo)
+> **Última actualización:** 24 de septiembre de 2026 (punto 3: plano de mesas)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -17,6 +17,7 @@ Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta 
 | **Enlaces para enviar por WhatsApp** | https://danieltijo94.github.io/boda-daniel-y-diana/enlaces.html |
 | **Página de fotos (destino del QR)** | https://danieltijo94.github.io/boda-daniel-y-diana/fotos.html |
 | **Tarjeta QR para imprimir (mesas)** | https://danieltijo94.github.io/boda-daniel-y-diana/qr-mesa.html |
+| **Plano de mesas (novios)** | https://danieltijo94.github.io/boda-daniel-y-diana/mesas.html |
 | **Hoja de confirmaciones (Google Sheets)** | https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit |
 | **Script de confirmaciones (URL publicada)** | configurada en `script.js` → `CONFIG.rsvpEndpoint` |
 
@@ -74,8 +75,9 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 | `index.html` | La invitación |
 | `styles.css` | Diseño (colores, letras, animaciones) |
 | `script.js` | Lógica: `CONFIG` (fecha, fecha límite, URL del script, lugar), invitado por código, formulario, cuenta regresiva |
-| `invitados.csv` | **Lista de invitados** (código, familia y nombres) |
-| `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp |
+| `invitados.csv` | **Lista de invitados** (código, familia, nombres y mesa) |
+| `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp (muestra la mesa si tiene) |
+| `mesas.html` | **Plano de mesas**: mesas redondas con sus puestos, quién se sienta en cada una, buscador de invitados y botón Imprimir. Puestos por mesa en `PUESTOS_POR_MESA` (10) |
 | `fotos.html` | Página del QR: abre el álbum compartido (`ALBUM_URL`, pendiente) |
 | `qr-mesa.html` | Tarjeta A6 para imprimir con el QR de fotos |
 | `assets/qr-fotos.svg` | Código QR (apunta a `fotos.html`, nunca cambia) |
@@ -90,14 +92,17 @@ Cada familia recibe un enlace con un código: `https://danieltijo94.github.io/bo
 `invitados.csv` y muestra su nombre y pases. Si alguien cambia el código por uno que no existe, ve la
 invitación general sin nombre ni pases.
 
-Formato de `invitados.csv` (los nombres van separados por `|`; la cantidad de nombres = número de pases):
+Formato de `invitados.csv` (los nombres van separados por `|`; la cantidad de nombres = número de pases;
+`mesa` es un número, o un texto como `Novios` para la mesa principal; vacío = sin mesa asignada):
 ```
-codigo,familia,invitados
-DT7K2,Daniel Tijo y Diana Sanchez,Daniel Tijo|Diana Sanchez
-FP4M9,Familia Pérez Gómez,Carlos Pérez|María Gómez|Juan Pérez|Laura Pérez
-TM8Q1,Tía Marta,Marta Rodríguez
-JL3R6,Juan y Laura,Juan Martínez|Laura Ríos
+codigo,familia,invitados,mesa
+DT7K2,Daniel Tijo y Diana Sanchez,Daniel Tijo|Diana Sanchez,Novios
+FP4M9,Familia Pérez Gómez,Carlos Pérez|María Gómez|Juan Pérez|Laura Pérez,1
+TM8Q1,Tía Marta,Marta Rodríguez,1
+JL3R6,Juan y Laura,Juan Martínez|Laura Ríos,2
 ```
+La mesa se asigna por familia (toda la tarjeta en la misma mesa). En la invitación todavía no se muestra:
+aparecerá el día de la boda (punto 5) y en el pase QR (punto 4).
 > ⚠️ Los datos actuales son **de ejemplo**. Falta la lista real.
 > Nota: el repositorio es público, así que quien conozca la dirección exacta de `invitados.csv` podría verlo.
 
@@ -132,7 +137,8 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   desde la invitación. El correo ahora dice "(agregada a la playlist ✓)" o el motivo si falla.
 
 ### 📋 Pendiente de ustedes
-- [ ] Lista real de invitados (familia + nombre de cada persona).
+- [ ] Lista real de invitados (familia + nombre de cada persona + mesa).
+- [ ] Confirmar con Hacienda Chic cuántos **puestos tiene cada mesa** (provisional: 10) y cuántas mesas hay.
 - [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
@@ -147,9 +153,9 @@ la boda", porque ambos muestran la mesa de cada familia.
 | # | Función | Estado |
 |---|---|---|
 | 1 | Información de llegada y transporte | ✅ Hecho (aprobado) |
-| 2 | Clima en vivo | ✅ Hecho (esperando visto bueno) |
-| 3 | Plano de mesas | ⏳ Siguiente |
-| 4 | Pase QR de entrada por familia | 🔜 Por hacer |
+| 2 | Clima en vivo | ✅ Hecho (aprobado) |
+| 3 | Plano de mesas | ✅ Hecho (esperando visto bueno) |
+| 4 | Pase QR de entrada por familia | ⏳ Siguiente |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
 | 7 | Panel de los novios | 🔜 Por hacer (al final) |
@@ -254,7 +260,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `b46a7df` | 2026-09-24 | Forma de trabajo acordada guardada en `CLAUDE.md` |
 | `21c0f55` | 2026-09-24 | Punto 1: sección "Llegada y transporte" y "12:00 a.m. Fin de la celebración" en el itinerario |
 | `ad2540e` | 2026-09-24 | Punto 2: sección "El clima" en vivo (pronóstico real o clima típico de los últimos 5 años) |
-| — | 2026-09-24 | Coordenadas reales de Hacienda Chic (4.8270016, -74.0314436) para el clima y el botón de Waze |
+| `af0cd7a` | 2026-09-24 | Coordenadas reales de Hacienda Chic (4.8270016, -74.0314436) para el clima y el botón de Waze |
+| — | 2026-09-24 | Punto 3: plano de mesas (`mesas.html`), columna `mesa` en `invitados.csv` y mesa en `enlaces.html` |
 
 ---
 
