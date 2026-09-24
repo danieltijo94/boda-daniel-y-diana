@@ -14,10 +14,12 @@ Responde siempre **en español** y con explicaciones sencillas (el usuario no es
 4. **Scripts** (sección 5): si cambió `google-apps-script/*.gs` o el manifiesto, copia la versión completa y actual.
 
 ## Convenciones
-- Archivos principales: `index.html`, `styles.css`, `script.js` (datos en `CONFIG`), `invitados.csv`.
+- Archivos principales: `index.html`, `styles.css`, `script.js` (datos en `CONFIG`), `panel.js` (páginas de los novios).
+- La lista de invitados vive en Google Sheets (pestañas Invitados y Mesas), servida por `google-apps-script/Code.gs`;
+  ya no hay `invitados.csv`. La clave `CLAVE_NOVIOS` va solo en Apps Script.
 - Al cambiar `styles.css` o `script.js`, sube el `?v=` en `index.html` para que los celulares no usen la versión vieja.
-- **Nunca subas secretos** al repositorio (es público): la palabra secreta de la playlist y la URL del script
-  de la pareja van solo en Apps Script.
+- **Nunca subas secretos** al repositorio (es público): la palabra secreta de la playlist, la URL del script
+  de la pareja y `CLAVE_NOVIOS` van solo en Apps Script.
 - Después de cambiar un script de Google, recuérdale al usuario publicar una **nueva versión**
   (Implementar → Gestionar implementaciones → ✏️ → Nueva versión).
 - Prueba los cambios visuales con Playwright en tamaño celular (390×844) antes de subirlos.
@@ -35,7 +37,9 @@ Responde siempre **en español** y con explicaciones sencillas (el usuario no es
   "(agregada a la playlist ✓)" o el motivo del fallo).
 
 ## Notas del entorno de pruebas
-- Desde el contenedor no se puede acceder a Google, YouTube ni github.io (red bloqueada): los scripts de
-  Google los prueba el usuario.
+- Desde el contenedor no se puede acceder a Google, YouTube, Open-Meteo ni github.io (red bloqueada): los scripts de
+  Google los prueba el usuario. `Code.gs` se puede probar localmente con una imitación de Sheets en Node
+  (cargar el archivo en `vm` de Node con SpreadsheetApp/ContentService simulados y responder con él
+  las peticiones a script.google.com interceptadas en Playwright).
 - Para ver las fuentes reales en Playwright, instálalas con `npm pack @fontsource/pinyon-script
   @fontsource/cinzel @fontsource/cormorant-garamond` y sírvelas interceptando `fonts.googleapis.com`.

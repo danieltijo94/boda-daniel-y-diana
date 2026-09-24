@@ -6,7 +6,8 @@ const CONFIG = {
   fecha: "2027-06-19T16:00:00-05:00",
   // Fecha límite para confirmar
   fechaLimiteConfirmacion: "30 de abril de 2027",
-  // URL de tu Google Apps Script (ver CONFIGURAR-CORREO.md). Vacío = modo de prueba.
+  // URL de tu Google Apps Script (ver CONFIGURAR-CORREO.md): confirmaciones y lista de invitados.
+  // Es la misma que ENDPOINT en panel.js. Vacío = modo de prueba.
   rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzUn2L-ukmTA2qxZPqtL_NP07KkcwTBhho45IDfBYrYjcCo_oL6x7sbNQ4qjci7HAtZnQ/exec",
   // Lugar para el evento de calendario
   lugarCalendario: "Hacienda Chic, Bogotá",
@@ -44,47 +45,10 @@ function fillDates() {
   });
 }
 
-/* ---------- Invitado personalizado (?i=CODIGO → invitados.csv) ---------- */
-function parseCSV(text) {
-  const rows = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter((l) => l.trim());
-  const split = (line) => {
-    const out = []; let cur = ""; let q = false;
-    for (const ch of line) {
-      if (ch === '"') q = !q;
-      else if ((ch === "," || ch === ";") && !q) { out.push(cur.trim()); cur = ""; }
-      else cur += ch;
-    }
-    out.push(cur.trim());
-    return out;
-  };
-  const head = split(rows.shift()).map((h) => h.toLowerCase());
-  return rows.map((r) => {
-    const cols = split(r);
-    return Object.fromEntries(head.map((h, i) => [h, cols[i] || ""]));
-  });
-}
-
-// Nombres de cada invitado de la tarjeta (columna "invitados", separados por |)
-function guestNames(g) {
-  const names = (g.invitados || "").split("|").map((n) => n.trim()).filter(Boolean);
-  if (names.length) return names;
-  const n = Math.max(1, parseInt(g.pases, 10) || 1);
-  return Array.from({ length: n }, (_, i) => `Invitado ${i + 1}`);
-}
-
+/* ---------- Invitado personalizado (?i=CODIGO → pestaña "Invitados" de Google Sheets) ---------- */
 let guest = null;
 
-async function fillGuest() {
-  const code = (params.get("i") || "").trim().toUpperCase();
-  if (!code) return;
-
-  try {
-    const res = await fetch("invitados.csv", { cache: "no-store" });
-    guest = parseCSV(await res.text()).find((g) => g.codigo.toUpperCase() === code) || null;
-  } catch { return; }
-  if (!guest) return;
-
-  guest.nombres = guestNames(guest);
+function showGuest() {
   const pases = guest.nombres.length;
   $("#guestName").textContent = guest.familia;
   const intro = $("#introGuest");
@@ -93,6 +57,31 @@ async function fillGuest() {
   $("#passesNum").textContent = pases;
   $("#passesText").textContent = pases === 1 ? "pase reservado" : "pases reservados";
   $("#passesBox").hidden = false;
+}
+
+async function fillGuest() {
+  const code = (params.get("i") || "").trim().toUpperCase();
+  if (!code || !CONFIG.rsvpEndpoint) return;
+  const key = "invitado:" + code;
+
+  // Lo guardado en este celular se muestra al instante mientras llega la versión actual
+  try {
+    const saved = JSON.parse(localStorage.getItem(key) || "null");
+    if (saved) { guest = saved; showGuest(); }
+  } catch { /* sin almacenamiento */ }
+
+  try {
+    const res = await fetch(`${CONFIG.rsvpEndpoint}?accion=invitado&codigo=${encodeURIComponent(code)}`);
+    const r = await res.json();
+    if (r.ok) {
+      guest = { codigo: r.codigo, familia: r.familia, nombres: r.invitados };
+      try { localStorage.setItem(key, JSON.stringify(guest)); } catch { /* ignorar */ }
+      showGuest();
+    } else if (r.error === "no existe") {
+      guest = null;
+      try { localStorage.removeItem(key); } catch { /* ignorar */ }
+    }
+  } catch { /* sin conexión: se queda con lo guardado, o la invitación general */ }
 }
 
 /* ---------- Sobre + música ---------- */

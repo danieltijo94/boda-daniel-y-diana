@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 24 de septiembre de 2026 (punto 3: plano de mesas)
+> **Última actualización:** 24 de septiembre de 2026 (punto 3: editor de mesas + lista de invitados en Google Sheets)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -17,7 +17,7 @@ Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta 
 | **Enlaces para enviar por WhatsApp** | https://danieltijo94.github.io/boda-daniel-y-diana/enlaces.html |
 | **Página de fotos (destino del QR)** | https://danieltijo94.github.io/boda-daniel-y-diana/fotos.html |
 | **Tarjeta QR para imprimir (mesas)** | https://danieltijo94.github.io/boda-daniel-y-diana/qr-mesa.html |
-| **Plano de mesas (novios)** | https://danieltijo94.github.io/boda-daniel-y-diana/mesas.html |
+| **Plano de mesas (novios, con clave)** | https://danieltijo94.github.io/boda-daniel-y-diana/mesas.html |
 | **Hoja de confirmaciones (Google Sheets)** | https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit |
 | **Script de confirmaciones (URL publicada)** | configurada en `script.js` → `CONFIG.rsvpEndpoint` |
 
@@ -74,10 +74,11 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 |---|---|
 | `index.html` | La invitación |
 | `styles.css` | Diseño (colores, letras, animaciones) |
-| `script.js` | Lógica: `CONFIG` (fecha, fecha límite, URL del script, lugar), invitado por código, formulario, cuenta regresiva |
-| `invitados.csv` | **Lista de invitados** (código, familia, nombres y mesa) |
-| `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp (muestra la mesa si tiene) |
-| `mesas.html` | **Plano de mesas**: mesas redondas con sus puestos, quién se sienta en cada una, buscador de invitados y botón Imprimir. Puestos por mesa en `PUESTOS_POR_MESA` (10) |
+| `script.js` | Lógica: `CONFIG` (fecha, fecha límite, URL del script, lugar, clima), invitado por código (lo pide al script de Google), formulario, cuenta regresiva, clima |
+| `panel.js` | Compartido por las páginas de los novios: `ENDPOINT` (misma URL que `CONFIG.rsvpEndpoint`), pide la clave `CLAVE_NOVIOS` (la recuerda en ese navegador), lee la lista y guarda el plano |
+| `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp: pases, mesa y si ya confirmó (con clave) |
+| `mesas.html` | **Editor del plano de mesas** (con clave): crear/renombrar/eliminar mesas, sillas con −/+, arrastrar personas o familias, ✓/✗ de confirmación, Guardar en Google Sheets e Imprimir |
+| `INVITADOS-Y-MESAS.md` | Guía: pestañas Invitados/Mesas, primera configuración y uso del plano |
 | `fotos.html` | Página del QR: abre el álbum compartido (`ALBUM_URL`, pendiente) |
 | `qr-mesa.html` | Tarjeta A6 para imprimir con el QR de fotos |
 | `assets/qr-fotos.svg` | Código QR (apunta a `fotos.html`, nunca cambia) |
@@ -87,24 +88,29 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 | `google-apps-script/appsscript-pareja.json` | Manifiesto para activar YouTube en el script de la pareja |
 | `CONFIGURAR-CORREO.md`, `PLAYLIST.md`, `FOTOS.md` | Guías paso a paso |
 
-### Invitados por código
-Cada familia recibe un enlace con un código: `https://danieltijo94.github.io/boda-daniel-y-diana/?i=FP4M9`. La invitación busca el código en
-`invitados.csv` y muestra su nombre y pases. Si alguien cambia el código por uno que no existe, ve la
-invitación general sin nombre ni pases.
+### Invitados por código (lista en Google Sheets)
+Cada familia recibe un enlace con un código: `https://danieltijo94.github.io/boda-daniel-y-diana/?i=FP4M9`.
+La invitación le pide esa familia al script de Google (`?accion=invitado&codigo=…`), que la busca en la pestaña
+**Invitados** y devuelve solo esa familia (nombre y personas). Se guarda en el celular para cargar al instante la
+próxima vez. Si el código no existe, se ve la invitación general sin nombre ni pases.
 
-Formato de `invitados.csv` (los nombres van separados por `|`; la cantidad de nombres = número de pases;
-`mesa` es un número, o un texto como `Novios` para la mesa principal; vacío = sin mesa asignada):
-```
-codigo,familia,invitados,mesa
-DT7K2,Daniel Tijo y Diana Sanchez,Daniel Tijo|Diana Sanchez,Novios
-FP4M9,Familia Pérez Gómez,Carlos Pérez|María Gómez|Juan Pérez|Laura Pérez,1
-TM8Q1,Tía Marta,Marta Rodríguez,1
-JL3R6,Juan y Laura,Juan Martínez|Laura Ríos,2
-```
-La mesa se asigna por familia (toda la tarjeta en la misma mesa). En la invitación todavía no se muestra:
-aparecerá el día de la boda (punto 5) y en el pase QR (punto 4).
-> ⚠️ Los datos actuales son **de ejemplo**. Falta la lista real.
-> Nota: el repositorio es público, así que quien conozca la dirección exacta de `invitados.csv` podría verlo.
+Hoja "Confirmaciones Boda Daniel y Diana" — pestañas:
+| Pestaña | Columnas |
+|---|---|
+| **Invitados** | `Código` · `Familia` · `Invitado` · `Mesa` (una fila por persona; pases = filas de la familia) |
+| **Mesas** | `Mesa` (número o texto, ej. `Novios`) · `Sillas` |
+| **Confirmaciones** | respuestas del formulario (si no existe, la primera hoja se renombra así) |
+
+- Código vacío → el script lo genera (5 caracteres, igual para toda la familia): menú **💍 Boda → Generar códigos
+  que falten**, o solo al abrir `enlaces.html`/`mesas.html`.
+- `?accion=lista&clave=…` (con `CLAVE_NOVIOS`) devuelve todas las familias, sus personas con mesa, su confirmación
+  y las mesas. Guardar el plano es un POST en JSON `{accion:"guardarMesas", clave, mesas, asignaciones}`;
+  cada persona se reconoce por `código|nombre`.
+- Al confirmar, el script toma los **pases y el nombre de la familia de la pestaña Invitados** (no del navegador).
+- La mesa se asigna **por persona**. En la invitación todavía no se muestra: aparecerá el día de la boda (punto 5)
+  y en el pase QR (punto 4).
+- `invitados.csv` se eliminó del repositorio: la lista ya no es pública.
+> ⚠️ Los datos actuales son **de ejemplo** (los crea `prepararHojas`). Falta la lista real.
 
 ### Confirmaciones → hoja + correo + playlist
 ```
@@ -137,8 +143,11 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   desde la invitación. El correo ahora dice "(agregada a la playlist ✓)" o el motivo si falla.
 
 ### 📋 Pendiente de ustedes
-- [ ] Lista real de invitados (familia + nombre de cada persona + mesa).
-- [ ] Confirmar con Hacienda Chic cuántos **puestos tiene cada mesa** (provisional: 10) y cuántas mesas hay.
+- [ ] Lista real de invitados (familia + nombre de cada persona).
+- [ ] **Actualizar el script de confirmaciones** (nuevo `Code.gs`): poner `CLAVE_NOVIOS`, ejecutar `prepararHojas` y publicar
+  una **nueva versión** (ver `INVITADOS-Y-MESAS.md`). Hasta hacerlo, la invitación no muestra el nombre de la familia.
+- [ ] Pasar la lista real a la pestaña **Invitados** (una fila por persona) y armar las mesas en `mesas.html`
+  (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
 - [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
@@ -154,7 +163,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 |---|---|---|
 | 1 | Información de llegada y transporte | ✅ Hecho (aprobado) |
 | 2 | Clima en vivo | ✅ Hecho (aprobado) |
-| 3 | Plano de mesas | ✅ Hecho (esperando visto bueno) |
+| 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (esperando visto bueno) |
 | 4 | Pase QR de entrada por familia | ⏳ Siguiente |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
@@ -175,10 +184,11 @@ la boda", porque ambos muestran la mesa de cada familia.
 - **Antes de eso:** muestra el clima típico (promedio en vivo de los últimos 5 años) y el aviso "el pronóstico aparecerá desde el 4 de junio de 2027".
 - Usa las **coordenadas de Hacienda Chic** (4.8270, -74.0314), guardadas en `CONFIG.clima`.
 
-**3. Plano de mesas**
-- Nueva columna `mesa` en `invitados.csv`.
-- Página `mesas.html` para los novios: plano visual de las mesas con quién se sienta en cada una
-  (para revisar e imprimir para la entrada).
+**3. Plano de mesas** (rehecho a pedido: editor interactivo)
+- La lista oficial de invitados pasa a **Google Sheets** (pestañas Invitados y Mesas); se quita `invitados.csv`.
+- `mesas.html` (con clave de los novios, pensado para computador y usable en celular): crear mesas, cambiar
+  nombre y sillas, arrastrar personas (o familias completas) a las mesas, ver quién confirmó, **Guardar**
+  (actualiza la hoja) e **Imprimir**. Se sienta **por persona**; mesas en **cuadrícula**.
 - La mesa se muestra en la invitación **solo el día de la boda** (ver punto 5) y en el pase QR.
 
 **4. Pase QR de entrada por familia**
@@ -223,7 +233,10 @@ la boda", porque ambos muestran la mesa de cada familia.
 - Las **preguntas frecuentes** se reemplazan por una sección de **llegada y transporte**.
 - Las nuevas funciones se hacen **una a una**, probando cada una antes de seguir.
 - **Confirmación dentro de la invitación** (no Google Form), guardada en Google Sheets + correo vía Apps Script.
-- **Invitados por código** en `invitados.csv` (no `?familia=…&pases=…`, que cualquiera podía editar).
+- **Invitados por código** (no `?familia=…&pases=…`, que cualquiera podía editar). La lista oficial vive en
+  **Google Sheets** (pestaña Invitados, una fila por persona); `invitados.csv` se eliminó.
+- **Plano de mesas:** editor en `mesas.html` que guarda en la hoja; asignación **por persona**; mesas en **cuadrícula**
+  (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
 - **Modo oscuro:** Chrome se controla con `color-scheme`; **Samsung Internet no se puede controlar** → aviso "Abrir en Chrome". El truco de invertir colores se probó y se retiró.
 - **Fotos de invitados:** álbum compartido de Google Fotos (no ocupa el espacio de la cuenta de los novios, no requiere script).
 - **Playlist:** vive en la cuenta de la pareja; por eso existe un segundo script (YouTube solo deja editar a la dueña).
@@ -261,7 +274,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `21c0f55` | 2026-09-24 | Punto 1: sección "Llegada y transporte" y "12:00 a.m. Fin de la celebración" en el itinerario |
 | `ad2540e` | 2026-09-24 | Punto 2: sección "El clima" en vivo (pronóstico real o clima típico de los últimos 5 años) |
 | `af0cd7a` | 2026-09-24 | Coordenadas reales de Hacienda Chic (4.8270016, -74.0314436) para el clima y el botón de Waze |
-| — | 2026-09-24 | Punto 3: plano de mesas (`mesas.html`), columna `mesa` en `invitados.csv` y mesa en `enlaces.html` |
+| `d3ff6d0` | 2026-09-24 | Punto 3 (primera versión): plano de mesas de solo lectura y columna `mesa` en `invitados.csv` |
+| — | 2026-09-24 | Punto 3 rehecho: lista de invitados en Google Sheets (pestañas Invitados y Mesas), editor interactivo `mesas.html`, `panel.js` con clave, `enlaces.html` con confirmaciones; se elimina `invitados.csv` |
 
 ---
 
@@ -270,17 +284,19 @@ la boda", porque ambos muestran la mesa de cada familia.
 Para actualizarlos: copiar desde el link "raw", pegar en Apps Script, **volver a escribir los valores
 secretos** (URL de la playlist y palabra secreta) y publicar una **nueva versión**.
 
-### 5.1 `google-apps-script/Code.gs` — confirmaciones (cuenta de Daniel)
+### 5.1 `google-apps-script/Code.gs` — confirmaciones, invitados y mesas (cuenta de Daniel)
 Link para copiar: https://raw.githubusercontent.com/danieltijo94/boda-daniel-y-diana/claude/tender-cerf-3qmwm1/google-apps-script/Code.gs
 
 Valores a llenar en Apps Script (no se guardan en el repositorio):
-`PLAYLIST_WEBAPP_URL` = URL `/exec` del script de la pareja · `PLAYLIST_CLAVE` = palabra secreta.
+`PLAYLIST_WEBAPP_URL` = URL `/exec` del script de la pareja · `PLAYLIST_CLAVE` = palabra secreta ·
+`CLAVE_NOVIOS` = clave de los novios para `enlaces.html` y `mesas.html`.
 
 ```javascript
 /**
- * Confirmaciones de la boda de Daniel Alejandro & Diana Carolina
- * Guarda cada respuesta en esta hoja de cálculo y envía un correo de aviso.
- * Instrucciones: ver CONFIGURAR-CORREO.md en el repositorio.
+ * Boda de Daniel Alejandro & Diana Carolina
+ * - Lista oficial de invitados (pestaña "Invitados") y plano de mesas (pestaña "Mesas").
+ * - Confirmaciones: guarda cada respuesta (pestaña "Confirmaciones") y envía un correo de aviso.
+ * Instrucciones: ver CONFIGURAR-CORREO.md e INVITADOS-Y-MESAS.md en el repositorio.
  */
 
 // Correos adicionales que también deben recibir el aviso (opcional)
@@ -291,24 +307,52 @@ const CORREOS_EXTRA = []; // ej: ["diana@gmail.com"]
 const PLAYLIST_WEBAPP_URL = ""; // URL (termina en /exec) del script Playlist-pareja.gs
 const PLAYLIST_CLAVE = "";      // la misma palabra secreta que en Playlist-pareja.gs
 
+// Clave de los novios para ver la lista completa (enlaces.html) y guardar el plano (mesas.html).
+// Escríbela solo aquí en Apps Script; nunca en el repositorio.
+const CLAVE_NOVIOS = "";
+
+const COL_INVITADOS = ["Código", "Familia", "Invitado", "Mesa"];
+const COL_MESAS = ["Mesa", "Sillas"];
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
 
+function responder(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Lecturas: la invitación pide su familia; enlaces.html y mesas.html piden la lista completa (con clave)
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  if (p.accion === "invitado") return responder(buscarInvitado(p.codigo));
+  if (p.accion === "lista") {
+    if (!claveOk(p.clave)) return responder({ ok: false, error: "clave" });
+    return responder(listaCompleta());
+  }
+  return responder({ ok: true, mensaje: "El script de la boda está funcionando" });
+}
+
 function doPost(e) {
+  // Plano de mesas: llega como JSON en texto
+  if (e && e.postData && String(e.postData.contents || "").trim().charAt(0) === "{") {
+    let d;
+    try { d = JSON.parse(e.postData.contents); } catch (err) { return responder({ ok: false, error: "datos" }); }
+    if (d.accion === "guardarMesas") return responder(guardarMesas(d));
+    return responder({ ok: false, error: "accion" });
+  }
+
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
     const p = (e && e.parameter) || {};
-    if (!p.nombre || !p.asistencia) {
-      return ContentService.createTextOutput(JSON.stringify({ ok: false, error: "faltan datos" }))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-    const pases = toInt(p.pases, 1);
+    if (!p.nombre || !p.asistencia) return responder({ ok: false, error: "faltan datos" });
+    // Los pases y el nombre de la familia salen de la pestaña "Invitados"
+    const inv = p.codigo ? buscarInvitado(p.codigo) : null;
+    const pases = inv && inv.ok ? inv.invitados.length : toInt(p.pases, 1);
     const asiste = p.asistencia === "Sí";
     const personas = asiste ? Math.min(Math.max(toInt(p.personas, 1), 1), pases) : 0;
     const fila = [
       new Date(),
       limpiar(p.codigo),
-      limpiar(p.nombre),
+      limpiar(inv && inv.ok ? inv.familia : p.nombre),
       asiste ? "Sí" : "No",
       personas,
       pases,
@@ -328,8 +372,7 @@ function doPost(e) {
 
     const errorPlaylist = p.cancion ? agregarAPlaylist(p.cancion) : null;
     enviarCorreo(fila, Boolean(existente), hoja, errorPlaylist);
-    return ContentService.createTextOutput(JSON.stringify({ ok: true }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return responder({ ok: true });
   } finally {
     lock.releaseLock();
   }
@@ -337,7 +380,12 @@ function doPost(e) {
 
 function obtenerHoja() {
   const libro = SpreadsheetApp.getActiveSpreadsheet();
-  const hoja = libro.getSheetByName("Confirmaciones") || libro.getSheets()[0];
+  let hoja = libro.getSheetByName("Confirmaciones");
+  if (!hoja) {
+    // La primera hoja que no sea de invitados ni mesas pasa a llamarse "Confirmaciones"
+    hoja = libro.getSheets().find((h) => ["Invitados", "Mesas"].indexOf(h.getName()) < 0) || libro.insertSheet();
+    hoja.setName("Confirmaciones");
+  }
   // Encabezados siempre al día (también si la hoja venía de una versión anterior)
   hoja.getRange(1, 1, 1, COLUMNAS.length).setValues([COLUMNAS])
     .setFontWeight("bold").setBackground("#f4dcdc");
@@ -410,6 +458,163 @@ function agregarAPlaylist(url) {
   } catch (err) {
     return "no se pudo conectar con el script de la playlist: " + err;
   }
+}
+
+/* ---------- Invitados y mesas ---------- */
+function claveOk(clave) {
+  return Boolean(CLAVE_NOVIOS) && String(clave || "") === CLAVE_NOVIOS;
+}
+
+function hojaCon(nombre, columnas) {
+  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  let hoja = libro.getSheetByName(nombre);
+  if (!hoja) hoja = libro.insertSheet(nombre);
+  hoja.getRange(1, 1, 1, columnas.length).setValues([columnas]).setFontWeight("bold").setBackground("#f4dcdc");
+  hoja.setFrozenRows(1);
+  return hoja;
+}
+
+// Una fila por persona: Código | Familia | Invitado | Mesa
+function leerInvitados(hoja) {
+  const n = hoja.getLastRow() - 1;
+  if (n < 1) return [];
+  const cuenta = {};
+  return hoja.getRange(2, 1, n, 4).getValues().map((r, i) => {
+    const familia = String(r[1]).trim();
+    const codigo = String(r[0]).trim().toUpperCase();
+    cuenta[familia] = (cuenta[familia] || 0) + 1;
+    return {
+      fila: i + 2, codigo, familia,
+      nombre: String(r[2]).trim() || `${familia} (${cuenta[familia]})`,
+      mesa: String(r[3]).trim(),
+    };
+  }).filter((x) => x.familia);
+}
+
+// Da un código a cada familia que no lo tenga (la misma familia comparte código)
+function completarCodigos(hoja) {
+  const filas = leerInvitados(hoja);
+  const porFamilia = {};
+  const usados = {};
+  filas.forEach((x) => { if (x.codigo) { usados[x.codigo] = true; porFamilia[x.familia] = porFamilia[x.familia] || x.codigo; } });
+  const letras = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let nuevos = 0;
+  filas.forEach((x) => {
+    if (x.codigo) return;
+    let c = porFamilia[x.familia];
+    if (!c) {
+      do { c = ""; for (let i = 0; i < 5; i++) c += letras[Math.floor(Math.random() * letras.length)]; } while (usados[c]);
+      usados[c] = true;
+      porFamilia[x.familia] = c;
+    }
+    hoja.getRange(x.fila, 1).setValue(c);
+    nuevos++;
+  });
+  return nuevos;
+}
+
+function buscarInvitado(codigo) {
+  const c = String(codigo || "").trim().toUpperCase();
+  if (!c) return { ok: false, error: "sin código" };
+  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Invitados");
+  const filas = hoja ? leerInvitados(hoja).filter((x) => x.codigo === c) : [];
+  if (!filas.length) return { ok: false, error: "no existe" };
+  return { ok: true, codigo: c, familia: filas[0].familia, invitados: filas.map((x) => x.nombre) };
+}
+
+function leerMesas() {
+  const hoja = hojaCon("Mesas", COL_MESAS);
+  const n = hoja.getLastRow() - 1;
+  if (n < 1) return [];
+  return hoja.getRange(2, 1, n, 2).getValues()
+    .filter((r) => String(r[0]).trim())
+    .map((r) => ({ mesa: String(r[0]).trim(), sillas: toInt(r[1], 10) }));
+}
+
+// Lista para los novios: familias, personas con su mesa, confirmación y mesas
+function listaCompleta() {
+  const hoja = hojaCon("Invitados", COL_INVITADOS);
+  completarCodigos(hoja);
+  const conf = {};
+  const hc = obtenerHoja();
+  const n = hc.getLastRow() - 1;
+  if (n > 0) {
+    hc.getRange(2, 1, n, COLUMNAS.length).getValues().forEach((r) => {
+      const c = String(r[1]).trim().toUpperCase();
+      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean) };
+    });
+  }
+  const familias = [];
+  const indice = {};
+  leerInvitados(hoja).forEach((x) => {
+    if (!indice[x.codigo]) {
+      indice[x.codigo] = { codigo: x.codigo, familia: x.familia, personas: [], confirmacion: conf[x.codigo] || null };
+      familias.push(indice[x.codigo]);
+    }
+    indice[x.codigo].personas.push({ nombre: x.nombre, mesa: x.mesa });
+  });
+  return { ok: true, familias, mesas: leerMesas() };
+}
+
+// Guarda el plano: las mesas (nombre y sillas) y la mesa de cada persona
+function guardarMesas(d) {
+  if (!claveOk(d.clave)) return { ok: false, error: "clave" };
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const hm = hojaCon("Mesas", COL_MESAS);
+    if (hm.getLastRow() > 1) hm.getRange(2, 1, hm.getLastRow() - 1, 2).clearContent();
+    const mesas = (d.mesas || []).map((m) => [limpiar(m.mesa), toInt(m.sillas, 10)]);
+    if (mesas.length) hm.getRange(2, 1, mesas.length, 2).setValues(mesas);
+
+    // Cada persona se reconoce por "código|nombre"; las filas nuevas que no conocía el plano no se tocan
+    const hi = hojaCon("Invitados", COL_INVITADOS);
+    const asig = d.asignaciones || {};
+    leerInvitados(hi).forEach((x) => {
+      const k = x.codigo + "|" + x.nombre;
+      if (k in asig && String(asig[k]) !== x.mesa) hi.getRange(x.fila, 4).setValue(limpiar(asig[k]));
+    });
+    return { ok: true };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Menú en la hoja de cálculo
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu("💍 Boda")
+    .addItem("Preparar pestañas Invitados y Mesas", "prepararHojas")
+    .addItem("Generar códigos que falten", "generarCodigos")
+    .addToUi();
+}
+
+function generarCodigos() {
+  const n = completarCodigos(hojaCon("Invitados", COL_INVITADOS));
+  console.log(n ? `Se generaron códigos para ${n} filas.` : "Todas las filas ya tienen código.");
+}
+
+// Ejecuta esta función una vez: crea las pestañas y, si están vacías, pone invitados y mesas de ejemplo
+function prepararHojas() {
+  const hi = hojaCon("Invitados", COL_INVITADOS);
+  if (hi.getLastRow() < 2) {
+    const ejemplo = [
+      ["DT7K2", "Daniel Tijo y Diana Sanchez", "Daniel Tijo", "Novios"],
+      ["DT7K2", "Daniel Tijo y Diana Sanchez", "Diana Sanchez", "Novios"],
+      ["FP4M9", "Familia Pérez Gómez", "Carlos Pérez", "1"],
+      ["FP4M9", "Familia Pérez Gómez", "María Gómez", "1"],
+      ["FP4M9", "Familia Pérez Gómez", "Juan Pérez", "1"],
+      ["FP4M9", "Familia Pérez Gómez", "Laura Pérez", "1"],
+      ["TM8Q1", "Tía Marta", "Marta Rodríguez", "1"],
+      ["JL3R6", "Juan y Laura", "Juan Martínez", ""],
+      ["JL3R6", "Juan y Laura", "Laura Ríos", ""],
+    ];
+    hi.getRange(2, 1, ejemplo.length, 4).setValues(ejemplo);
+  }
+  const hm = hojaCon("Mesas", COL_MESAS);
+  if (hm.getLastRow() < 2) hm.getRange(2, 1, 3, 2).setValues([["Novios", 10], ["1", 10], ["2", 10]]);
+  obtenerHoja();
+  completarCodigos(hi);
+  console.log("Listo: pestañas Invitados, Mesas y Confirmaciones preparadas.");
 }
 
 function totalConfirmados(hoja) {
