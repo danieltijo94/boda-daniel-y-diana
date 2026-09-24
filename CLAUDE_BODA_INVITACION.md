@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 24 de septiembre de 2026 (plan de nuevas funciones)
+> **Última actualización:** 24 de septiembre de 2026 (punto 1: llegada y transporte)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -39,17 +39,20 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 4. **Tarjeta del invitado**: cita de Cantares 8:7, nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
 6. **¿Dónde y cuándo?**: Hacienda Chic, botones **Google Maps** y **Waze**.
-7. **Itinerario**: 4:00 Coffee time · 5:00 Ceremonia religiosa · 6:00 Brindis · 6:30 Cena · 7:30 ¡A celebrar!
-8. **Galería** "Nuestra historia" (espacios para fotos, pendiente).
-9. **Código de vestimenta**: Formal + colores reservados.
-10. **Regalos**: texto de lluvia de sobres.
-11. **Comparte tus fotos**: QR + botón hacia `fotos.html`.
-12. **Confirma tu asistencia** (formulario dentro de la invitación):
+7. **Llegada y transporte**: tarjeta con íconos dorados — cupos de parqueadero limitados (se recomienda no llevar carro),
+   valet parking bajo la responsabilidad de cada invitado, conductor elegido contratable en el lugar con costo adicional,
+   y la celebración termina a las 12:00 de la noche.
+8. **Itinerario**: 4:00 Coffee time · 5:00 Ceremonia religiosa · 6:00 Brindis · 6:30 Cena · 7:30 ¡A celebrar! · 12:00 a.m. Fin de la celebración
+9. **Galería** "Nuestra historia" (espacios para fotos, pendiente).
+10. **Código de vestimenta**: Formal + colores reservados.
+11. **Regalos**: texto de lluvia de sobres.
+12. **Comparte tus fotos**: QR + botón hacia `fotos.html`.
+13. **Confirma tu asistencia** (formulario dentro de la invitación):
     - ¿Nos acompañarás? → "¡Sí, ahí estaré!" / "No podré asistir".
     - Si es "Sí": casillas con **el nombre de cada invitado de la tarjeta** para marcar quiénes asisten,
       **restricciones alimenticias o alergias** y **link de YouTube de la canción que no puede faltar**.
     - Al enviar: destellos, mensaje de gracias y opción "Cambiar mi respuesta".
-13. **Pie**: nombres, fecha 19 · 06 · 2027 y agradecimiento.
+14. **Pie**: nombres, fecha 19 · 06 · 2027 y agradecimiento.
 
 **Estilo:** fondo marfil y rosa, orquídeas phalaenopsis (SVG propias), detalles dorados, letras Pinyon Script
 (caligrafía), Cinzel (mayúsculas) y Cormorant Garamond (texto). Pétalos de orquídea y destellos dorados cayendo.
@@ -137,8 +140,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 
 | # | Función | Estado |
 |---|---|---|
-| 1 | Información de llegada y transporte | ⏳ Siguiente |
-| 2 | Clima en vivo | 🔜 Por hacer |
+| 1 | Información de llegada y transporte | ✅ Hecho (esperando visto bueno) |
+| 2 | Clima en vivo | ⏳ Siguiente |
 | 3 | Plano de mesas | 🔜 Por hacer |
 | 4 | Pase QR de entrada por familia | 🔜 Por hacer |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
@@ -242,7 +245,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `7ecc05d` | 2026-09-24 | Regla en `CLAUDE.md`: actualizar este documento con cada cambio |
 | `cf5c79a` | 2026-09-24 | Plan de trabajo de nuevas funciones (llegada, clima, mesas, pase QR, modo boda, agradecimiento) |
 | `8401fcd` | 2026-09-24 | El panel de los novios entra al plan como último punto |
-| — | 2026-09-24 | Forma de trabajo acordada guardada en `CLAUDE.md` |
+| `b46a7df` | 2026-09-24 | Forma de trabajo acordada guardada en `CLAUDE.md` |
+| — | 2026-09-24 | Punto 1: sección "Llegada y transporte" y "12:00 a.m. Fin de la celebración" en el itinerario |
 
 ---
 
