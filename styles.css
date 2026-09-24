@@ -551,6 +551,7 @@ main {
   animation: popIn .7s var(--ease);
 }
 .rsvp-done h3 { font-family: var(--script); font-weight: normal; font-size: 46px; color: var(--wine); line-height: 1.15; margin: 4px 0 8px; }
+.done-when { font-size: 15px; font-style: italic; color: var(--ink-soft); margin: 10px 0 16px; line-height: 1.45; }
 .done-orchid { width: 90px; height: 90px; animation: heartbeat 1.8s ease-in-out infinite; }
 @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.12); } 30% { transform: scale(1); } 45% { transform: scale(1.08); } }
 @keyframes popIn { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }

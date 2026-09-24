@@ -64,6 +64,9 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
     - **Sin código:** nombre + "¿Nos acompañarás?" + restricción.
     - Al enviar: destellos y gracias con nombres ("Te esperamos a Carlos y María. Extrañaremos a Juan.");
       **"Cambiar mi respuesta"** vuelve a cargar lo marcado.
+    - **La respuesta es una sola por código** (la guarda la hoja): al abrir el link, la invitación trae la última respuesta
+      de la familia desde la hoja, en cualquier celular, y muestra "Respuesta registrada el … Cualquiera de la familia
+      puede cambiarla desde su link". Cada cambio actualiza el mismo registro.
 15. **Pie**: nombres, fecha 19 · 06 · 2027 y agradecimiento.
 
 **Estilo:** fondo marfil y rosa, orquídeas phalaenopsis (SVG propias), detalles dorados, letras Pinyon Script
@@ -115,6 +118,9 @@ Hoja "Confirmaciones Boda Daniel y Diana" — pestañas:
   con acompañantes, mesa), su confirmación y las mesas. Guardar el plano es un POST en JSON
   `{accion:"guardarMesas", clave, mesas, asignaciones}`; cada fila se reconoce por `código|nombre`.
 - Al confirmar, el script toma los **pases y el nombre de la familia de la Lista de Invitados** (no del navegador).
+- `?accion=invitado&codigo=…` devuelve también `respuesta` (`ultimaRespuesta`: fecha, canción y cada persona con
+  asiste/restricción/nombre indicado, desde Confirmaciones + Asistencia por persona). El celular solo usa lo guardado
+  localmente si el script no envía `respuesta` (versión vieja o sin conexión).
 - La invitación envía `detalle` (JSON: nombre, nombre indicado, asiste, restricción por persona); el script solo acepta
   nombres de esa invitación. `listaCompleta` usa **Asistencia por persona** para ✓/✗ y restricciones (🍽 en el plano).
 - La mesa se asigna **por persona** (una fila). En la invitación todavía no se muestra: aparecerá el día de la
@@ -261,6 +267,7 @@ la boda", porque ambos muestran la mesa de cada familia.
   **Google Sheets** (pestaña Invitados, una fila por persona); `invitados.csv` se eliminó.
 - **Plano de mesas:** editor en `mesas.html` que guarda en la hoja; asignación **por persona**; mesas en **cuadrícula**
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
+- **El código es la llave**: una sola respuesta por invitación, guardada en la hoja y visible/editable desde cualquier celular.
 - **Confirmación por persona** (no por familia): cada invitado de la tarjeta marca si va y su propia restricción.
 - Se usa la pestaña que creó el usuario (**Lista de Invitados**) en vez de una nueva; el script solo le agrega
   las columnas Familia y Código. Las invitaciones se agrupan por la columna **Familia**.
@@ -306,7 +313,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `a1a1bc7` | 2026-09-24 | El script usa la pestaña del usuario **Lista de Invitados** (Nombre, Pases, Numero de Mesa) y le agrega Familia y Código; acompañantes por Pases; códigos unificados por familia |
 | `16ecebd` | 2026-09-24 | Documento de seguimiento: nombre de la pestaña Lista de Invitados |
 | `f90ca73` | 2026-09-24 | Punto 3 aprobado; nueva prioridad ★ (confirmación por persona) en el plan |
-| — | 2026-09-25 | ★ Confirmación por persona: tarjetas Asistirá/No podrá, restricción por persona, nombre de acompañantes, resumen y gracias con nombres; script con columna "No asisten", pestaña "Asistencia por persona" y correo detallado; 🍽 en el plano |
+| `c64758a` | 2026-09-25 | ★ Confirmación por persona: tarjetas Asistirá/No podrá, restricción por persona, nombre de acompañantes, resumen y gracias con nombres; script con columna "No asisten", pestaña "Asistencia por persona" y correo detallado; 🍽 en el plano |
+| — | 2026-09-25 | Arreglo: la respuesta se lee de la hoja por código (antes solo se recordaba en el mismo celular); toda la familia ve y edita el mismo registro |
 
 ---
 
@@ -360,7 +368,11 @@ function responder(obj) {
 // Lecturas: la invitación pide su familia; enlaces.html y mesas.html piden la lista completa (con clave)
 function doGet(e) {
   const p = (e && e.parameter) || {};
-  if (p.accion === "invitado") return responder(buscarInvitado(p.codigo));
+  if (p.accion === "invitado") {
+    const inv = buscarInvitado(p.codigo);
+    if (inv.ok) inv.respuesta = ultimaRespuesta(inv.codigo, inv.invitados);
+    return responder(inv);
+  }
   if (p.accion === "lista") {
     if (!claveOk(p.clave)) return responder({ ok: false, error: "clave" });
     return responder(listaCompleta());
@@ -661,6 +673,37 @@ function buscarInvitado(codigo) {
   const invitados = [];
   filas.forEach((x) => invitados.push(...conAcompanantes(x)));
   return { ok: true, codigo: cod, familia: filas[0].familia, invitados };
+}
+
+// Última respuesta guardada para ese código (la misma para toda la familia, se abra en el celular que sea):
+// { fecha, cancion, personas: [{ nombre, dado, asiste, restriccion }] } o null si aún no responden
+function ultimaRespuesta(codigo, invitados) {
+  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const hc = libro.getSheetByName("Confirmaciones");
+  const fila = hc ? buscarFila(hc, codigo) : 0;
+  if (!fila) return null;
+  const r = hc.getRange(fila, 1, 1, COLUMNAS.length).getValues()[0];
+  const fecha = r[0] instanceof Date ? r[0].toISOString() : String(r[0] || "");
+  const cancion = String(r[8] || "");
+  // Formulario por persona: pestaña "Asistencia por persona"
+  const hp = libro.getSheetByName(HOJA_PERSONAS);
+  const np = hp ? hp.getLastRow() - 1 : 0;
+  const porNombre = {};
+  if (np > 0) {
+    hp.getRange(2, 1, np, COL_PERSONAS.length).getValues().forEach((x) => {
+      if (String(x[0]).trim().toUpperCase() === codigo) {
+        porNombre[String(x[2])] = { dado: String(x[3] || ""), asiste: x[4] === "Sí", restriccion: String(x[5] || "") };
+      }
+    });
+  }
+  // Respuestas anteriores (solo la fila de Confirmaciones): asiste quien esté en "Asistentes"
+  const asistentes = String(r[6] || "").split(",").map((x) => x.trim());
+  const personas = invitados.map((nombre) => {
+    const x = porNombre[nombre];
+    if (x) return { nombre, dado: x.dado, asiste: x.asiste, restriccion: x.restriccion };
+    return { nombre, dado: "", asiste: r[3] === "Sí" && asistentes.indexOf(nombre) >= 0, restriccion: "" };
+  });
+  return { fecha, cancion, personas };
 }
 
 function leerMesas() {

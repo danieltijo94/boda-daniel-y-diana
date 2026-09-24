@@ -74,7 +74,8 @@ async function fillGuest() {
     const res = await fetch(`${CONFIG.rsvpEndpoint}?accion=invitado&codigo=${encodeURIComponent(code)}`);
     const r = await res.json();
     if (r.ok) {
-      guest = { codigo: r.codigo, familia: r.familia, nombres: r.invitados };
+      // respuesta: lo último que confirmó la familia (desde la hoja), o null si aún no responde
+      guest = { codigo: r.codigo, familia: r.familia, nombres: r.invitados, respuesta: r.respuesta === undefined ? undefined : r.respuesta };
       try { localStorage.setItem(key, JSON.stringify(guest)); } catch { /* ignorar */ }
       showGuest();
     } else if (r.error === "no existe") {
@@ -249,6 +250,18 @@ function readDiet(box) {
   else if (detalle) partes.push(detalle);
   return { chips, detalle, texto: partes.join(", "), alergiaSinDetalle: chips.includes("Alergia") && !detalle };
 }
+// Convierte el texto guardado en la hoja ("Vegetariano, Alergia: maní") en las opciones marcadas
+function parseDiet(texto) {
+  const chips = [];
+  const resto = [];
+  String(texto || "").split(/,\s*/).filter(Boolean).forEach((parte) => {
+    const alergia = parte.match(/^Alergia(?::\s*(.*))?$/i);
+    if (alergia) { chips.push("Alergia"); if (alergia[1]) resto.push(alergia[1]); }
+    else if (DIETAS.includes(parte)) chips.push(parte);
+    else resto.push(parte);
+  });
+  return { chips, detalle: resto.join(", ") };
+}
 function fillDiet(box, prev) {
   if (!prev) return;
   box.querySelectorAll(".diet-chips input").forEach((i) => { i.checked = (prev.chips || []).includes(i.value); });
@@ -371,9 +384,27 @@ function setupRSVP() {
       : `Te esperamos con mucha ilusión a ${juntar(van)}.` + (noVan.length ? ` Extrañaremos a ${juntar(noVan)}.` : "");
   };
 
-  // Respuesta anterior guardada en este celular: se muestra el gracias y se precarga el formulario
+  const doneWhen = $("#rsvpDoneWhen");
+  const cuando = (iso) => {
+    const d = new Date(iso);
+    if (isNaN(d)) return "";
+    const f = d.toLocaleDateString("es-CO", { day: "numeric", month: "long", timeZone: "America/Bogota" });
+    return `Respuesta registrada el ${f}.`;
+  };
+
+  // Respuesta anterior: la de la hoja (la misma para toda la familia en cualquier celular);
+  // si el script no la envía (versión vieja o sin conexión), la guardada en este celular
   try {
-    const prev = JSON.parse(localStorage.getItem(storeKey) || "null");
+    let prev = null;
+    if (guest && guest.respuesta !== undefined) {
+      prev = guest.respuesta && {
+        cancion: guest.respuesta.cancion,
+        fecha: guest.respuesta.fecha,
+        personas: guest.respuesta.personas.map((x) => ({ nombre: x.nombre, dado: x.dado, asiste: x.asiste, dieta: parseDiet(x.restriccion) })),
+      };
+    } else {
+      prev = JSON.parse(localStorage.getItem(storeKey) || "null");
+    }
     if (prev && prev.personas) {
       if (guest) {
         prev.personas.forEach((pp) => {
@@ -393,6 +424,10 @@ function setupRSVP() {
       $("#songInput").value = prev.cancion || "";
       actualizar();
       showDone(prev.personas);
+      if (guest && names.length > 1) {
+        doneWhen.textContent = [cuando(prev.fecha), "Cualquiera de la familia puede cambiarla desde su link."].filter(Boolean).join(" ");
+        doneWhen.hidden = false;
+      }
     } else if (prev) {
       // Respuesta de la versión anterior del formulario
       showDone([{ nombre: "", asiste: prev.asistencia === "Sí" }]);
@@ -459,6 +494,11 @@ function setupRSVP() {
       }
       const guardado = ps.map((p) => ({ nombre: p.nombre, dado: p.dado || "", asiste: p.asiste, dieta: p.dieta && { chips: p.dieta.chips, detalle: p.dieta.detalle } }));
       try { localStorage.setItem(storeKey, JSON.stringify({ personas: guardado, cancion })); } catch { /* ignorar */ }
+      if (guest) {
+        guest.respuesta = { fecha: new Date().toISOString(), cancion: van.length ? cancion : "", personas: detalle };
+        try { localStorage.setItem("invitado:" + guest.codigo, JSON.stringify(guest)); } catch { /* ignorar */ }
+      }
+      doneWhen.hidden = true;
       showDone(ps);
       if (van.length) sparkleBurst($("#rsvpSubmit"));
     } catch {

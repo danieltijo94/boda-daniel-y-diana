@@ -35,7 +35,11 @@ function responder(obj) {
 // Lecturas: la invitación pide su familia; enlaces.html y mesas.html piden la lista completa (con clave)
 function doGet(e) {
   const p = (e && e.parameter) || {};
-  if (p.accion === "invitado") return responder(buscarInvitado(p.codigo));
+  if (p.accion === "invitado") {
+    const inv = buscarInvitado(p.codigo);
+    if (inv.ok) inv.respuesta = ultimaRespuesta(inv.codigo, inv.invitados);
+    return responder(inv);
+  }
   if (p.accion === "lista") {
     if (!claveOk(p.clave)) return responder({ ok: false, error: "clave" });
     return responder(listaCompleta());
@@ -336,6 +340,37 @@ function buscarInvitado(codigo) {
   const invitados = [];
   filas.forEach((x) => invitados.push(...conAcompanantes(x)));
   return { ok: true, codigo: cod, familia: filas[0].familia, invitados };
+}
+
+// Última respuesta guardada para ese código (la misma para toda la familia, se abra en el celular que sea):
+// { fecha, cancion, personas: [{ nombre, dado, asiste, restriccion }] } o null si aún no responden
+function ultimaRespuesta(codigo, invitados) {
+  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const hc = libro.getSheetByName("Confirmaciones");
+  const fila = hc ? buscarFila(hc, codigo) : 0;
+  if (!fila) return null;
+  const r = hc.getRange(fila, 1, 1, COLUMNAS.length).getValues()[0];
+  const fecha = r[0] instanceof Date ? r[0].toISOString() : String(r[0] || "");
+  const cancion = String(r[8] || "");
+  // Formulario por persona: pestaña "Asistencia por persona"
+  const hp = libro.getSheetByName(HOJA_PERSONAS);
+  const np = hp ? hp.getLastRow() - 1 : 0;
+  const porNombre = {};
+  if (np > 0) {
+    hp.getRange(2, 1, np, COL_PERSONAS.length).getValues().forEach((x) => {
+      if (String(x[0]).trim().toUpperCase() === codigo) {
+        porNombre[String(x[2])] = { dado: String(x[3] || ""), asiste: x[4] === "Sí", restriccion: String(x[5] || "") };
+      }
+    });
+  }
+  // Respuestas anteriores (solo la fila de Confirmaciones): asiste quien esté en "Asistentes"
+  const asistentes = String(r[6] || "").split(",").map((x) => x.trim());
+  const personas = invitados.map((nombre) => {
+    const x = porNombre[nombre];
+    if (x) return { nombre, dado: x.dado, asiste: x.asiste, restriccion: x.restriccion };
+    return { nombre, dado: "", asiste: r[3] === "Sí" && asistentes.indexOf(nombre) >= 0, restriccion: "" };
+  });
+  return { fecha, cancion, personas };
 }
 
 function leerMesas() {
