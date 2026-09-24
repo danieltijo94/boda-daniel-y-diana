@@ -143,7 +143,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 4 | Pase QR de entrada por familia | 🔜 Por hacer |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
-| 7 | Panel de los novios | ⏸️ En pausa (decidir después) |
+| 7 | Panel de los novios | 🔜 Por hacer (al final) |
 
 **1. Información de llegada y transporte** (en vez de preguntas frecuentes)
 - Nueva sección elegante junto a "¿Dónde y cuándo?", con íconos dorados:
@@ -184,7 +184,7 @@ la boda", porque ambos muestran la mesa de cada familia.
   fotos de los invitados, la playlist y el espacio para las fotos oficiales.
 - Para probarlo antes: `?modo=gracias`.
 
-**7. Panel de los novios** *(en pausa)*
+**7. Panel de los novios** *(se hace al final)*
 - Página con clave: confirmados, pendientes y quiénes no asisten; resumen de restricciones para el catering;
   canciones sugeridas; recordatorio por WhatsApp a los pendientes. Incluye la idea del "recordatorio de pendientes".
 
@@ -240,7 +240,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `6425697` | 2026-09-24 16:43 | Explicar en el correo por qué una canción no llegó a la playlist |
 | `2f16850` | 2026-09-24 | Documento de seguimiento del proyecto (este archivo) |
 | `7ecc05d` | 2026-09-24 | Regla en `CLAUDE.md`: actualizar este documento con cada cambio |
-| — | 2026-09-24 | Plan de trabajo de nuevas funciones (llegada, clima, mesas, pase QR, modo boda, agradecimiento) |
+| `cf5c79a` | 2026-09-24 | Plan de trabajo de nuevas funciones (llegada, clima, mesas, pase QR, modo boda, agradecimiento) |
+| — | 2026-09-24 | El panel de los novios entra al plan como último punto |
 
 ---
 
