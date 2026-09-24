@@ -78,7 +78,7 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 | `panel.js` | Compartido por las páginas de los novios: `ENDPOINT` (misma URL que `CONFIG.rsvpEndpoint`), pide la clave `CLAVE_NOVIOS` (la recuerda en ese navegador), lee la lista y guarda el plano |
 | `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp: pases, mesa y si ya confirmó (con clave) |
 | `mesas.html` | **Editor del plano de mesas** (con clave): crear/renombrar/eliminar mesas, sillas con −/+, arrastrar personas o familias, ✓/✗ de confirmación, Guardar en Google Sheets e Imprimir |
-| `INVITADOS-Y-MESAS.md` | Guía: pestañas Invitados/Mesas, primera configuración y uso del plano |
+| `INVITADOS-Y-MESAS.md` | Guía: pestañas Lista de Invitados y Mesas, primera configuración y uso del plano |
 | `fotos.html` | Página del QR: abre el álbum compartido (`ALBUM_URL`, pendiente) |
 | `qr-mesa.html` | Tarjeta A6 para imprimir con el QR de fotos |
 | `assets/qr-fotos.svg` | Código QR (apunta a `fotos.html`, nunca cambia) |
@@ -188,7 +188,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 - Usa las **coordenadas de Hacienda Chic** (4.8270, -74.0314), guardadas en `CONFIG.clima`.
 
 **3. Plano de mesas** (rehecho a pedido: editor interactivo)
-- La lista oficial de invitados pasa a **Google Sheets** (pestañas Invitados y Mesas); se quita `invitados.csv`.
+- La lista oficial de invitados pasa a **Google Sheets** (pestaña del usuario "Lista de Invitados" + Mesas); se quita `invitados.csv`.
 - `mesas.html` (con clave de los novios, pensado para computador y usable en celular): crear mesas, cambiar
   nombre y sillas, arrastrar personas (o familias completas) a las mesas, ver quién confirmó, **Guardar**
   (actualiza la hoja) e **Imprimir**. Se sienta **por persona**; mesas en **cuadrícula**.
