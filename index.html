@@ -22,7 +22,7 @@
       if (!seguirAqui) document.documentElement.classList.add("samsung");
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=202609240100">
+  <link rel="stylesheet" href="styles.css?v=202609240200">
 </head>
 <body class="locked">
 
@@ -265,6 +265,17 @@
       </article>
     </section>
 
+    <!-- ========== CLIMA ========== -->
+    <section class="section weather" id="clima">
+      <h2 class="section-title reveal">El clima</h2>
+      <article class="weather-card reveal" id="weatherCard">
+        <p class="w-kicker" id="wKicker">Consultando el clima…</p>
+        <div class="w-slots" id="wSlots"></div>
+        <p class="w-tip" id="wTip"></p>
+        <p class="w-note" id="wNote"></p>
+      </article>
+    </section>
+
     <!-- ========== LLEGADA Y TRANSPORTE ========== -->
     <section class="section arrival" id="llegada">
       <h2 class="section-title reveal">Llegada y transporte</h2>
@@ -459,6 +470,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=202609240100"></script>
+  <script src="script.js?v=202609240200"></script>
 </body>
 </html>

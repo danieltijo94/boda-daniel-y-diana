@@ -12,6 +12,8 @@ const CONFIG = {
   lugarCalendario: "Hacienda Chic, Bogotá",
   // Duración aproximada del evento (horas) para el calendario
   duracionHoras: 8,
+  // Punto para el clima (provisional: centro de Bogotá; cambiar por las coordenadas de Hacienda Chic)
+  clima: { lat: 4.711, lon: -74.0721, lugar: "Bogotá" },
 };
 
 /* ========================================================= */
@@ -391,6 +393,126 @@ function setupChromeGate() {
   });
 }
 
+/* ---------- Clima en vivo (Open-Meteo, sin clave) ---------- */
+// Horas que se muestran: [hora del día, nombre, ¿de noche?, ¿es del día siguiente?]
+const CLIMA_HORAS = [[16, "4 p.m.", false, 0], [18, "6 p.m.", false, 0], [21, "9 p.m.", true, 0], [0, "12 a.m.", true, 1]];
+const ICONOS_CLIMA = {
+  sol: '<circle cx="16" cy="16" r="5.5"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/>',
+  luna: '<path d="M19 5A11 11 0 1 0 27 19 8.5 8.5 0 0 1 19 5z"/>',
+  nube: '<path d="M9 24h14a5 5 0 0 0 .6-10A7.5 7.5 0 0 0 9.3 15.4 4.3 4.3 0 0 0 9 24z"/>',
+  lluvia: '<path d="M9 19h14a5 5 0 0 0 .6-10A7.5 7.5 0 0 0 9.3 10.4 4.3 4.3 0 0 0 9 19zM11 23l-1.5 4M16.5 23L15 27M22 23l-1.5 4"/>',
+  tormenta: '<path d="M9 19h14a5 5 0 0 0 .6-10A7.5 7.5 0 0 0 9.3 10.4 4.3 4.3 0 0 0 9 19zM17 20l-3 5h4l-2.5 5"/>',
+};
+
+const fechaBogota = (ms) => new Date(ms - 5 * 3600e3).toISOString().slice(0, 10);
+const masUnDia = (f) => fechaBogota(Date.parse(f + "T12:00:00-05:00") + 86400e3);
+const hora = (f, h) => `${f}T${String(h).padStart(2, "0")}:00`;
+
+function iconoClima({ codigo, lluvia, noche }) {
+  if (codigo >= 95) return "tormenta";
+  if ((codigo >= 51 && codigo <= 67) || (codigo >= 80 && codigo <= 82) || lluvia >= 60) return "lluvia";
+  if (codigo === 3 || codigo === 45 || codigo === 48 || lluvia >= 30) return "nube";
+  return noche ? "luna" : "sol";
+}
+
+function pintarClima({ titulo, franjas, nota }) {
+  $("#wKicker").textContent = titulo;
+  $("#wSlots").innerHTML = franjas.map((f) => `
+    <div class="w-slot">
+      <span class="w-hour">${f.nombre}</span>
+      <svg viewBox="0 0 32 32" aria-hidden="true">${ICONOS_CLIMA[iconoClima(f)]}</svg>
+      <span class="w-temp">${Math.round(f.temp)}°</span>
+      <span class="w-rain">☂ ${Math.round(f.lluvia)}%</span>
+    </div>`).join("");
+  const minima = Math.min(...franjas.map((f) => f.temp));
+  const lluvia = Math.max(...franjas.map((f) => f.lluvia));
+  const consejos = [];
+  if (minima <= 13) consejos.push(`La noche será fría (${Math.round(minima)} °C): lleva un abrigo o chal elegante.`);
+  if (lluvia >= 40) consejos.push("Podría llover: ten a mano un paraguas.");
+  if (!consejos.length) consejos.push("¡Pinta para una noche perfecta!");
+  $("#wTip").textContent = consejos.join(" ");
+  $("#wNote").textContent = nota;
+  $("#weatherCard").classList.add("ready");
+}
+
+// Pronóstico real (disponible unos 15 días antes)
+async function pronostico(dia) {
+  const { lat, lon } = CONFIG.clima;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    "&hourly=temperature_2m,precipitation_probability,weather_code&timezone=America%2FBogota&forecast_days=16";
+  const h = (await (await fetch(url)).json()).hourly;
+  const franjas = CLIMA_HORAS.map(([hh, nombre, noche, sig]) => {
+    const i = h.time.indexOf(hora(sig ? masUnDia(dia) : dia, hh));
+    return i < 0 ? null : { nombre, noche, temp: h.temperature_2m[i], lluvia: h.precipitation_probability[i] ?? 0, codigo: h.weather_code[i] };
+  }).filter(Boolean);
+  if (!franjas.length) throw new Error("sin datos");
+  return franjas;
+}
+
+// Clima típico: lo que pasó alrededor del 19 de junio en los últimos 5 años
+async function climaTipico() {
+  const { lat, lon } = CONFIG.clima;
+  const hoy = new Date().getFullYear();
+  const anios = [1, 2, 3, 4, 5].map((n) => hoy - n);
+  const datos = await Promise.all(anios.map(async (y) => {
+    const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}` +
+      `&start_date=${y}-06-12&end_date=${y}-06-27&hourly=temperature_2m,precipitation&timezone=America%2FBogota`;
+    return (await (await fetch(url)).json()).hourly;
+  }));
+  return CLIMA_HORAS.map(([hh, nombre, noche, sig]) => {
+    let temp = 0, n = 0, conLluvia = 0;
+    datos.forEach((h, k) => {
+      for (let d = 12; d <= 26; d++) {
+        const f = `${anios[k]}-06-${d}`;
+        const i = h.time.indexOf(hora(sig ? masUnDia(f) : f, hh));
+        if (i < 0 || h.temperature_2m[i] == null) continue;
+        temp += h.temperature_2m[i]; n++;
+        // ¿Llovió en esa hora o la anterior?
+        if ((h.precipitation[i] || 0) + (h.precipitation[i - 1] || 0) >= 0.2) conLluvia++;
+      }
+    });
+    if (!n) throw new Error("sin datos");
+    return { nombre, noche, temp: temp / n, lluvia: (conLluvia / n) * 100, codigo: 0 };
+  });
+}
+
+async function setupWeather() {
+  if (!$("#weatherCard")) return;
+  const modo = params.get("clima"); // pruebas: ?clima=hoy o ?clima=tipico
+  const diaBoda = CONFIG.fecha.slice(0, 10);
+  const hoy = fechaBogota(Date.now());
+  const dias = Math.round((Date.parse(diaBoda) - Date.parse(hoy)) / 86400e3);
+  const desde = new Date(Date.parse(diaBoda) - 15 * 86400e3);
+  const desdeTexto = `${desde.getUTCDate()} de ${MESES[desde.getUTCMonth()].toLowerCase()} de ${desde.getUTCFullYear()}`;
+  const lugar = CONFIG.clima.lugar;
+
+  if (modo === "hoy" || (modo !== "tipico" && dias >= 0 && dias <= 15)) {
+    const dia = modo === "hoy" ? hoy : diaBoda;
+    try {
+      const franjas = await pronostico(dia);
+      const ahora = new Date().toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit", timeZone: "America/Bogota" });
+      return pintarClima({
+        titulo: modo === "hoy" ? `Pronóstico de hoy en ${lugar}` : `Pronóstico para el día de la boda en ${lugar}`,
+        franjas,
+        nota: `Actualizado hoy a las ${ahora} · Fuente: Open-Meteo`,
+      });
+    } catch { /* si falla, se muestra el clima típico */ }
+  }
+  try {
+    const franjas = await climaTipico();
+    pintarClima({
+      titulo: `Así suele estar el clima en ${lugar} a mediados de junio`,
+      franjas,
+      nota: `Promedio de los últimos 5 años (☂ = qué tan seguido llovió a esa hora). ` +
+        `El pronóstico real para la boda aparecerá aquí desde el ${desdeTexto}.`,
+    });
+  } catch {
+    $("#wKicker").textContent = `El clima en ${lugar} en junio`;
+    $("#wTip").textContent = "Las tardes suelen ser frescas y las noches frías: te recomendamos llevar un abrigo o chal elegante.";
+    $("#weatherCard").classList.add("ready");
+  }
+}
+
 /* ---------- Inicio ---------- */
 setupChromeGate();
 fillDates();
@@ -399,3 +521,4 @@ setupIntro();
 setupReveal();
 setupCountdown();
 setupCalendar();
+setupWeather();

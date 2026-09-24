@@ -598,3 +598,28 @@ html.samsung .chrome-gate {
 .arrival-list h3 { font-family: var(--caps); font-weight: 500; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--wine); margin-bottom: 2px; }
 .arrival-list p { font-size: 18px; line-height: 1.4; }
 .arrival-list strong { color: var(--wine); font-weight: 600; }
+
+/* =================== CLIMA =================== */
+.weather-card {
+  max-width: 460px; margin: 0 auto; padding: 26px 18px 22px; background: #fff; border-radius: 16px;
+  border: 1px solid rgba(184, 145, 79, .6);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+}
+.w-kicker { font-family: var(--caps); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); line-height: 1.7; }
+.w-slots { display: flex; gap: 6px; margin: 18px 0 14px; }
+.w-slots:empty { display: none; }
+.w-slot {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0 10px;
+  border-radius: 999px 999px 12px 12px; background: linear-gradient(180deg, var(--ivory), #fff);
+  border: 1px solid rgba(184, 145, 79, .35);
+  opacity: 0; transform: translateY(10px); transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+.weather-card.ready .w-slot { opacity: 1; transform: none; }
+.w-slot:nth-child(2) { transition-delay: .1s; } .w-slot:nth-child(3) { transition-delay: .2s; } .w-slot:nth-child(4) { transition-delay: .3s; }
+.w-slot svg { width: 30px; height: 30px; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.w-hour { font-family: var(--caps); font-size: 11px; letter-spacing: .08em; color: var(--ink-soft); }
+.w-temp { font-size: 28px; font-weight: 500; line-height: 1; color: var(--wine); font-variant-numeric: lining-nums; }
+.w-rain { font-size: 13px; color: var(--ink-soft); font-variant-numeric: lining-nums; }
+.w-tip { font-size: 18px; line-height: 1.45; max-width: 380px; margin: 0 auto; }
+.w-note { margin-top: 12px; font-size: 13px; font-style: italic; color: var(--ink-soft); line-height: 1.5; }
+.w-note:empty { display: none; }
