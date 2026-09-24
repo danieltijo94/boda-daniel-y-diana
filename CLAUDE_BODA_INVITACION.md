@@ -167,7 +167,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 1 | Información de llegada y transporte | ✅ Hecho (aprobado) |
 | 2 | Clima en vivo | ✅ Hecho (aprobado) |
 | 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (aprobado) |
-| 4 | Pase QR de entrada por familia | ⏳ Siguiente |
+| ★ | **Confirmación por persona** (prioridad) | 📝 Propuesta (esperando aprobación) |
+| 4 | Pase QR de entrada por familia | 🔜 Después de ★ |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
 | 7 | Panel de los novios | 🔜 Por hacer (al final) |
@@ -193,6 +194,18 @@ la boda", porque ambos muestran la mesa de cada familia.
   nombre y sillas, arrastrar personas (o familias completas) a las mesas, ver quién confirmó, **Guardar**
   (actualiza la hoja) e **Imprimir**. Se sienta **por persona**; mesas en **cuadrícula**.
 - La mesa se muestra en la invitación **solo el día de la boda** (ver punto 5) y en el pase QR.
+
+**★ Confirmación por persona** *(prioridad, pedida por el usuario; va antes del punto 4)*
+- En invitaciones de varios pases, cada persona se confirma por separado: **Asistirá ✓ / No podrá ✗**, con atajos
+  "Todos asistiremos" / "Ninguno podrá asistir". Hay que marcar a todos antes de enviar.
+- Restricción alimenticia **por persona** (solo para quienes asisten): opciones rápidas (Vegetariano, Vegano,
+  Sin gluten, Sin lactosa, Alergia…) + detalle escrito.
+- Acompañantes ("Acompañante de …"): opción de escribir su nombre.
+- Resumen antes de enviar y gracias personalizado ("Te esperamos a Carlos y María").
+- Hoja: la fila de Confirmaciones agrega "No asisten" y restricciones con nombre; nueva pestaña
+  **Asistencia por persona** (una fila por persona: código, familia, nombre, asiste, restricción, fecha).
+- Correo con ✓/✗ y restricción de cada persona. El plano de mesas muestra 🍽 en quien tiene restricción.
+- "Cambiar mi respuesta" vuelve a cargar lo que habían marcado.
 
 **4. Pase QR de entrada por familia**
 - Cuando una familia confirma "Sí", su invitación muestra un **pase con código QR** (familia, personas confirmadas y mesa).
@@ -284,6 +297,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `a1a1bc7` | 2026-09-24 | El script usa la pestaña del usuario **Lista de Invitados** (Nombre, Pases, Numero de Mesa) y le agrega Familia y Código; acompañantes por Pases; códigos unificados por familia |
 | `16ecebd` | 2026-09-24 | Documento de seguimiento: nombre de la pestaña Lista de Invitados |
 | — | 2026-09-24 | Punto 3 aprobado por el usuario |
+| — | 2026-09-24 | Nueva prioridad ★ en el plan: confirmación por persona (propuesta) |
 
 ---
 

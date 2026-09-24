@@ -29,7 +29,7 @@ Responde siempre **en español** y con explicaciones sencillas (el usuario no es
 ## Cómo trabajamos (acordado con el usuario)
 - **Antes de empezar, lee `CLAUDE_BODA_INVITACION.md`**, en especial la sección 3 "🛠️ Plan de trabajo".
 - Las funciones del plan se hacen **una a una, en orden** (1 llegada y transporte → 2 clima en vivo →
-  3 plano de mesas → 4 pase QR de entrada → 5 modo "día de la boda" → 6 página de agradecimiento →
+  3 plano de mesas → ★ confirmación por persona (prioridad) → 4 pase QR de entrada → 5 modo "día de la boda" → 6 página de agradecimiento →
   7 panel de los novios). Al terminar una: probarla, subirla, actualizar su estado en la tabla del plan
   (✅ Hecho) y **esperar a que el usuario la pruebe y dé el visto bueno** antes de empezar la siguiente.
 - Antes de programar una función, confirma los datos que falten (por ejemplo, coordenadas de Hacienda Chic
