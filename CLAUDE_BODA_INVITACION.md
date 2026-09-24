@@ -142,6 +142,7 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 6. Publicar desde la rama `main` en lugar de la rama de trabajo.
 
 ### 🗂️ Decisiones tomadas (para no repetir)
+- **Este documento se actualiza con cada cambio** (regla guardada en `CLAUDE.md`).
 - **Confirmación dentro de la invitación** (no Google Form), guardada en Google Sheets + correo vía Apps Script.
 - **Invitados por código** en `invitados.csv` (no `?familia=…&pases=…`, que cualquiera podía editar).
 - **Modo oscuro:** Chrome se controla con `color-scheme`; **Samsung Internet no se puede controlar** → aviso "Abrir en Chrome". El truco de invertir colores se probó y se retiró.
@@ -173,6 +174,8 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 | `50e8b17` | 2026-09-23 01:54 | Manifiesto para activar YouTube sin el diálogo de servicios |
 | `af8af1c` | 2026-09-23 02:04 | Revisar la playlist real antes de agregar una canción |
 | `6425697` | 2026-09-24 16:43 | Explicar en el correo por qué una canción no llegó a la playlist |
+| `2f16850` | 2026-09-24 | Documento de seguimiento del proyecto (este archivo) |
+| — | 2026-09-24 | Regla en `CLAUDE.md`: actualizar este documento con cada cambio |
 
 ---
 
