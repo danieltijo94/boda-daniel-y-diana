@@ -12,8 +12,8 @@ const CONFIG = {
   lugarCalendario: "Hacienda Chic, Bogotá",
   // Duración aproximada del evento (horas) para el calendario
   duracionHoras: 8,
-  // Punto para el clima (provisional: centro de Bogotá; cambiar por las coordenadas de Hacienda Chic)
-  clima: { lat: 4.711, lon: -74.0721, lugar: "Bogotá" },
+  // Punto para el clima: Hacienda Chic (Cra. 7 #247-15, norte de Bogotá, límite con Chía)
+  clima: { lat: 4.8270, lon: -74.0314, lugar: "Hacienda Chic" },
 };
 
 /* ========================================================= */

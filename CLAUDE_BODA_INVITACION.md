@@ -38,14 +38,14 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 3. **Portada**: marco dorado doble, monograma D&D, "Con la bendición de Dios y de nuestras familias", nombres en caligrafía, fecha y lugar, ramas de orquídeas animadas.
 4. **Tarjeta del invitado**: cita de Cantares 8:7, nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
-6. **¿Dónde y cuándo?**: Hacienda Chic, botones **Google Maps** y **Waze**.
+6. **¿Dónde y cuándo?**: Hacienda Chic (Cra. 7 #247-15, 4.8270016, -74.0314436), botones **Google Maps** y **Waze** (Waze va a las coordenadas exactas).
 7. **El clima** (en vivo, Open-Meteo): se consulta cada vez que se abre la invitación. Muestra 4 p.m., 6 p.m.,
    9 p.m. y 12 a.m. con ícono, temperatura y lluvia, más un consejo (abrigo / paraguas).
    - Desde 15 días antes (4 de junio de 2027): **pronóstico real** del día de la boda.
    - Antes: **clima típico** calculado en vivo con lo que pasó del 12 al 26 de junio de los últimos 5 años.
    - Sin conexión: texto fijo ("tardes frescas y noches frías, lleva abrigo").
    - Pruebas: `?clima=hoy` (pronóstico de hoy) y `?clima=tipico`.
-   - Coordenadas en `CONFIG.clima` (provisional: centro de Bogotá).
+   - Coordenadas en `CONFIG.clima`: Hacienda Chic (4.8270, -74.0314).
 8. **Llegada y transporte**: tarjeta con íconos dorados — cupos de parqueadero limitados (se recomienda no llevar carro),
    valet parking bajo la responsabilidad de cada invitado, conductor elegido contratable en el lugar con costo adicional,
    y la celebración termina a las 12:00 de la noche.
@@ -136,7 +136,6 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
-- [ ] Pasar las **coordenadas (o link exacto) de Hacienda Chic**: sirven para el clima y para revisar el botón de **Waze**.
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
@@ -168,7 +167,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 - **Hasta 16 días antes:** se muestra el **pronóstico real** del 19 de junio, de 4 p.m. a 12 a.m. (temperatura,
   probabilidad de lluvia y un consejo, por ejemplo "lleva abrigo" o "lleva paraguas").
 - **Antes de eso:** muestra el clima típico (promedio en vivo de los últimos 5 años) y el aviso "el pronóstico aparecerá desde el 4 de junio de 2027".
-- Se necesitan las **coordenadas de Hacienda Chic** (mientras tanto se usa el centro de Bogotá, en `CONFIG.clima`).
+- Usa las **coordenadas de Hacienda Chic** (4.8270, -74.0314), guardadas en `CONFIG.clima`.
 
 **3. Plano de mesas**
 - Nueva columna `mesa` en `invitados.csv`.
@@ -254,7 +253,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `8401fcd` | 2026-09-24 | El panel de los novios entra al plan como último punto |
 | `b46a7df` | 2026-09-24 | Forma de trabajo acordada guardada en `CLAUDE.md` |
 | `21c0f55` | 2026-09-24 | Punto 1: sección "Llegada y transporte" y "12:00 a.m. Fin de la celebración" en el itinerario |
-| — | 2026-09-24 | Punto 2: sección "El clima" en vivo (pronóstico real o clima típico de los últimos 5 años) |
+| `ad2540e` | 2026-09-24 | Punto 2: sección "El clima" en vivo (pronóstico real o clima típico de los últimos 5 años) |
+| — | 2026-09-24 | Coordenadas reales de Hacienda Chic (4.8270016, -74.0314436) para el clima y el botón de Waze |
 
 ---
 
