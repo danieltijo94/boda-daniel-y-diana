@@ -15,10 +15,11 @@ Responde siempre **en español** y con explicaciones sencillas (el usuario no es
 
 ## Convenciones
 - Archivos principales: `index.html`, `styles.css`, `script.js` (datos en `CONFIG`), `panel.js` (páginas de los novios).
-- La lista de invitados vive en Google Sheets (pestañas Invitados y Mesas), servida por `google-apps-script/Code.gs`;
+- La lista de invitados vive en Google Sheets (pestaña del usuario "Lista de Invitados": Nombre, Pases, Numero de Mesa,
+  + Familia y Código que agrega el script; y pestaña Mesas), servida por `google-apps-script/Code.gs`;
   ya no hay `invitados.csv`. La clave `CLAVE_NOVIOS` va solo en Apps Script.
 - Al cambiar `styles.css` o `script.js`, sube el `?v=` en `index.html` para que los celulares no usen la versión vieja.
-- **Nunca subas secretos** al repositorio (es público): la palabra secreta de la playlist, la URL del script
+- **Nunca subas secretos ni la lista real de invitados** al repositorio (es público): la palabra secreta de la playlist, la URL del script
   de la pareja y `CLAVE_NOVIOS` van solo en Apps Script.
 - Después de cambiar un script de Google, recuérdale al usuario publicar una **nueva versión**
   (Implementar → Gestionar implementaciones → ✏️ → Nueva versión).

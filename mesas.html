@@ -140,11 +140,12 @@
     <main class="grid" id="grid"><p class="loading">Cargando la lista de invitados…</p></main>
   </div>
 
-  <p class="help">La lista sale de la pestaña <b>Invitados</b> de Google Sheets y las mesas de la pestaña <b>Mesas</b>.
-    Al tocar <b>Guardar cambios</b> se actualiza la columna <b>Mesa</b> de cada invitado. Para agregar o quitar invitados,
+  <p class="help">La lista sale de la pestaña <b>Lista de Invitados</b> de Google Sheets y las mesas de la pestaña <b>Mesas</b>.
+    Quien tiene <b>+1</b> trae acompañantes (columna Pases) y ocupa esas sillas extra.
+    Al tocar <b>Guardar cambios</b> se actualiza la columna <b>Numero de Mesa</b> de cada invitado. Para agregar o quitar invitados,
     edita la hoja y recarga esta página.</p>
 
-  <script src="panel.js?v=202609240400"></script>
+  <script src="panel.js?v=202609240500"></script>
   <script>
     const $ = (s, el = document) => el.querySelector(s);
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -153,12 +154,13 @@
     const MAX_SILLAS = 30;
 
     let mesas = [];          // { id, nombre, sillas }
-    let personas = [];       // { key, codigo, familia, nombre, mesa (id o null), estado: si | no | pendiente }
+    let personas = [];       // { key, codigo, familia, nombre, puestos, mesa (id o null), estado: si | no | pendiente }
     const sel = new Set();   // personas seleccionadas (por key)
     let dirty = false;
     let nextId = 1;
 
-    const ocupadas = (id) => personas.filter((p) => p.mesa === id).length;
+    const puestos = (lista) => lista.reduce((s, p) => s + p.puestos, 0);
+    const ocupadas = (id) => puestos(personas.filter((p) => p.mesa === id));
     const mesaDe = (id) => mesas.find((m) => m.id === id);
     const etiqueta = (m) => (/^\d+$/.test(m.nombre) ? `Mesa ${m.nombre}` : m.nombre);
 
@@ -198,7 +200,7 @@
     function chip(p, quitar) {
       const mk = p.estado === "si" ? "✓" : p.estado === "no" ? "✗" : "";
       return `<span class="chip st-${p.estado}${sel.has(p.key) ? " sel" : ""}" draggable="true" data-key="${esc(p.key)}" title="${esc(p.familia)}">` +
-        `${esc(p.nombre)}${mk ? `<span class="mk">${mk}</span>` : ""}${quitar ? `<button class="x" type="button" title="Quitar de la mesa" data-quitar="${esc(p.key)}">×</button>` : ""}</span>`;
+        `${esc(p.nombre)}${p.puestos > 1 ? ` <b>+${p.puestos - 1}</b>` : ""}${mk ? `<span class="mk">${mk}</span>` : ""}${quitar ? `<button class="x" type="button" title="Quitar de la mesa" data-quitar="${esc(p.key)}">×</button>` : ""}</span>`;
     }
     // Agrupa por familia, respetando el orden de la hoja
     function porFamilia(lista) {
@@ -213,10 +215,10 @@
       const verNo = $("#showNo").checked;
       const libres = personas.filter((p) => !p.mesa);
       const visibles = libres.filter((p) => (verNo || p.estado !== "no") && (!q || norm(p.nombre).includes(q) || norm(p.familia).includes(q)));
-      $("#freeCount").textContent = `(${libres.filter((p) => p.estado !== "no").length})`;
+      $("#freeCount").textContent = `(${puestos(libres.filter((p) => p.estado !== "no"))})`;
       $("#freeList").innerHTML = visibles.length ? porFamilia(visibles).map((f) => `
         <div class="fam"><div class="fam-title" draggable="true" data-fam="${esc(f[0].codigo)}" title="Arrastra para sentar a toda la familia">
-          <span>${esc(f[0].familia)}</span><small>${f.length}</small></div>
+          <span>${esc(f[0].familia)}</span><small>${puestos(f)}</small></div>
           <div class="chips">${f.map((p) => chip(p, false)).join("")}</div></div>`).join("")
         : `<p class="empty">${q ? "Nadie coincide con la búsqueda."
           : libres.length ? `¡Todos los que asisten tienen mesa! 🎉 (${libres.length} que no asisten, ocultos)` : "¡Todos tienen mesa! 🎉"}</p>`;
@@ -225,12 +227,12 @@
       const destino = sel.size > 0;
       $("#grid").innerHTML = mesas.map((m) => {
         const aqui = personas.filter((p) => p.mesa === m.id);
-        return `<div class="table${destino ? " target" : ""}${aqui.length >= m.sillas ? " full" : ""}" data-mesa="${m.id}">
+        return `<div class="table${destino ? " target" : ""}${puestos(aqui) >= m.sillas ? " full" : ""}" data-mesa="${m.id}">
           <div class="t-head"><input class="t-name" value="${esc(etiqueta(m))}" data-renombrar="${m.id}" aria-label="Nombre de la mesa" title="Cambiar el nombre (número o texto, ej. Novios)">
             <button class="t-del" type="button" data-borrar="${m.id}" title="Eliminar mesa">🗑</button></div>
           ${dibujoMesa(m)}
           <div class="t-seats"><button type="button" data-sillas="${m.id}" data-d="-1" title="Quitar una silla">−</button>
-            <span class="t-count">${aqui.length} de ${m.sillas} sillas</span>
+            <span class="t-count">${puestos(aqui)} de ${m.sillas} sillas</span>
             <button type="button" data-sillas="${m.id}" data-d="1" title="Agregar una silla">+</button></div>
           <div class="t-people">${aqui.length ? porFamilia(aqui).map((f) =>
             `<div class="fam-title"><span>${esc(f[0].familia)}</span></div><div class="chips">${f.map((p) => chip(p, true)).join("")}</div>`).join("")
@@ -240,16 +242,16 @@
 
       // Resumen
       const van = personas.filter((p) => p.estado !== "no");
-      const sentados = van.filter((p) => p.mesa).length;
+      const sentados = puestos(van.filter((p) => p.mesa));
       const sillas = mesas.reduce((s, m) => s + m.sillas, 0);
-      const noSentados = personas.filter((p) => p.estado === "no" && p.mesa).length;
+      const noSentados = puestos(personas.filter((p) => p.estado === "no" && p.mesa));
       $("#summary").innerHTML = [
         `<span class="pill">${mesas.length} ${mesas.length === 1 ? "mesa" : "mesas"} · ${sillas} sillas</span>`,
-        `<span class="pill">${van.length} invitados</span>`,
+        `<span class="pill">${puestos(van)} invitados</span>`,
         `<span class="pill">${sentados} con mesa</span>`,
-        van.length - sentados ? `<span class="pill warn">${van.length - sentados} sin mesa</span>` : "",
+        puestos(van) - sentados ? `<span class="pill warn">${puestos(van) - sentados} sin mesa</span>` : "",
         noSentados ? `<span class="pill warn">${noSentados} que no asisten ocupan silla</span>` : "",
-        `<span class="pill">${personas.filter((p) => p.estado === "si").length} confirmados</span>`,
+        `<span class="pill">${personas.reduce((s, p) => s + p.confirmados, 0)} confirmados</span>`,
       ].join("");
     }
 
@@ -260,8 +262,8 @@
       if (id) {
         const m = mesaDe(id);
         const libres = m.sillas - ocupadas(id);
-        if (mover.length > libres) {
-          const falta = mover.length - libres;
+        if (puestos(mover) > libres) {
+          const falta = puestos(mover) - libres;
           return status(`${etiqueta(m)} solo tiene ${libres} ${libres === 1 ? "silla libre" : "sillas libres"}: agrégale ${falta} ${falta === 1 ? "silla" : "sillas"} con el botón + o elige otra mesa.`, true);
         }
       }
@@ -395,11 +397,14 @@
       r.familias.forEach((f) => {
         const c = f.confirmacion;
         f.personas.forEach((p) => {
-          const estado = !c ? "pendiente" : c.asistencia === "Sí" && c.asistentes.includes(p.nombre) ? "si" : "no";
+          const nombres = p.nombres || [p.nombre];
+          const estado = !c ? "pendiente" : c.asistencia === "Sí" && nombres.some((n) => c.asistentes.includes(n)) ? "si" : "no";
           let m = p.mesa ? mesas.find((x) => norm(x.nombre) === norm(p.mesa)) : null;
           // Una mesa escrita a mano en la hoja que no está en la pestaña Mesas se crea sola
           if (p.mesa && !m) { m = { id: nextId++, nombre: p.mesa, sillas: SILLAS }; mesas.push(m); }
-          personas.push({ key: `${f.codigo}|${p.nombre}`, codigo: f.codigo, familia: f.familia, nombre: p.nombre, mesa: m ? m.id : null, estado });
+          personas.push({ key: `${f.codigo}|${p.nombre}`, codigo: f.codigo, familia: f.familia, nombre: p.nombre,
+            puestos: Math.max(1, p.pases || 1), mesa: m ? m.id : null, estado,
+            confirmados: estado === "si" ? nombres.filter((n) => c.asistentes.includes(n)).length : 0 });
         });
       });
       // Si una mesa quedó con más invitados que sillas, se agregan sillas

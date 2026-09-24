@@ -36,22 +36,23 @@
 <body>
   <div class="wrap">
     <h1>Enlaces de invitados</h1>
-    <p class="sub">Esta lista sale de la pestaña <b>Invitados</b> de Google Sheets. Para añadir o cambiar invitados, edita esa pestaña y recarga esta página.</p>
+    <p class="sub">Esta lista sale de la pestaña <b>Lista de Invitados</b> de Google Sheets. Para añadir o cambiar invitados, edita esa pestaña y recarga esta página.</p>
     <p class="total" id="total"></p>
     <div id="list"></div>
   </div>
-  <script src="panel.js?v=202609240400"></script>
+  <script src="panel.js?v=202609240500"></script>
   <script>
     const base = new URL("./", location.href).href;
     Panel.cargarLista()
       .then((r) => {
         const guests = r.familias;
-        const totalPases = guests.reduce((s, g) => s + g.personas.length, 0);
+        const pasesDe = (g) => g.personas.reduce((s, p) => s + (p.pases || 1), 0);
+        const totalPases = guests.reduce((s, g) => s + pasesDe(g), 0);
         document.getElementById("total").textContent = `${guests.length} invitaciones · ${totalPases} pases en total`;
         const list = document.getElementById("list");
         guests.forEach((g) => {
           const url = `${base}?i=${encodeURIComponent(g.codigo)}`;
-          const n = g.personas.length;
+          const n = pasesDe(g);
           const msg = `¡Hola ${g.familia}! 💌 Con mucha alegría te compartimos la invitación a nuestra boda (válida para ${n} ${n === 1 ? "persona" : "personas"}). Ábrela aquí:\n${url}`;
           const card = document.createElement("div");
           card.className = "card";
@@ -69,7 +70,7 @@
             m.hidden = false;
             m.textContent = (mesas.length === 1 ? "Mesa " : "Mesas ") + mesas.join(", ");
           }
-          card.querySelector(".who").textContent = g.personas.map((p) => p.nombre).join(" · ");
+          card.querySelector(".who").textContent = g.personas.map((p) => p.nombre + (p.pases > 1 ? ` (+${p.pases - 1})` : "")).join(" · ");
           const c = g.confirmacion;
           const st = card.querySelector(".state");
           st.textContent = !c ? "⏳ Aún no responde" : c.asistencia === "Sí" ? `✓ Confirmó ${c.asistentes.length} de ${n}` : "✗ No podrá asistir";

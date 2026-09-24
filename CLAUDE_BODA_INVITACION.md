@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 24 de septiembre de 2026 (punto 3: editor de mesas + lista de invitados en Google Sheets)
+> **Última actualización:** 24 de septiembre de 2026 (punto 3: editor de mesas sobre la pestaña "Lista de Invitados")
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -97,20 +97,23 @@ próxima vez. Si el código no existe, se ve la invitación general sin nombre n
 Hoja "Confirmaciones Boda Daniel y Diana" — pestañas:
 | Pestaña | Columnas |
 |---|---|
-| **Invitados** | `Código` · `Familia` · `Invitado` · `Mesa` (una fila por persona; pases = filas de la familia) |
+| **Lista de Invitados** (creada por el usuario, ~100 personas) | `Nombre` · `Pases` · `Numero de Mesa` + `Familia` · `Código` (las agrega `prepararHojas` al final) |
 | **Mesas** | `Mesa` (número o texto, ej. `Novios`) · `Sillas` |
-| **Confirmaciones** | respuestas del formulario (si no existe, la primera hoja se renombra así) |
+| **Confirmaciones** | respuestas del formulario (la hoja cuyo A1 es "Fecha" se renombra así; si no hay, se crea) |
 
-- Código vacío → el script lo genera (5 caracteres, igual para toda la familia): menú **💍 Boda → Generar códigos
-  que falten**, o solo al abrir `enlaces.html`/`mesas.html`.
-- `?accion=lista&clave=…` (con `CLAVE_NOVIOS`) devuelve todas las familias, sus personas con mesa, su confirmación
-  y las mesas. Guardar el plano es un POST en JSON `{accion:"guardarMesas", clave, mesas, asignaciones}`;
-  cada persona se reconoce por `código|nombre`.
-- Al confirmar, el script toma los **pases y el nombre de la familia de la pestaña Invitados** (no del navegador).
-- La mesa se asigna **por persona**. En la invitación todavía no se muestra: aparecerá el día de la boda (punto 5)
-  y en el pase QR (punto 4).
-- `invitados.csv` se eliminó del repositorio: la lista ya no es pública.
-> ⚠️ Los datos actuales son **de ejemplo** (los crea `prepararHojas`). Falta la lista real.
+- Las columnas se reconocen **por su título** (sin tildes ni mayúsculas), no por su posición.
+- **Familia**: filas con el mismo texto = una sola invitación. Vacía = invitación individual (se muestra el Nombre).
+- **Pases**: vacío/1 = solo la persona; N > 1 = la persona + "Acompañante de …" (ocupa N sillas en el plano).
+- **Código**: lo genera el script al abrir `enlaces.html`/`mesas.html` o con el menú **💍 Boda → Generar códigos
+  que falten**. Si se agrupa a alguien después, toma el código de la primera fila de su familia.
+- `?accion=lista&clave=…` (con `CLAVE_NOVIOS`) devuelve todas las familias, sus personas (nombre, pases, nombres
+  con acompañantes, mesa), su confirmación y las mesas. Guardar el plano es un POST en JSON
+  `{accion:"guardarMesas", clave, mesas, asignaciones}`; cada fila se reconoce por `código|nombre`.
+- Al confirmar, el script toma los **pases y el nombre de la familia de la Lista de Invitados** (no del navegador).
+- La mesa se asigna **por persona** (una fila). En la invitación todavía no se muestra: aparecerá el día de la
+  boda (punto 5) y en el pase QR (punto 4).
+- `invitados.csv` se eliminó del repositorio: la lista ya no es pública. **Nunca subir la lista real al repositorio.**
+
 
 ### Confirmaciones → hoja + correo + playlist
 ```
@@ -143,11 +146,11 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   desde la invitación. El correo ahora dice "(agregada a la playlist ✓)" o el motivo si falla.
 
 ### 📋 Pendiente de ustedes
-- [ ] Lista real de invitados (familia + nombre de cada persona).
+- [x] Lista real de invitados: ya está en la pestaña **Lista de Invitados** (~100 personas).
 - [ ] **Actualizar el script de confirmaciones** (nuevo `Code.gs`): poner `CLAVE_NOVIOS`, ejecutar `prepararHojas` y publicar
   una **nueva versión** (ver `INVITADOS-Y-MESAS.md`). Hasta hacerlo, la invitación no muestra el nombre de la familia.
-- [ ] Pasar la lista real a la pestaña **Invitados** (una fila por persona) y armar las mesas en `mesas.html`
-  (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
+- [ ] Llenar la columna **Familia** de la Lista de Invitados (quiénes van en la misma invitación) **antes de enviar enlaces**,
+  y armar las mesas en `mesas.html` (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
 - [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
@@ -237,6 +240,8 @@ la boda", porque ambos muestran la mesa de cada familia.
   **Google Sheets** (pestaña Invitados, una fila por persona); `invitados.csv` se eliminó.
 - **Plano de mesas:** editor en `mesas.html` que guarda en la hoja; asignación **por persona**; mesas en **cuadrícula**
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
+- Se usa la pestaña que creó el usuario (**Lista de Invitados**) en vez de una nueva; el script solo le agrega
+  las columnas Familia y Código. Las invitaciones se agrupan por la columna **Familia**.
 - **Modo oscuro:** Chrome se controla con `color-scheme`; **Samsung Internet no se puede controlar** → aviso "Abrir en Chrome". El truco de invertir colores se probó y se retiró.
 - **Fotos de invitados:** álbum compartido de Google Fotos (no ocupa el espacio de la cuenta de los novios, no requiere script).
 - **Playlist:** vive en la cuenta de la pareja; por eso existe un segundo script (YouTube solo deja editar a la dueña).
@@ -275,7 +280,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `ad2540e` | 2026-09-24 | Punto 2: sección "El clima" en vivo (pronóstico real o clima típico de los últimos 5 años) |
 | `af0cd7a` | 2026-09-24 | Coordenadas reales de Hacienda Chic (4.8270016, -74.0314436) para el clima y el botón de Waze |
 | `d3ff6d0` | 2026-09-24 | Punto 3 (primera versión): plano de mesas de solo lectura y columna `mesa` en `invitados.csv` |
-| — | 2026-09-24 | Punto 3 rehecho: lista de invitados en Google Sheets (pestañas Invitados y Mesas), editor interactivo `mesas.html`, `panel.js` con clave, `enlaces.html` con confirmaciones; se elimina `invitados.csv` |
+| `7bfe280` | 2026-09-24 | Punto 3 rehecho: lista de invitados en Google Sheets (pestañas Invitados y Mesas), editor interactivo `mesas.html`, `panel.js` con clave, `enlaces.html` con confirmaciones; se elimina `invitados.csv` |
+| — | 2026-09-24 | El script usa la pestaña del usuario **Lista de Invitados** (Nombre, Pases, Numero de Mesa) y le agrega Familia y Código; acompañantes por Pases; códigos unificados por familia |
 
 ---
 
@@ -294,7 +300,7 @@ Valores a llenar en Apps Script (no se guardan en el repositorio):
 ```javascript
 /**
  * Boda de Daniel Alejandro & Diana Carolina
- * - Lista oficial de invitados (pestaña "Invitados") y plano de mesas (pestaña "Mesas").
+ * - Lista oficial de invitados (pestaña "Lista de Invitados") y plano de mesas (pestaña "Mesas").
  * - Confirmaciones: guarda cada respuesta (pestaña "Confirmaciones") y envía un correo de aviso.
  * Instrucciones: ver CONFIGURAR-CORREO.md e INVITADOS-Y-MESAS.md en el repositorio.
  */
@@ -311,7 +317,11 @@ const PLAYLIST_CLAVE = "";      // la misma palabra secreta que en Playlist-pare
 // Escríbela solo aquí en Apps Script; nunca en el repositorio.
 const CLAVE_NOVIOS = "";
 
-const COL_INVITADOS = ["Código", "Familia", "Invitado", "Mesa"];
+// Pestaña con la lista de invitados: una fila por persona. Columnas que se reconocen por su título:
+// Nombre · Pases · Numero de Mesa · Familia · Código (Familia y Código se agregan solas al final si faltan).
+// Pases vacío = 1. Pases 2 o más = esa persona trae acompañantes.
+// Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
+const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción"];
 
@@ -344,7 +354,7 @@ function doPost(e) {
   try {
     const p = (e && e.parameter) || {};
     if (!p.nombre || !p.asistencia) return responder({ ok: false, error: "faltan datos" });
-    // Los pases y el nombre de la familia salen de la pestaña "Invitados"
+    // Los pases y el nombre de la familia salen de la lista de invitados
     const inv = p.codigo ? buscarInvitado(p.codigo) : null;
     const pases = inv && inv.ok ? inv.invitados.length : toInt(p.pases, 1);
     const asiste = p.asistencia === "Sí";
@@ -383,7 +393,9 @@ function obtenerHoja() {
   let hoja = libro.getSheetByName("Confirmaciones");
   if (!hoja) {
     // La primera hoja que no sea de invitados ni mesas pasa a llamarse "Confirmaciones"
-    hoja = libro.getSheets().find((h) => ["Invitados", "Mesas"].indexOf(h.getName()) < 0) || libro.insertSheet();
+    // La hoja que ya tiene los títulos de confirmaciones (empieza con "Fecha"); si no hay, se crea
+    hoja = libro.getSheets().find((h) => String(h.getRange(1, 1).getValues()[0][0]).trim() === "Fecha")
+      || libro.insertSheet("Confirmaciones");
     hoja.setName("Confirmaciones");
   }
   // Encabezados siempre al día (también si la hoja venía de una versión anterior)
@@ -474,52 +486,110 @@ function hojaCon(nombre, columnas) {
   return hoja;
 }
 
-// Una fila por persona: Código | Familia | Invitado | Mesa
-function leerInvitados(hoja) {
-  const n = hoja.getLastRow() - 1;
-  if (n < 1) return [];
-  const cuenta = {};
-  return hoja.getRange(2, 1, n, 4).getValues().map((r, i) => {
-    const familia = String(r[1]).trim();
-    const codigo = String(r[0]).trim().toUpperCase();
-    cuenta[familia] = (cuenta[familia] || 0) + 1;
-    return {
-      fila: i + 2, codigo, familia,
-      nombre: String(r[2]).trim() || `${familia} (${cuenta[familia]})`,
-      mesa: String(r[3]).trim(),
-    };
-  }).filter((x) => x.familia);
+function sinTildes(s) {
+  return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 }
 
-// Da un código a cada familia que no lo tenga (la misma familia comparte código)
+// Pestaña de invitados (se busca sin importar mayúsculas); con crear=true se crea si no existe
+function hojaInvitados(crear) {
+  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const hoja = libro.getSheets().find((h) => sinTildes(h.getName()) === sinTildes(HOJA_INVITADOS))
+    || libro.getSheetByName("Invitados");
+  if (hoja || !crear) return hoja;
+  const nueva = libro.insertSheet(HOJA_INVITADOS);
+  nueva.getRange(1, 1, 1, 5).setValues([["Nombre", "Pases", "Numero de Mesa", "Familia", "Código"]])
+    .setFontWeight("bold").setBackground("#f4dcdc");
+  nueva.setFrozenRows(1);
+  return nueva;
+}
+
+// Ubica cada columna por su título; con agregar=true crea al final las que falten (Familia, Código, Mesa)
+function columnas(hoja, agregar) {
+  const ancho = Math.max(hoja.getLastColumn(), 1);
+  const titulos = hoja.getRange(1, 1, 1, ancho).getValues()[0].map(sinTildes);
+  const col = (...nombres) => titulos.findIndex((t) => nombres.indexOf(t) >= 0) + 1;
+  const c = {
+    nombre: col("nombre", "nombres", "invitado"),
+    pases: col("pases", "cupos"),
+    mesa: col("numero de mesa", "mesa", "no. de mesa", "n° de mesa", "# de mesa"),
+    familia: col("familia", "invitacion", "grupo"),
+    codigo: col("codigo"),
+  };
+  if (agregar) {
+    let siguiente = titulos.filter(Boolean).length ? ancho + 1 : 1;
+    [["nombre", "Nombre"], ["mesa", "Numero de Mesa"], ["familia", "Familia"], ["codigo", "Código"]].forEach(([k, titulo]) => {
+      if (c[k]) return;
+      hoja.getRange(1, siguiente).setValue(titulo).setFontWeight("bold");
+      c[k] = siguiente++;
+    });
+  }
+  return c;
+}
+
+// Una fila por persona → { fila, codigo, familia, nombre, pases, mesa, conFamilia }
+function leerInvitados(hoja, c) {
+  c = c || columnas(hoja, false);
+  const n = hoja.getLastRow() - 1;
+  if (n < 1 || !c.nombre) return [];
+  const valor = (r, k) => (c[k] ? String(r[c[k] - 1]).trim() : "");
+  return hoja.getRange(2, 1, n, Math.max(hoja.getLastColumn(), 1)).getValues().map((r, i) => {
+    const nombre = valor(r, "nombre");
+    const familia = valor(r, "familia");
+    return {
+      fila: i + 2, nombre, conFamilia: Boolean(familia), familia: familia || nombre,
+      codigo: valor(r, "codigo").toUpperCase(),
+      pases: Math.max(1, toInt(valor(r, "pases"), 1)),
+      mesa: valor(r, "mesa"),
+    };
+  }).filter((x) => x.nombre);
+}
+
+// Nombres para la invitación: la persona y sus acompañantes (si Pases es mayor que 1)
+function conAcompanantes(x) {
+  const extra = x.pases - 1;
+  const nombres = [x.nombre];
+  for (let i = 1; i <= extra; i++) nombres.push(extra === 1 ? `Acompañante de ${x.nombre}` : `Acompañante ${i} de ${x.nombre}`);
+  return nombres;
+}
+
+// Da un código a cada invitación que no lo tenga. Las filas con la misma Familia quedan con el mismo
+// código (el de la primera fila de esa familia), aunque se hayan agrupado después.
 function completarCodigos(hoja) {
-  const filas = leerInvitados(hoja);
+  const c = columnas(hoja, true);
+  const filas = leerInvitados(hoja, c);
   const porFamilia = {};
   const usados = {};
-  filas.forEach((x) => { if (x.codigo) { usados[x.codigo] = true; porFamilia[x.familia] = porFamilia[x.familia] || x.codigo; } });
+  filas.forEach((x) => {
+    if (!x.codigo) return;
+    usados[x.codigo] = true;
+    if (x.conFamilia) porFamilia[sinTildes(x.familia)] = porFamilia[sinTildes(x.familia)] || x.codigo;
+  });
   const letras = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let nuevos = 0;
   filas.forEach((x) => {
-    if (x.codigo) return;
-    let c = porFamilia[x.familia];
-    if (!c) {
-      do { c = ""; for (let i = 0; i < 5; i++) c += letras[Math.floor(Math.random() * letras.length)]; } while (usados[c]);
-      usados[c] = true;
-      porFamilia[x.familia] = c;
+    const deFamilia = x.conFamilia ? porFamilia[sinTildes(x.familia)] : "";
+    if (x.codigo && (!deFamilia || deFamilia === x.codigo)) return;
+    let codigo = deFamilia;
+    if (!codigo) {
+      do { codigo = ""; for (let i = 0; i < 5; i++) codigo += letras[Math.floor(Math.random() * letras.length)]; } while (usados[codigo]);
+      usados[codigo] = true;
+      if (x.conFamilia) porFamilia[sinTildes(x.familia)] = codigo;
     }
-    hoja.getRange(x.fila, 1).setValue(c);
+    hoja.getRange(x.fila, c.codigo).setValue(codigo);
     nuevos++;
   });
   return nuevos;
 }
 
 function buscarInvitado(codigo) {
-  const c = String(codigo || "").trim().toUpperCase();
-  if (!c) return { ok: false, error: "sin código" };
-  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Invitados");
-  const filas = hoja ? leerInvitados(hoja).filter((x) => x.codigo === c) : [];
+  const cod = String(codigo || "").trim().toUpperCase();
+  if (!cod) return { ok: false, error: "sin código" };
+  const hoja = hojaInvitados(false);
+  const filas = hoja ? leerInvitados(hoja).filter((x) => x.codigo === cod) : [];
   if (!filas.length) return { ok: false, error: "no existe" };
-  return { ok: true, codigo: c, familia: filas[0].familia, invitados: filas.map((x) => x.nombre) };
+  const invitados = [];
+  filas.forEach((x) => invitados.push(...conAcompanantes(x)));
+  return { ok: true, codigo: cod, familia: filas[0].familia, invitados };
 }
 
 function leerMesas() {
@@ -533,7 +603,7 @@ function leerMesas() {
 
 // Lista para los novios: familias, personas con su mesa, confirmación y mesas
 function listaCompleta() {
-  const hoja = hojaCon("Invitados", COL_INVITADOS);
+  const hoja = hojaInvitados(true);
   completarCodigos(hoja);
   const conf = {};
   const hc = obtenerHoja();
@@ -551,7 +621,7 @@ function listaCompleta() {
       indice[x.codigo] = { codigo: x.codigo, familia: x.familia, personas: [], confirmacion: conf[x.codigo] || null };
       familias.push(indice[x.codigo]);
     }
-    indice[x.codigo].personas.push({ nombre: x.nombre, mesa: x.mesa });
+    indice[x.codigo].personas.push({ nombre: x.nombre, pases: x.pases, nombres: conAcompanantes(x), mesa: x.mesa });
   });
   return { ok: true, familias, mesas: leerMesas() };
 }
@@ -568,11 +638,12 @@ function guardarMesas(d) {
     if (mesas.length) hm.getRange(2, 1, mesas.length, 2).setValues(mesas);
 
     // Cada persona se reconoce por "código|nombre"; las filas nuevas que no conocía el plano no se tocan
-    const hi = hojaCon("Invitados", COL_INVITADOS);
+    const hi = hojaInvitados(true);
+    const c = columnas(hi, true);
     const asig = d.asignaciones || {};
-    leerInvitados(hi).forEach((x) => {
+    leerInvitados(hi, c).forEach((x) => {
       const k = x.codigo + "|" + x.nombre;
-      if (k in asig && String(asig[k]) !== x.mesa) hi.getRange(x.fila, 4).setValue(limpiar(asig[k]));
+      if (k in asig && String(asig[k]) !== x.mesa) hi.getRange(x.fila, c.mesa).setValue(limpiar(asig[k]));
     });
     return { ok: true };
   } finally {
@@ -583,38 +654,35 @@ function guardarMesas(d) {
 // Menú en la hoja de cálculo
 function onOpen() {
   SpreadsheetApp.getUi().createMenu("💍 Boda")
-    .addItem("Preparar pestañas Invitados y Mesas", "prepararHojas")
+    .addItem("Preparar lista de invitados y mesas", "prepararHojas")
     .addItem("Generar códigos que falten", "generarCodigos")
     .addToUi();
 }
 
 function generarCodigos() {
-  const n = completarCodigos(hojaCon("Invitados", COL_INVITADOS));
+  const n = completarCodigos(hojaInvitados(true));
   console.log(n ? `Se generaron códigos para ${n} filas.` : "Todas las filas ya tienen código.");
 }
 
-// Ejecuta esta función una vez: crea las pestañas y, si están vacías, pone invitados y mesas de ejemplo
+// Ejecuta esta función una vez: agrega las columnas Familia y Código a la lista de invitados (o la crea
+// con datos de ejemplo si no existe), crea la pestaña Mesas y genera los códigos que falten
 function prepararHojas() {
-  const hi = hojaCon("Invitados", COL_INVITADOS);
-  if (hi.getLastRow() < 2) {
-    const ejemplo = [
-      ["DT7K2", "Daniel Tijo y Diana Sanchez", "Daniel Tijo", "Novios"],
-      ["DT7K2", "Daniel Tijo y Diana Sanchez", "Diana Sanchez", "Novios"],
-      ["FP4M9", "Familia Pérez Gómez", "Carlos Pérez", "1"],
-      ["FP4M9", "Familia Pérez Gómez", "María Gómez", "1"],
-      ["FP4M9", "Familia Pérez Gómez", "Juan Pérez", "1"],
-      ["FP4M9", "Familia Pérez Gómez", "Laura Pérez", "1"],
-      ["TM8Q1", "Tía Marta", "Marta Rodríguez", "1"],
-      ["JL3R6", "Juan y Laura", "Juan Martínez", ""],
-      ["JL3R6", "Juan y Laura", "Laura Ríos", ""],
-    ];
-    hi.getRange(2, 1, ejemplo.length, 4).setValues(ejemplo);
+  let hi = hojaInvitados(false);
+  if (!hi) {
+    hi = hojaInvitados(true);
+    hi.getRange(2, 1, 4, 4).setValues([
+      ["Daniel Tijo", "", "Novios", "Daniel Tijo y Diana Sanchez"],
+      ["Diana Sanchez", "", "Novios", "Daniel Tijo y Diana Sanchez"],
+      ["Tía Marta", 2, "1", ""],
+      ["Carlos Pérez", 1, "", "Familia Pérez"],
+    ]);
   }
   const hm = hojaCon("Mesas", COL_MESAS);
-  if (hm.getLastRow() < 2) hm.getRange(2, 1, 3, 2).setValues([["Novios", 10], ["1", 10], ["2", 10]]);
+  if (hm.getLastRow() < 2) hm.getRange(2, 1, 2, 2).setValues([["1", 10], ["2", 10]]);
+  columnas(hi, true);
   obtenerHoja();
-  completarCodigos(hi);
-  console.log("Listo: pestañas Invitados, Mesas y Confirmaciones preparadas.");
+  console.log(`Listo: lista de invitados ("${hi.getName()}") con columnas Familia y Código, Mesas y Confirmaciones.` +
+    " Llena la columna Familia para agrupar a quienes van en la misma invitación; los códigos se crean al abrir enlaces.html.");
 }
 
 function totalConfirmados(hoja) {

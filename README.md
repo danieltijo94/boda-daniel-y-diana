@@ -4,8 +4,9 @@ Invitación web con orquídeas, detalles dorados, sobre animado, música, pétal
 ubicaciones, itinerario, galería, código de vestimenta, regalos y confirmación de asistencia dentro de la página (con aviso por correo, ver `CONFIGURAR-CORREO.md`).
 
 ## Invitados, pases y mesas
-La lista oficial de invitados está en **Google Sheets** (pestaña **Invitados**, una fila por persona:
-Código · Familia · Invitado · Mesa). Los pases de cada familia son sus filas. Ver **`INVITADOS-Y-MESAS.md`**.
+La lista oficial de invitados está en **Google Sheets** (pestaña **Lista de Invitados**, una fila por persona:
+Nombre · Pases · Numero de Mesa · Familia · Código). Quienes comparten Familia reciben una sola invitación.
+Ver **`INVITADOS-Y-MESAS.md`**.
 
 Cada invitado recibe un enlace con su código, por ejemplo
 `https://danieltijo94.github.io/boda-daniel-y-diana/?i=FP4M9`.
