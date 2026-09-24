@@ -166,7 +166,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 |---|---|---|
 | 1 | Información de llegada y transporte | ✅ Hecho (aprobado) |
 | 2 | Clima en vivo | ✅ Hecho (aprobado) |
-| 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (esperando visto bueno) |
+| 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (aprobado) |
 | 4 | Pase QR de entrada por familia | ⏳ Siguiente |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
@@ -217,7 +217,7 @@ la boda", porque ambos muestran la mesa de cada familia.
   canciones sugeridas; recordatorio por WhatsApp a los pendientes. Incluye la idea del "recordatorio de pendientes".
 
 ### 💡 Ideas propuestas que aún no se programan
-1. **Mensaje personal para cada familia** (columna en `invitados.csv`).
+1. **Mensaje personal para cada familia** (columna nueva en la pestaña Lista de Invitados).
 2. **"Agendar" en iPhone y Outlook** (archivo de calendario .ics, además de Google Calendar).
 3. **Nuestra historia**: línea de tiempo con fotos (cómo se conocieron, primera cita, propuesta).
 4. **Libro de buenos deseos**: los invitados dejan un mensaje (se guarda en la hoja).
@@ -281,7 +281,9 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `af0cd7a` | 2026-09-24 | Coordenadas reales de Hacienda Chic (4.8270016, -74.0314436) para el clima y el botón de Waze |
 | `d3ff6d0` | 2026-09-24 | Punto 3 (primera versión): plano de mesas de solo lectura y columna `mesa` en `invitados.csv` |
 | `7bfe280` | 2026-09-24 | Punto 3 rehecho: lista de invitados en Google Sheets (pestañas Invitados y Mesas), editor interactivo `mesas.html`, `panel.js` con clave, `enlaces.html` con confirmaciones; se elimina `invitados.csv` |
-| — | 2026-09-24 | El script usa la pestaña del usuario **Lista de Invitados** (Nombre, Pases, Numero de Mesa) y le agrega Familia y Código; acompañantes por Pases; códigos unificados por familia |
+| `a1a1bc7` | 2026-09-24 | El script usa la pestaña del usuario **Lista de Invitados** (Nombre, Pases, Numero de Mesa) y le agrega Familia y Código; acompañantes por Pases; códigos unificados por familia |
+| `16ecebd` | 2026-09-24 | Documento de seguimiento: nombre de la pestaña Lista de Invitados |
+| — | 2026-09-24 | Punto 3 aprobado por el usuario |
 
 ---
 
