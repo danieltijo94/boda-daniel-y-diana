@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 24 de septiembre de 2026
+> **Última actualización:** 24 de septiembre de 2026 (plan de nuevas funciones)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -130,19 +130,83 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
+### 🛠️ Plan de trabajo: nuevas funciones (se hacen una a una y se prueban antes de seguir)
+
+**Orden propuesto:** 1 → 2 → 3 → 4 → 5 → 6 → 7. El plano de mesas va antes que el pase QR y el modo "día de
+la boda", porque ambos muestran la mesa de cada familia.
+
+| # | Función | Estado |
+|---|---|---|
+| 1 | Información de llegada y transporte | ⏳ Siguiente |
+| 2 | Clima en vivo | 🔜 Por hacer |
+| 3 | Plano de mesas | 🔜 Por hacer |
+| 4 | Pase QR de entrada por familia | 🔜 Por hacer |
+| 5 | Modo "día de la boda" | 🔜 Por hacer |
+| 6 | Página de agradecimiento | 🔜 Por hacer |
+| 7 | Panel de los novios | ⏸️ En pausa (decidir después) |
+
+**1. Información de llegada y transporte** (en vez de preguntas frecuentes)
+- Nueva sección elegante junto a "¿Dónde y cuándo?", con íconos dorados:
+  - 🚗 **Parqueadero limitado:** los cupos para carros son limitados, por lo que se recomienda no llevar carro.
+  - 🔑 **Valet parking:** disponible en el lugar, bajo la responsabilidad de cada invitado.
+  - 🍸 **Conductor elegido:** se puede contratar directamente en el sitio, con costo adicional.
+  - 🌙 **Hora de finalización:** la celebración termina a las **12:00 de la noche**.
+- Agregar "12:00 a.m. · Fin de la celebración" al itinerario. El evento del calendario ya termina a medianoche.
+
+**2. Clima en vivo**
+- Cada vez que se abre la invitación se consulta el clima en línea (Open-Meteo: gratis y sin registro).
+- **Hasta 16 días antes:** se muestra el **pronóstico real** del 19 de junio, de 4 p.m. a 12 a.m. (temperatura,
+  probabilidad de lluvia y un consejo, por ejemplo "lleva abrigo" o "lleva paraguas").
+- **Antes de eso:** muestra el clima típico de junio en Bogotá y el aviso "el pronóstico estará disponible desde el 3 de junio".
+- Se necesitan las **coordenadas de Hacienda Chic** (mientras tanto se usa Bogotá).
+
+**3. Plano de mesas**
+- Nueva columna `mesa` en `invitados.csv`.
+- Página `mesas.html` para los novios: plano visual de las mesas con quién se sienta en cada una
+  (para revisar e imprimir para la entrada).
+- La mesa se muestra en la invitación **solo el día de la boda** (ver punto 5) y en el pase QR.
+
+**4. Pase QR de entrada por familia**
+- Cuando una familia confirma "Sí", su invitación muestra un **pase con código QR** (familia, personas confirmadas y mesa).
+- Página `entrada.html` (protegida con clave) para quien reciba en la puerta: escanea el QR con la cámara del
+  celular, muestra familia, cuántos confirmaron y su mesa, y **registra la llegada** en la hoja.
+- Requiere actualizar el script de confirmaciones (nueva columna "Llegada").
+
+**5. Modo "día de la boda"**
+- El 19 de junio de 2027 la invitación cambia sola:
+  - **Itinerario en vivo:** "Ahora: Brindis 🥂 · Siguiente: Cena 6:30".
+  - **"Tu mesa es la 5"** y el pase QR a la vista.
+  - Botones grandes para **subir fotos** y **ver la playlist**.
+- Para probarlo antes se usará un link especial (por ejemplo `?modo=boda`).
+
+**6. Página de agradecimiento**
+- Desde el 20 de junio de 2027 la invitación se convierte en "¡Gracias por acompañarnos!", con el álbum de
+  fotos de los invitados, la playlist y el espacio para las fotos oficiales.
+- Para probarlo antes: `?modo=gracias`.
+
+**7. Panel de los novios** *(en pausa)*
+- Página con clave: confirmados, pendientes y quiénes no asisten; resumen de restricciones para el catering;
+  canciones sugeridas; recordatorio por WhatsApp a los pendientes. Incluye la idea del "recordatorio de pendientes".
+
 ### 💡 Ideas propuestas que aún no se programan
-1. **Recordatorio de pendientes**: que `enlaces.html` muestre ✅ confirmó / ❌ no asiste / ⏳ pendiente por
-   familia, con el resumen total, filtro "Solo pendientes" y botón de WhatsApp con mensaje de recordatorio.
-   Requiere que el script de confirmaciones entregue los estados, protegido con una clave.
-2. **Sección de hospedaje / transporte** para invitados de fuera de Bogotá.
-3. **Hashtag de la boda** para las redes sociales.
-4. **Mostrar la playlist en la invitación** ("Escucha la playlist de la boda") o compartirla con el DJ.
-5. **Versión nocturna** de la invitación (vino, borgoña y dorado) para quien use modo oscuro (se descartó
-   por ahora; se optó por el aviso "Abrir en Chrome").
-6. Publicar desde la rama `main` en lugar de la rama de trabajo.
+1. **Mensaje personal para cada familia** (columna en `invitados.csv`).
+2. **"Agendar" en iPhone y Outlook** (archivo de calendario .ics, además de Google Calendar).
+3. **Nuestra historia**: línea de tiempo con fotos (cómo se conocieron, primera cita, propuesta).
+4. **Libro de buenos deseos**: los invitados dejan un mensaje (se guarda en la hoja).
+5. **Trivia "¿Cuánto conoces a los novios?"** con ranking.
+6. **Versión en inglés** con botón para cambiar el idioma.
+7. **Invitación en PDF para imprimir** (abuelos o quien prefiera papel).
+8. **Transmisión en vivo** para quien no pueda asistir.
+9. **Sección de hospedaje** para invitados de fuera de Bogotá.
+10. **Hashtag de la boda** para las redes sociales.
+11. **Mostrar la playlist en la invitación** o compartirla con el DJ (se incluirá en los puntos 5 y 6 del plan).
+12. **Versión nocturna** de la invitación (descartada por ahora; se optó por el aviso "Abrir en Chrome").
+13. Publicar desde la rama `main` en lugar de la rama de trabajo.
 
 ### 🗂️ Decisiones tomadas (para no repetir)
 - **Este documento se actualiza con cada cambio** (regla guardada en `CLAUDE.md`).
+- Las **preguntas frecuentes** se reemplazan por una sección de **llegada y transporte**.
+- Las nuevas funciones se hacen **una a una**, probando cada una antes de seguir.
 - **Confirmación dentro de la invitación** (no Google Form), guardada en Google Sheets + correo vía Apps Script.
 - **Invitados por código** en `invitados.csv` (no `?familia=…&pases=…`, que cualquiera podía editar).
 - **Modo oscuro:** Chrome se controla con `color-scheme`; **Samsung Internet no se puede controlar** → aviso "Abrir en Chrome". El truco de invertir colores se probó y se retiró.
@@ -175,7 +239,8 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 | `af8af1c` | 2026-09-23 02:04 | Revisar la playlist real antes de agregar una canción |
 | `6425697` | 2026-09-24 16:43 | Explicar en el correo por qué una canción no llegó a la playlist |
 | `2f16850` | 2026-09-24 | Documento de seguimiento del proyecto (este archivo) |
-| — | 2026-09-24 | Regla en `CLAUDE.md`: actualizar este documento con cada cambio |
+| `7ecc05d` | 2026-09-24 | Regla en `CLAUDE.md`: actualizar este documento con cada cambio |
+| — | 2026-09-24 | Plan de trabajo de nuevas funciones (llegada, clima, mesas, pase QR, modo boda, agradecimiento) |
 
 ---
 
