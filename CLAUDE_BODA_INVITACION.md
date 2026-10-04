@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 25 de septiembre de 2026 (★ confirmación por persona)
+> **Última actualización:** 4 de octubre de 2026 (★ confirmación por persona aprobada)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -181,7 +181,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 1 | Información de llegada y transporte | ✅ Hecho (aprobado) |
 | 2 | Clima en vivo | ✅ Hecho (aprobado) |
 | 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (aprobado) |
-| ★ | **Confirmación por persona** (prioridad) | ✅ Hecho (esperando visto bueno) |
+| ★ | **Confirmación por persona** (prioridad) | ✅ Hecho (aprobado) |
 | 4 | Pase QR de entrada por familia | ⏳ Siguiente |
 | 5 | Modo "día de la boda" | 🔜 Por hacer |
 | 6 | Página de agradecimiento | 🔜 Por hacer |
@@ -314,7 +314,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `16ecebd` | 2026-09-24 | Documento de seguimiento: nombre de la pestaña Lista de Invitados |
 | `f90ca73` | 2026-09-24 | Punto 3 aprobado; nueva prioridad ★ (confirmación por persona) en el plan |
 | `c64758a` | 2026-09-25 | ★ Confirmación por persona: tarjetas Asistirá/No podrá, restricción por persona, nombre de acompañantes, resumen y gracias con nombres; script con columna "No asisten", pestaña "Asistencia por persona" y correo detallado; 🍽 en el plano |
-| — | 2026-09-25 | Arreglo: la respuesta se lee de la hoja por código (antes solo se recordaba en el mismo celular); toda la familia ve y edita el mismo registro |
+| `8d0772e` | 2026-09-25 | Arreglo: la respuesta se lee de la hoja por código (antes solo se recordaba en el mismo celular); toda la familia ve y edita el mismo registro |
+| — | 2026-10-04 | ★ Confirmación por persona aprobada por el usuario (probada con la hoja real) |
 
 ---
 
