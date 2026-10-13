@@ -667,3 +667,49 @@ html.samsung .chrome-gate {
 .w-tip { font-size: 18px; line-height: 1.45; max-width: 380px; margin: 0 auto; }
 .w-note { margin-top: 12px; font-size: 13px; font-style: italic; color: var(--ink-soft); line-height: 1.5; }
 .w-note:empty { display: none; }
+
+/* =================== DÍA DE LA BODA =================== */
+.today { padding-top: 70px; }
+.today-kicker { font-family: var(--caps); font-size: 12px; letter-spacing: .35em; color: var(--gold); margin-bottom: 6px; }
+.now-card {
+  position: relative; max-width: 440px; margin: 0 auto; padding: 26px 24px 22px; border-radius: 18px; overflow: hidden;
+  background: linear-gradient(160deg, #fff, var(--ivory)); border: 1px solid rgba(184, 145, 79, .6);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+}
+.now-label { font-family: var(--caps); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--wine); }
+.now-label::before {
+  content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #c2414b; margin-right: 8px;
+  vertical-align: 1px; animation: pulseDot 1.6s ease-in-out infinite;
+}
+@keyframes pulseDot { 50% { opacity: .25; transform: scale(.7); } }
+.now-main { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 8px; }
+.now-icon { width: 58px; height: 58px; flex: none; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--gold); background: #fff; box-shadow: 0 0 0 4px var(--ivory); }
+.now-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--wine); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.now-what { font-family: var(--script); font-size: 44px; line-height: 1.1; color: var(--wine); text-align: left; }
+.now-next { font-size: 18px; color: var(--ink-soft); font-style: italic; }
+.now-bar { height: 4px; border-radius: 4px; background: rgba(184, 145, 79, .2); margin-top: 16px; overflow: hidden; }
+.now-bar span { display: block; height: 100%; width: 0; border-radius: 4px; background: linear-gradient(90deg, var(--gold-light), var(--gold)); transition: width 1s var(--ease); }
+
+.table-card {
+  position: relative; max-width: 300px; margin: 52px auto 0; padding: 46px 22px 24px; border-radius: 160px 160px 16px 16px;
+  background: #fff; border: 1px solid var(--gold); box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45);
+  animation: popIn .7s var(--ease);
+}
+.table-orchid { position: absolute; top: -34px; left: 50%; width: 70px; height: 70px; margin-left: -35px; animation: bob 5s ease-in-out infinite; }
+.table-label { font-family: var(--caps); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.table-num { display: block; font-size: 84px; line-height: 1; font-weight: 500; color: var(--wine); font-variant-numeric: lining-nums; margin-top: 6px; }
+.table-name { display: block; font-family: var(--script); font-size: 48px; line-height: 1.2; color: var(--wine); margin-top: 4px; }
+.table-row { display: flex; align-items: center; gap: 14px; text-align: left; padding: 8px 0; }
+.table-row + .table-row { border-top: 1px solid rgba(184, 145, 79, .25); }
+.table-row .table-num { font-size: 44px; margin: 0; min-width: 52px; text-align: center; }
+.table-row .table-name { font-size: 30px; margin: 0; }
+.table-who { font-size: 17px; line-height: 1.35; }
+
+.today-btns { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 34px; }
+.today-btns .btn { min-width: 250px; justify-content: center; }
+
+/* Itinerario en vivo */
+.modo-boda .timeline li.past { opacity: .45; }
+.modo-boda .timeline li.now .t-dot { border-color: var(--wine); background: var(--rose-light); box-shadow: 0 0 0 4px var(--ivory), 0 0 0 7px rgba(122, 46, 69, .25); animation: pulse 2s infinite; }
+.modo-boda .timeline li.now .t-text { color: var(--wine); font-weight: 600; }
+.modo-boda .timeline li.now .t-time::after { content: " · ahora"; color: var(--wine); }

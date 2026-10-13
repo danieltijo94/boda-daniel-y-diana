@@ -22,7 +22,7 @@
       if (!seguirAqui) document.documentElement.classList.add("samsung");
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=202609250300">
+  <link rel="stylesheet" href="styles.css?v=202610130100">
 </head>
 <body class="locked">
 
@@ -207,6 +207,44 @@
       </div>
     </section>
 
+    <!-- ========== DÍA DE LA BODA (solo el 19 de junio o con ?modo=boda) ========== -->
+    <section class="section today" id="hoy" hidden>
+      <svg class="divider" aria-hidden="true"><use href="#garland"/></svg>
+      <p class="today-kicker" data-cfg="shortDate">19 · 06 · 2027</p>
+      <h2 class="section-title">¡Hoy nos casamos!</h2>
+
+      <div class="now-card" id="nowCard">
+        <p class="now-label" id="nowLabel">Ahora</p>
+        <div class="now-main">
+          <span class="now-icon" id="nowIcon" aria-hidden="true"></span>
+          <span class="now-what" id="nowWhat">Coffee time</span>
+        </div>
+        <p class="now-next" id="nowNext"></p>
+        <div class="now-bar" aria-hidden="true"><span id="nowBar"></span></div>
+      </div>
+
+      <div class="table-card" id="tableCard" hidden>
+        <svg class="table-orchid" aria-hidden="true"><use href="#orchidBlush"/></svg>
+        <p class="table-label" id="tableLabel">Tu mesa</p>
+        <div class="table-info" id="tableInfo"></div>
+      </div>
+
+      <div class="today-btns">
+        <a class="btn btn-big" href="fotos.html" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 7.2 5H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+          Subir mis fotos
+        </a>
+        <a class="btn btn-ghost" id="playlistBtn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13a3 3 0 1 1-2-2.8V6.4l-8 1.4V18a3 3 0 1 1-2-2.8z"/></svg>
+          Nuestra playlist
+        </a>
+        <a class="btn btn-ghost" href="#lugar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          Cómo llegar
+        </a>
+      </div>
+    </section>
+
     <!-- ========== INVITADO PERSONALIZADO ========== -->
     <section class="section guest" id="invitado">
       <svg class="divider reveal" aria-hidden="true"><use href="#garland"/></svg>
@@ -304,32 +342,32 @@
     <section class="section timeline-section" id="itinerario">
       <h2 class="section-title reveal">Itinerario</h2>
       <ol class="timeline">
-        <li class="reveal">
+        <li class="reveal" data-hora="16:00">
           <span class="t-time">4:00 p.m.</span>
           <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 12h16v7a7 7 0 0 1-7 7h-2a7 7 0 0 1-7-7zM22 14h2a3 3 0 0 1 0 6h-2M10 4c-1 2 1 3 0 5M15 4c-1 2 1 3 0 5M4 29h22"/></svg></span>
           <span class="t-text">Coffee time</span>
         </li>
-        <li class="reveal">
+        <li class="reveal" data-hora="17:00">
           <span class="t-time">5:00 p.m.</span>
           <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="12" cy="19" r="7"/><circle cx="20" cy="19" r="7"/><path d="M13 8l3-4 3 4-3 3z"/></svg></span>
           <span class="t-text">Ceremonia religiosa</span>
         </li>
-        <li class="reveal">
+        <li class="reveal" data-hora="18:00">
           <span class="t-time">6:00 p.m.</span>
           <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4h6l-.5 8a2.5 2.5 0 0 1-5 0zM11 14.5V26M8 26h6M18 4h6l.5 8a2.5 2.5 0 0 1-5 0zM21 14.5V26M18 26h6"/></svg></span>
           <span class="t-text">Brindis</span>
         </li>
-        <li class="reveal">
+        <li class="reveal" data-hora="18:30">
           <span class="t-time">6:30 p.m.</span>
           <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="17" r="8"/><circle cx="16" cy="17" r="5"/><path d="M4 5v7a2 2 0 0 0 2 2v13M4 5v5M6 5v5M8 5v7a2 2 0 0 1-2 2M27 5c-3 1-3 7-3 9h3v13"/></svg></span>
           <span class="t-text">Cena</span>
         </li>
-        <li class="reveal">
+        <li class="reveal" data-hora="19:30">
           <span class="t-time">7:30 p.m.</span>
           <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 24V7l14-3v17"/><circle cx="9" cy="24" r="3"/><circle cx="23" cy="21" r="3"/><path d="M12 12l14-3"/></svg></span>
           <span class="t-text">¡A celebrar!</span>
         </li>
-        <li class="reveal">
+        <li class="reveal" data-hora="24:00">
           <span class="t-time">12:00 a.m.</span>
           <span class="t-dot"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19 5A11 11 0 1 0 27 19 8.5 8.5 0 0 1 19 5z"/><path d="M23.5 7.5l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z"/></svg></span>
           <span class="t-text">Fin de la celebración</span>
@@ -473,6 +511,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=202609250300"></script>
+  <script src="script.js?v=202610130100"></script>
 </body>
 </html>

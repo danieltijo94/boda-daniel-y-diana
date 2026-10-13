@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 4 de octubre de 2026 (★ confirmación por persona aprobada)
+> **Última actualización:** 13 de octubre de 2026 (punto 5: modo "día de la boda")
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -39,6 +39,8 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 3. **Portada**: marco dorado doble, monograma D&D, "Con la bendición de Dios y de nuestras familias", nombres en caligrafía, fecha y lugar, ramas de orquídeas animadas.
 4. **Tarjeta del invitado**: cita de Cantares 8:7, nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
+5b. **¡Hoy nos casamos!** (solo el 19 de junio de 2027 o con `?modo=boda`): itinerario en vivo, "Tu mesa",
+   botones de fotos, playlist y cómo llegar; se ocultan la cuenta regresiva y la confirmación.
 6. **¿Dónde y cuándo?**: Hacienda Chic (Cra. 7 #247-15, 4.8270016, -74.0314436), botones **Google Maps** y **Waze** (Waze va a las coordenadas exactas).
 7. **El clima** (en vivo, Open-Meteo): se consulta cada vez que se abre la invitación. Muestra 4 p.m., 6 p.m.,
    9 p.m. y 12 a.m. con ícono, temperatura y lluvia, más un consejo (abrigo / paraguas).
@@ -169,6 +171,7 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
+- [ ] Revisar que la **playlist** sea pública u "oculta" (no privada), para que los invitados puedan abrirla el día de la boda.
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
 ### 🛠️ Plan de trabajo: nuevas funciones (se hacen una a una y se prueban antes de seguir)
@@ -182,9 +185,9 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 2 | Clima en vivo | ✅ Hecho (aprobado) |
 | 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (aprobado) |
 | ★ | **Confirmación por persona** (prioridad) | ✅ Hecho (aprobado) |
-| 4 | Pase QR de entrada por familia | ⏳ Siguiente |
-| 5 | Modo "día de la boda" | 🔜 Por hacer |
-| 6 | Página de agradecimiento | 🔜 Por hacer |
+| 4 | Pase QR de entrada por familia | ⏭️ Omitido (decisión del usuario) |
+| 5 | Modo "día de la boda" | ✅ Hecho (esperando visto bueno) |
+| 6 | Página de agradecimiento | ⏳ Siguiente |
 | 7 | Panel de los novios | 🔜 Por hacer (al final) |
 
 **1. Información de llegada y transporte** (en vez de preguntas frecuentes)
@@ -227,12 +230,18 @@ la boda", porque ambos muestran la mesa de cada familia.
   celular, muestra familia, cuántos confirmaron y su mesa, y **registra la llegada** en la hoja.
 - Requiere actualizar el script de confirmaciones (nueva columna "Llegada").
 
-**5. Modo "día de la boda"**
-- El 19 de junio de 2027 la invitación cambia sola:
-  - **Itinerario en vivo:** "Ahora: Brindis 🥂 · Siguiente: Cena 6:30".
-  - **"Tu mesa es la 5"** y el pase QR a la vista.
-  - Botones grandes para **subir fotos** y **ver la playlist**.
-- Para probarlo antes se usará un link especial (por ejemplo `?modo=boda`).
+**5. Modo "día de la boda"** — ✅ programado
+- El 19 de junio de 2027 (hora de Colombia) la invitación cambia sola: aparece la sección **"¡Hoy nos casamos!"**
+  arriba (después de la portada) y se ocultan la cuenta regresiva y el formulario de confirmación.
+  - **Itinerario en vivo:** tarjeta "● Ahora: Brindis · Siguiente: Cena · 6:30 p.m." con barra de avance; antes de las
+    4 p.m. dice "Empezamos a las 4:00 p.m. · Faltan …"; en la sección Itinerario se resalta el momento actual
+    ("· ahora") y se atenúan los que pasaron. Se actualiza cada 30 s. Las horas salen de `data-hora` en cada `<li>`.
+  - **"Tu mesa" / "Su mesa"**: número grande (o "Novios"); si la familia quedó en mesas distintas, "Sus mesas" con
+    quién va en cada una. Solo cuenta a quienes confirmaron (si ya respondieron). El script envía `mesas`
+    (persona → mesa) en `?accion=invitado`.
+  - Botones: **Subir mis fotos** (`fotos.html`), **Nuestra playlist** (`CONFIG.playlistUrl`) y **Cómo llegar**.
+- Pruebas: `?modo=boda` y, para simular la hora, `&hora=18:10` (ej. `?i=CODIGO&modo=boda&hora=18:10`).
+- El pase QR quedó fuera porque el punto 4 se omitió.
 
 **6. Página de agradecimiento**
 - Desde el 20 de junio de 2027 la invitación se convierte en "¡Gracias por acompañarnos!", con el álbum de
@@ -268,6 +277,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 - **Plano de mesas:** editor en `mesas.html` que guarda en la hoja; asignación **por persona**; mesas en **cuadrícula**
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
 - **El código es la llave**: una sola respuesta por invitación, guardada en la hoja y visible/editable desde cualquier celular.
+- **Pase QR de entrada (punto 4): omitido** por decisión del usuario.
 - **Confirmación por persona** (no por familia): cada invitado de la tarjeta marca si va y su propia restricción.
 - Se usa la pestaña que creó el usuario (**Lista de Invitados**) en vez de una nueva; el script solo le agrega
   las columnas Familia y Código. Las invitaciones se agrupan por la columna **Familia**.
@@ -315,7 +325,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `f90ca73` | 2026-09-24 | Punto 3 aprobado; nueva prioridad ★ (confirmación por persona) en el plan |
 | `c64758a` | 2026-09-25 | ★ Confirmación por persona: tarjetas Asistirá/No podrá, restricción por persona, nombre de acompañantes, resumen y gracias con nombres; script con columna "No asisten", pestaña "Asistencia por persona" y correo detallado; 🍽 en el plano |
 | `8d0772e` | 2026-09-25 | Arreglo: la respuesta se lee de la hoja por código (antes solo se recordaba en el mismo celular); toda la familia ve y edita el mismo registro |
-| — | 2026-10-04 | ★ Confirmación por persona aprobada por el usuario (probada con la hoja real) |
+| `e476660` | 2026-10-04 | ★ Confirmación por persona aprobada por el usuario (probada con la hoja real) |
+| — | 2026-10-13 | Punto 4 omitido. Punto 5: modo "día de la boda" (sección ¡Hoy nos casamos!, itinerario en vivo, tu mesa, botones de fotos/playlist/cómo llegar; el script envía la mesa de cada persona) |
 
 ---
 
@@ -672,8 +683,12 @@ function buscarInvitado(codigo) {
   const filas = hoja ? leerInvitados(hoja).filter((x) => x.codigo === cod) : [];
   if (!filas.length) return { ok: false, error: "no existe" };
   const invitados = [];
-  filas.forEach((x) => invitados.push(...conAcompanantes(x)));
-  return { ok: true, codigo: cod, familia: filas[0].familia, invitados };
+  const mesas = {}; // mesa de cada persona (los acompañantes van en la mesa de quien los trae)
+  filas.forEach((x) => conAcompanantes(x).forEach((nombre) => {
+    invitados.push(nombre);
+    if (x.mesa) mesas[nombre] = x.mesa;
+  }));
+  return { ok: true, codigo: cod, familia: filas[0].familia, invitados, mesas };
 }
 
 // Última respuesta guardada para ese código (la misma para toda la familia, se abra en el celular que sea):

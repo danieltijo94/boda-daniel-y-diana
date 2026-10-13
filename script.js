@@ -13,6 +13,8 @@ const CONFIG = {
   lugarCalendario: "Hacienda Chic, Bogotá",
   // Duración aproximada del evento (horas) para el calendario
   duracionHoras: 8,
+  // Playlist de YouTube de la pareja (se muestra el día de la boda)
+  playlistUrl: "https://www.youtube.com/playlist?list=PLSZ7h_cwdW9k",
   // Punto para el clima: Hacienda Chic (Cra. 7 #247-15, norte de Bogotá, límite con Chía)
   clima: { lat: 4.8270, lon: -74.0314, lugar: "Hacienda Chic" },
 };
@@ -75,7 +77,7 @@ async function fillGuest() {
     const r = await res.json();
     if (r.ok) {
       // respuesta: lo último que confirmó la familia (desde la hoja), o null si aún no responde
-      guest = { codigo: r.codigo, familia: r.familia, nombres: r.invitados, respuesta: r.respuesta === undefined ? undefined : r.respuesta };
+      guest = { codigo: r.codigo, familia: r.familia, nombres: r.invitados, mesas: r.mesas || {}, respuesta: r.respuesta === undefined ? undefined : r.respuesta };
       try { localStorage.setItem(key, JSON.stringify(guest)); } catch { /* ignorar */ }
       showGuest();
     } else if (r.error === "no existe") {
@@ -667,10 +669,104 @@ async function setupWeather() {
   }
 }
 
+/* ---------- Modo "día de la boda" (19 de junio; pruebas: ?modo=boda&hora=18:10) ---------- */
+const enModoBoda = () => {
+  const hoyBogota = new Date(Date.now() - 5 * 3600e3).toISOString().slice(0, 10);
+  return params.get("modo") === "boda" || hoyBogota === CONFIG.fecha.slice(0, 10);
+};
+
+// Minutos desde la medianoche en Bogotá (o la hora simulada con ?hora=HH:MM)
+function minutosAhora() {
+  const sim = (params.get("hora") || "").match(/^(\d{1,2}):(\d{2})$/);
+  if (sim) return Number(sim[1]) * 60 + Number(sim[2]);
+  const d = new Date(Date.now() - 5 * 3600e3);
+  return d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
+}
+
+function setupWeddingDay() {
+  if (!enModoBoda()) return;
+  document.documentElement.classList.add("modo-boda");
+  $("#hoy").hidden = false;
+  $("#cuenta").hidden = true;
+  $("#confirmar").hidden = true;
+  $("#playlistBtn").href = CONFIG.playlistUrl;
+
+  // El itinerario sale de la sección "Itinerario" (data-hora en cada momento)
+  const items = [...document.querySelectorAll(".timeline li[data-hora]")].map((li) => {
+    const [h, m] = li.dataset.hora.split(":").map(Number);
+    return { li, min: h * 60 + m, hora: li.querySelector(".t-time").textContent, que: li.querySelector(".t-text").textContent,
+      icono: li.querySelector(".t-dot").innerHTML };
+  });
+  const fin = items[items.length - 1];
+  const actividades = items.slice(0, -1);
+  const falta = (m) => {
+    const h = Math.floor(m / 60), r = Math.round(m % 60);
+    return h ? `${h} h ${r} min` : `${r} min`;
+  };
+
+  const pintar = () => {
+    const ahora = minutosAhora();
+    const i = actividades.findLastIndex((a) => a.min <= ahora);
+    items.forEach((a, k) => {
+      a.li.classList.toggle("past", k < i);
+      a.li.classList.toggle("now", k === i);
+    });
+    if (i < 0) {
+      const primero = actividades[0];
+      $("#nowLabel").textContent = `Empezamos a las ${primero.hora}`;
+      $("#nowIcon").innerHTML = primero.icono;
+      $("#nowWhat").textContent = primero.que;
+      $("#nowNext").textContent = `Faltan ${falta(primero.min - ahora)} · ¡Te esperamos!`;
+      $("#nowBar").style.width = "0%";
+      return;
+    }
+    const a = actividades[i];
+    const sig = items[i + 1];
+    $("#nowLabel").textContent = "Ahora";
+    $("#nowIcon").innerHTML = a.icono;
+    $("#nowWhat").textContent = a.que;
+    $("#nowNext").textContent = sig === fin
+      ? `La celebración termina a las ${fin.hora}`
+      : `Siguiente: ${sig.que} · ${sig.hora}`;
+    $("#nowBar").style.width = `${Math.min(100, ((ahora - a.min) / (sig.min - a.min)) * 100).toFixed(1)}%`;
+  };
+  pintar();
+  setInterval(pintar, 30000);
+}
+
+// "Tu mesa": la mesa de cada persona de la invitación (de quienes confirmaron, si ya respondieron)
+function renderMesa() {
+  if (!enModoBoda() || !guest || !guest.mesas) return;
+  const resp = guest.respuesta && guest.respuesta.personas;
+  const van = resp ? resp.filter((p) => p.asiste) : guest.nombres.map((nombre) => ({ nombre }));
+  const grupos = new Map();
+  van.forEach((p) => {
+    const mesa = guest.mesas[p.nombre];
+    if (!mesa) return;
+    if (!grupos.has(mesa)) grupos.set(mesa, []);
+    grupos.get(mesa).push(p.dado || p.nombre);
+  });
+  if (!grupos.size) return;
+  const etiqueta = (m) => (/^\d+$/.test(m) ? `<span class="table-num">${m}</span>` : `<span class="table-name">${m.replace(/[&<>]/g, "")}</span>`);
+  const card = $("#tableCard");
+  if (grupos.size === 1) {
+    const [[mesa]] = grupos;
+    $("#tableLabel").textContent = van.length > 1 ? "Su mesa" : "Tu mesa";
+    $("#tableInfo").innerHTML = etiqueta(mesa);
+  } else {
+    $("#tableLabel").textContent = "Sus mesas";
+    $("#tableInfo").innerHTML = [...grupos].map(([mesa]) =>
+      `<div class="table-row">${etiqueta(mesa)}<span class="table-who"></span></div>`).join("");
+    [...grupos].forEach(([, quienes], k) => { $("#tableInfo").querySelectorAll(".table-who")[k].textContent = juntar(quienes); });
+  }
+  card.hidden = false;
+}
+
 /* ---------- Inicio ---------- */
 setupChromeGate();
 fillDates();
-fillGuest().then(setupRSVP);
+fillGuest().then(() => { setupRSVP(); renderMesa(); });
+setupWeddingDay();
 setupIntro();
 setupReveal();
 setupCountdown();

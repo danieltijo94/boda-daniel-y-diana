@@ -338,8 +338,12 @@ function buscarInvitado(codigo) {
   const filas = hoja ? leerInvitados(hoja).filter((x) => x.codigo === cod) : [];
   if (!filas.length) return { ok: false, error: "no existe" };
   const invitados = [];
-  filas.forEach((x) => invitados.push(...conAcompanantes(x)));
-  return { ok: true, codigo: cod, familia: filas[0].familia, invitados };
+  const mesas = {}; // mesa de cada persona (los acompañantes van en la mesa de quien los trae)
+  filas.forEach((x) => conAcompanantes(x).forEach((nombre) => {
+    invitados.push(nombre);
+    if (x.mesa) mesas[nombre] = x.mesa;
+  }));
+  return { ok: true, codigo: cod, familia: filas[0].familia, invitados, mesas };
 }
 
 // Última respuesta guardada para ese código (la misma para toda la familia, se abra en el celular que sea):
