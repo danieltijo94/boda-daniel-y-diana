@@ -82,7 +82,10 @@ async function fillGuest() {
     if (r.ok) {
       // respuesta: lo último que confirmó la familia (desde la hoja), o null si aún no responde
       guest = { codigo: r.codigo, familia: r.familia, nombres: r.invitados, mesas: r.mesas || {}, respuesta: r.respuesta === undefined ? undefined : r.respuesta };
-      try { localStorage.setItem(key, JSON.stringify(guest)); } catch { /* ignorar */ }
+      try {
+        localStorage.setItem(key, JSON.stringify(guest));
+        localStorage.setItem("ultimoCodigo", guest.codigo); // para que fotos.html sepa quién sube
+      } catch { /* ignorar */ }
       showGuest();
     } else if (r.error === "no existe") {
       guest = null;

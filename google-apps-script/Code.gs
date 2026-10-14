@@ -23,6 +23,11 @@ const CLAVE_NOVIOS = "";
 // Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
 const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
+// Fotos de los invitados (fotos.html): se guardan en esta carpeta de tu Drive (se crea sola)
+const CARPETA_FOTOS = "Fotos boda – invitados";
+const VER_FOTOS_INVITADOS = true; // true = los invitados pueden VER la carpeta (no borrar ni editar)
+const MAX_MB_ARCHIVO = 45;        // tamaño máximo por foto o video
+
 // Después de este momento ya no se aceptan confirmaciones ni cambios (fecha límite: 30 de abril de 2027)
 const CIERRE_CONFIRMACIONES = new Date("2027-05-01T00:00:00-05:00");
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción", "No asisten"];
@@ -42,6 +47,7 @@ function doGet(e) {
     if (inv.ok) inv.respuesta = ultimaRespuesta(inv.codigo, inv.invitados);
     return responder(inv);
   }
+  if (p.accion === "fotos") return responder({ ok: true, url: VER_FOTOS_INVITADOS ? carpetaFotos().getUrl() : "" });
   if (p.accion === "lista") {
     if (!claveOk(p.clave)) return responder({ ok: false, error: "clave" });
     return responder(listaCompleta());
@@ -55,6 +61,7 @@ function doPost(e) {
     let d;
     try { d = JSON.parse(e.postData.contents); } catch (err) { return responder({ ok: false, error: "datos" }); }
     if (d.accion === "guardarMesas") return responder(guardarMesas(d));
+    if (d.accion === "subirFoto") return responder(subirFoto(d));
     return responder({ ok: false, error: "accion" });
   }
 
@@ -458,6 +465,47 @@ function guardarMesas(d) {
   }
 }
 
+/* ---------- Fotos de los invitados ---------- */
+function carpetaFotos() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty("CARPETA_FOTOS_ID");
+  if (id) {
+    try {
+      const f = DriveApp.getFolderById(id);
+      if (!f.isTrashed()) return f;
+    } catch (err) { /* la carpeta ya no existe: se crea otra */ }
+  }
+  const carpeta = DriveApp.createFolder(CARPETA_FOTOS);
+  props.setProperty("CARPETA_FOTOS_ID", carpeta.getId());
+  if (VER_FOTOS_INVITADOS) {
+    try { carpeta.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (err) { /* sin permiso para compartir */ }
+  }
+  return carpeta;
+}
+
+// Guarda una foto o video que envía fotos.html (en base64). El nombre lleva la familia y la hora.
+function subirFoto(d) {
+  const tipo = String(d.tipo || "");
+  if (!/^(image|video)\//.test(tipo)) return { ok: false, error: "tipo" };
+  let bytes;
+  try { bytes = Utilities.base64Decode(String(d.datos || "")); } catch (err) { return { ok: false, error: "datos" }; }
+  if (!bytes.length) return { ok: false, error: "vacio" };
+  if (bytes.length > MAX_MB_ARCHIVO * 1024 * 1024) return { ok: false, error: "grande" };
+  const inv = d.codigo ? buscarInvitado(d.codigo) : null;
+  const quien = String(inv && inv.ok ? inv.familia : d.quien || "Invitado").replace(/[\\/:*?"<>|]/g, "").trim().slice(0, 60) || "Invitado";
+  const original = String(d.nombre || "").match(/\.[a-z0-9]{2,5}$/i);
+  const ext = tipo === "image/jpeg" ? ".jpg" : tipo === "image/png" ? ".png" : original ? original[0].toLowerCase() : "";
+  const hora = Utilities.formatDate(new Date(), "America/Bogota", "yyyy-MM-dd HH.mm.ss");
+  const unico = Math.random().toString(36).slice(2, 6); // para que dos fotos del mismo segundo no se llamen igual
+  carpetaFotos().createFile(Utilities.newBlob(bytes, tipo, `${quien} – ${hora} – ${unico}${ext}`));
+  return { ok: true };
+}
+
+// Ejecuta esta función una vez para autorizar el acceso a Drive y crear la carpeta de fotos
+function probarFotos() {
+  console.log("Carpeta de fotos lista: " + carpetaFotos().getUrl());
+}
+
 // Menú en la hoja de cálculo
 function onOpen() {
   SpreadsheetApp.getUi().createMenu("💍 Boda")
@@ -488,6 +536,7 @@ function prepararHojas() {
   if (hm.getLastRow() < 2) hm.getRange(2, 1, 2, 2).setValues([["1", 10], ["2", 10]]);
   columnas(hi, true);
   obtenerHoja();
+  carpetaFotos();
   console.log(`Listo: lista de invitados ("${hi.getName()}") con columnas Familia y Código, Mesas y Confirmaciones.` +
     " Llena la columna Familia para agrupar a quienes van en la misma invitación; los códigos se crean al abrir enlaces.html.");
 }

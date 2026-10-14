@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 14 de octubre de 2026 (punto 6: página de agradecimiento)
+> **Última actualización:** 14 de octubre de 2026 (fotos de los invitados directo a Google Drive)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -94,7 +94,7 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 | `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp: pases, mesa y si ya confirmó (con clave) |
 | `mesas.html` | **Editor del plano de mesas** (con clave): crear/renombrar/eliminar mesas, sillas con −/+, arrastrar personas o familias, ✓/✗ de confirmación, Guardar en Google Sheets e Imprimir |
 | `INVITADOS-Y-MESAS.md` | Guía: pestañas Lista de Invitados y Mesas, primera configuración y uso del plano |
-| `fotos.html` | Página del QR: abre el álbum compartido (`ALBUM_URL`, pendiente) |
+| `fotos.html` | Página del QR: **sube fotos y videos a la carpeta "Fotos boda – invitados" de Drive** sin cuenta de Google (reduce las fotos a 2560 px; videos hasta 45 MB; nombre del archivo con la familia y la hora) y botón "Ver las fotos de todos" |
 | `qr-mesa.html` | Tarjeta A6 para imprimir con el QR de fotos |
 | `assets/qr-fotos.svg` | Código QR (apunta a `fotos.html`, nunca cambia) |
 | `assets/cancion.mp3` | Música de fondo (**pendiente**) |
@@ -133,6 +133,9 @@ Hoja "Confirmaciones Boda Daniel y Diana" — pestañas:
   nombres de esa invitación. `listaCompleta` usa **Asistencia por persona** para ✓/✗ y restricciones (🍽 en el plano).
 - La mesa se asigna **por persona** (una fila). En la invitación todavía no se muestra: aparecerá el día de la
   boda (punto 5) y en el pase QR (punto 4).
+- **Fotos:** `?accion=fotos` devuelve el link de la carpeta (si `VER_FOTOS_INVITADOS`); POST JSON `{accion:"subirFoto", codigo, quien,
+  nombre, tipo, datos(base64)}` guarda el archivo en la carpeta (ID en las propiedades del script, `CARPETA_FOTOS_ID`).
+  La invitación guarda `ultimoCodigo` en el celular para que `fotos.html` sepa de qué familia es.
 - `invitados.csv` se eliminó del repositorio: la lista ya no es pública. **Nunca subir la lista real al repositorio.**
 
 
@@ -175,7 +178,7 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   y armar las mesas en `mesas.html` (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
 - [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
-- [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
+- [ ] Activar las **fotos en Drive**: pegar el nuevo `Code.gs`, ejecutar `probarFotos` (acepta el permiso de Drive) y publicar una nueva versión (ver `FOTOS.md`).
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
 - [ ] (Después de la boda) Pasar el link del **álbum de las fotos oficiales** del fotógrafo (`CONFIG.fotosOficialesUrl`).
 - [x] Números de WhatsApp de Diana y Daniel configurados en `CONFIG.whatsapp` (botones del cierre de confirmaciones).
@@ -296,7 +299,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 - Se usa la pestaña que creó el usuario (**Lista de Invitados**) en vez de una nueva; el script solo le agrega
   las columnas Familia y Código. Las invitaciones se agrupan por la columna **Familia**.
 - **Modo oscuro:** Chrome se controla con `color-scheme`; **Samsung Internet no se puede controlar** → aviso "Abrir en Chrome". El truco de invertir colores se probó y se retiró.
-- **Fotos de invitados:** álbum compartido de Google Fotos (no ocupa el espacio de la cuenta de los novios, no requiere script).
+- **Fotos de invitados:** se suben desde `fotos.html` a una **carpeta del Drive de Daniel** mediante el script (sin cuenta de
+  Google para el invitado; la carpeta se comparte solo para ver). Reemplaza la idea anterior del álbum de Google Fotos.
 - **Playlist:** vive en la cuenta de la pareja; por eso existe un segundo script (YouTube solo deja editar a la dueña).
 - Se quitaron: sección de padres, datos bancarios y paleta de colores sugerida.
 
@@ -344,7 +348,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `e3039f4` | 2026-10-14 | Cierre automático de confirmaciones después del 30 de abril de 2027, con botones de WhatsApp "Escribe a Diana" / "Escribe a Daniel"; el script rechaza confirmaciones tardías |
 | `049076a` | 2026-10-14 | Números de WhatsApp de Diana y Daniel en los botones del cierre de confirmaciones |
 | `3ea1dee` | 2026-10-14 | Se quita el botón "Nuestra playlist" del modo día de la boda |
-| — | 2026-10-14 | Punto 5 aprobado. Punto 6: página de agradecimiento (desde el 20 de junio; mensaje por familia, fotos de invitados y oficiales) |
+| `060366e` | 2026-10-14 | Punto 5 aprobado. Punto 6: página de agradecimiento (desde el 20 de junio; mensaje por familia, fotos de invitados y oficiales) |
+| — | 2026-10-14 | Fotos de los invitados directo a una carpeta de Google Drive desde `fotos.html` (sin cuenta de Google); el script crea la carpeta y la comparte solo para ver |
 
 ---
 
@@ -386,6 +391,11 @@ const CLAVE_NOVIOS = "";
 // Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
 const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
+// Fotos de los invitados (fotos.html): se guardan en esta carpeta de tu Drive (se crea sola)
+const CARPETA_FOTOS = "Fotos boda – invitados";
+const VER_FOTOS_INVITADOS = true; // true = los invitados pueden VER la carpeta (no borrar ni editar)
+const MAX_MB_ARCHIVO = 45;        // tamaño máximo por foto o video
+
 // Después de este momento ya no se aceptan confirmaciones ni cambios (fecha límite: 30 de abril de 2027)
 const CIERRE_CONFIRMACIONES = new Date("2027-05-01T00:00:00-05:00");
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción", "No asisten"];
@@ -405,6 +415,7 @@ function doGet(e) {
     if (inv.ok) inv.respuesta = ultimaRespuesta(inv.codigo, inv.invitados);
     return responder(inv);
   }
+  if (p.accion === "fotos") return responder({ ok: true, url: VER_FOTOS_INVITADOS ? carpetaFotos().getUrl() : "" });
   if (p.accion === "lista") {
     if (!claveOk(p.clave)) return responder({ ok: false, error: "clave" });
     return responder(listaCompleta());
@@ -418,6 +429,7 @@ function doPost(e) {
     let d;
     try { d = JSON.parse(e.postData.contents); } catch (err) { return responder({ ok: false, error: "datos" }); }
     if (d.accion === "guardarMesas") return responder(guardarMesas(d));
+    if (d.accion === "subirFoto") return responder(subirFoto(d));
     return responder({ ok: false, error: "accion" });
   }
 
@@ -821,6 +833,47 @@ function guardarMesas(d) {
   }
 }
 
+/* ---------- Fotos de los invitados ---------- */
+function carpetaFotos() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty("CARPETA_FOTOS_ID");
+  if (id) {
+    try {
+      const f = DriveApp.getFolderById(id);
+      if (!f.isTrashed()) return f;
+    } catch (err) { /* la carpeta ya no existe: se crea otra */ }
+  }
+  const carpeta = DriveApp.createFolder(CARPETA_FOTOS);
+  props.setProperty("CARPETA_FOTOS_ID", carpeta.getId());
+  if (VER_FOTOS_INVITADOS) {
+    try { carpeta.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (err) { /* sin permiso para compartir */ }
+  }
+  return carpeta;
+}
+
+// Guarda una foto o video que envía fotos.html (en base64). El nombre lleva la familia y la hora.
+function subirFoto(d) {
+  const tipo = String(d.tipo || "");
+  if (!/^(image|video)\//.test(tipo)) return { ok: false, error: "tipo" };
+  let bytes;
+  try { bytes = Utilities.base64Decode(String(d.datos || "")); } catch (err) { return { ok: false, error: "datos" }; }
+  if (!bytes.length) return { ok: false, error: "vacio" };
+  if (bytes.length > MAX_MB_ARCHIVO * 1024 * 1024) return { ok: false, error: "grande" };
+  const inv = d.codigo ? buscarInvitado(d.codigo) : null;
+  const quien = String(inv && inv.ok ? inv.familia : d.quien || "Invitado").replace(/[\\/:*?"<>|]/g, "").trim().slice(0, 60) || "Invitado";
+  const original = String(d.nombre || "").match(/\.[a-z0-9]{2,5}$/i);
+  const ext = tipo === "image/jpeg" ? ".jpg" : tipo === "image/png" ? ".png" : original ? original[0].toLowerCase() : "";
+  const hora = Utilities.formatDate(new Date(), "America/Bogota", "yyyy-MM-dd HH.mm.ss");
+  const unico = Math.random().toString(36).slice(2, 6); // para que dos fotos del mismo segundo no se llamen igual
+  carpetaFotos().createFile(Utilities.newBlob(bytes, tipo, `${quien} – ${hora} – ${unico}${ext}`));
+  return { ok: true };
+}
+
+// Ejecuta esta función una vez para autorizar el acceso a Drive y crear la carpeta de fotos
+function probarFotos() {
+  console.log("Carpeta de fotos lista: " + carpetaFotos().getUrl());
+}
+
 // Menú en la hoja de cálculo
 function onOpen() {
   SpreadsheetApp.getUi().createMenu("💍 Boda")
@@ -851,6 +904,7 @@ function prepararHojas() {
   if (hm.getLastRow() < 2) hm.getRange(2, 1, 2, 2).setValues([["1", 10], ["2", 10]]);
   columnas(hi, true);
   obtenerHoja();
+  carpetaFotos();
   console.log(`Listo: lista de invitados ("${hi.getName()}") con columnas Familia y Código, Mesas y Confirmaciones.` +
     " Llena la columna Familia para agrupar a quienes van en la misma invitación; los códigos se crean al abrir enlaces.html.");
 }
