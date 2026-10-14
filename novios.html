@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="robots" content="noindex">
+  <title>Panel de los novios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ivory: #fdf9f4; --wine: #7a2e45; --gold: #b8914f; --ink: #4a3338; --ink-soft: #86696e;
+      --line: rgba(184,145,79,.45); --red: #a3272f; --green: #3f7d5a;
+    }
+    @media (prefers-color-scheme: dark) { html, body { background: #fdf9f4; color: #4a3338; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+    body { font-family: "Cormorant Garamond", serif; font-variant-numeric: lining-nums; background: var(--ivory); color: var(--ink); padding: 24px 16px 48px; }
+    button { font: inherit; cursor: pointer; }
+    a { color: var(--wine); }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { font-family: "Pinyon Script", cursive; font-weight: normal; color: var(--wine); font-size: 54px; line-height: 1.2; text-align: center; }
+    .sub { font-family: Cinzel, serif; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin: 4px 0 14px; text-align: center; }
+    .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .links a { font-size: 16px; padding: 5px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; text-decoration: none; }
+    .links a:hover { border-color: var(--gold); }
+
+    .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .tile { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 10px 14px; text-align: center; box-shadow: 0 18px 30px -24px rgba(90,31,51,.5); }
+    .tile b { display: block; font-size: 44px; font-weight: 500; line-height: 1; color: var(--wine); }
+    .tile span { font-family: Cinzel, serif; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+    .tile.si b { color: var(--green); }
+    .tile.no b { color: var(--ink-soft); }
+    .tile.pend b { color: var(--gold); }
+    .progress { margin: 18px auto 26px; max-width: 620px; text-align: center; font-size: 17px; color: var(--ink-soft); }
+    .bar { height: 10px; border-radius: 10px; overflow: hidden; display: flex; background: rgba(184,145,79,.18); margin-bottom: 8px; }
+    .bar i { display: block; height: 100%; }
+    .bar .b-si { background: var(--green); } .bar .b-no { background: #cdbfba; }
+
+    .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 18px; }
+    .tabs button { font-family: Cinzel, serif; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; padding: 9px 16px; border-radius: 999px;
+      border: 1px solid var(--line); background: #fff; color: var(--wine); }
+    .tabs button[aria-selected="true"] { background: var(--wine); border-color: var(--wine); color: #fff; }
+    .tools { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .tools input { flex: 1; max-width: 420px; font: inherit; font-size: 17px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+    .tools button { font-family: Cinzel, serif; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; padding: 0 16px; border-radius: 999px; border: 1px solid var(--wine); background: #fff; color: var(--wine); }
+    .hint { text-align: center; font-size: 16px; font-style: italic; color: var(--ink-soft); margin-bottom: 14px; }
+
+    .list { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: 0 18px 30px -26px rgba(90,31,51,.5); }
+    .card h3 { font-family: Cinzel, serif; font-weight: 500; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--wine); display: flex; justify-content: space-between; gap: 8px; }
+    .card h3 small { font-family: "Cormorant Garamond", serif; letter-spacing: 0; text-transform: none; font-size: 15px; color: var(--ink-soft); white-space: nowrap; }
+    .people { list-style: none; margin-top: 8px; }
+    .people li { font-size: 17px; line-height: 1.45; }
+    .people .si::before { content: "✓ "; color: var(--green); }
+    .people .no { color: var(--ink-soft); text-decoration: line-through; }
+    .people .no::before { content: "✗ "; }
+    .people .pend::before { content: "· "; color: var(--gold); }
+    .people em { color: var(--ink-soft); font-size: 15px; }
+    .meta { margin-top: 6px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
+    .row { display: flex; gap: 8px; margin-top: 10px; }
+    .row a, .row button { flex: 1; text-align: center; padding: 8px; border-radius: 999px; font-size: 15px; text-decoration: none; border: 1px solid var(--line); background: #fff; color: var(--wine); }
+    .row .wa { background: #25d366; border-color: #25d366; color: #fff; }
+    .empty { grid-column: 1 / -1; text-align: center; font-size: 19px; font-style: italic; color: var(--ink-soft); padding: 26px 10px; }
+    .err { text-align: center; color: var(--red); font-size: 19px; padding: 30px 10px; }
+
+    .diet-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px; }
+    .diet-tiles span { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; font-size: 17px; }
+    .diet-tiles b { color: var(--wine); }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+    th, td { text-align: left; padding: 9px 12px; font-size: 17px; border-bottom: 1px solid rgba(184,145,79,.2); vertical-align: top; }
+    th { font-family: Cinzel, serif; font-weight: 500; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--wine); background: #fbf3ea; }
+    tr:last-child td { border-bottom: 0; }
+    .song a { word-break: break-all; }
+
+    @media (max-width: 640px) {
+      .tiles { grid-template-columns: repeat(2, 1fr); }
+      th, td { padding: 8px; font-size: 15px; }
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .links, .tabs, .tools, .row, .progress, .tiles, .hint { display: none !important; }
+      .card, table { box-shadow: none; }
+      @page { margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Panel de los novios</h1>
+    <p class="sub">Daniel Alejandro &amp; Diana Carolina · 19 · 06 · 2027</p>
+    <nav class="links">
+      <a href="mesas.html">🪑 Plano de mesas</a>
+      <a href="enlaces.html">💌 Enlaces para enviar</a>
+      <a href="https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit" target="_blank" rel="noopener">📊 Hoja de Google</a>
+    </nav>
+
+    <div class="tiles" id="tiles"></div>
+    <div class="progress" id="progress"></div>
+
+    <div class="tabs" role="tablist" id="tabs">
+      <button role="tab" data-tab="pendientes">Pendientes</button>
+      <button role="tab" data-tab="confirmados">Confirmados</button>
+      <button role="tab" data-tab="noasisten">No asisten</button>
+      <button role="tab" data-tab="catering">Catering</button>
+      <button role="tab" data-tab="canciones">Canciones</button>
+    </div>
+    <div class="tools" id="tools">
+      <input type="search" id="search" placeholder="Buscar familia o invitado…" autocomplete="off">
+      <button type="button" id="print">Imprimir</button>
+    </div>
+    <p class="hint" id="hint"></p>
+    <main id="view"><p class="empty">Cargando…</p></main>
+  </div>
+
+  <script src="panel.js?v=202610140500"></script>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const norm = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const FECHA_LIMITE = "30 de abril de 2027";
+    const DIETAS = ["Vegetariano", "Vegano", "Sin gluten", "Sin lactosa"];
+    const base = new URL("./", location.href).href;
+    let familias = [];
+    let tab = "pendientes";
+
+    const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+    const fecha = (iso) => {
+      const d = new Date(iso);
+      return isNaN(d) ? "" : d.toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric", timeZone: "America/Bogota" });
+    };
+
+    // Cada familia con el estado de cada persona: si | no | pend
+    function preparar(r) {
+      return r.familias.map((f) => {
+        const c = f.confirmacion;
+        const personas = [];
+        f.personas.forEach((p) => (p.nombres || [p.nombre]).forEach((nombre) => {
+          const estado = !c ? "pend" : c.asistentes.includes(nombre) ? "si" : "no";
+          const dado = (c && c.dados && c.dados[nombre]) || ""; // nombre que escribieron para un acompañante
+          personas.push({ nombre: dado ? `${dado} (${nombre.replace(/^Acompañante/, "acompañante")})` : nombre, estado, mesa: p.mesa,
+            restriccion: (c && c.restricciones && c.restricciones[nombre]) || "" });
+        }));
+        return { ...f, personas, respondio: Boolean(c), van: personas.filter((p) => p.estado === "si").length };
+      });
+    }
+
+    function resumen() {
+      const todas = familias.flatMap((f) => f.personas);
+      const si = todas.filter((p) => p.estado === "si").length;
+      const no = todas.filter((p) => p.estado === "no").length;
+      const pend = todas.length - si - no;
+      const resp = familias.filter((f) => f.respondio).length;
+      $("#tiles").innerHTML = `
+        <div class="tile"><b>${todas.length}</b><span>Invitados</span></div>
+        <div class="tile si"><b>${si}</b><span>Confirmados</span></div>
+        <div class="tile no"><b>${no}</b><span>No asisten</span></div>
+        <div class="tile pend"><b>${pend}</b><span>Sin responder</span></div>`;
+      const pc = (n) => (todas.length ? (n / todas.length) * 100 : 0).toFixed(1);
+      $("#progress").innerHTML = `<div class="bar"><i class="b-si" style="width:${pc(si)}%"></i><i class="b-no" style="width:${pc(no)}%"></i></div>
+        Han respondido ${resp} de ${plural(familias.length, "invitación", "invitaciones")}
+        (${familias.length ? Math.round((resp / familias.length) * 100) : 0}%) · fecha límite: ${FECHA_LIMITE}`;
+      const n = { pendientes: familias.filter((f) => !f.respondio).length, confirmados: familias.filter((f) => f.van).length,
+        noasisten: no, catering: si, canciones: familias.filter((f) => f.confirmacion && f.confirmacion.cancion).length };
+      document.querySelectorAll("#tabs button").forEach((b) => {
+        b.textContent = `${b.textContent.replace(/\s*\(\d+\)$/, "")} (${n[b.dataset.tab]})`;
+        b.setAttribute("aria-selected", b.dataset.tab === tab);
+      });
+    }
+
+    const coincide = (f, q) => !q || norm(f.familia).includes(q) || f.personas.some((p) => norm(p.nombre).includes(q));
+    const personasHtml = (f, soloQueVan) => `<ul class="people">${f.personas.filter((p) => !soloQueVan || p.estado === "si").map((p) =>
+      `<li class="${p.estado}">${esc(p.nombre)}${p.restriccion ? ` <em>(${esc(p.restriccion)})</em>` : ""}</li>`).join("")}</ul>`;
+
+    function vista() {
+      const q = norm($("#search").value.trim());
+      const view = $("#view");
+      const hint = $("#hint");
+      hint.textContent = "";
+      if (tab === "pendientes") {
+        const lista = familias.filter((f) => !f.respondio && coincide(f, q));
+        hint.textContent = "El botón de WhatsApp abre el mensaje listo: tú eliges el contacto.";
+        view.innerHTML = `<div class="list">${lista.map((f) => `
+          <div class="card" data-codigo="${esc(f.codigo)}">
+            <h3>${esc(f.familia)} <small>${plural(f.personas.length, "pase", "pases")}</small></h3>
+            ${personasHtml(f)}
+            <div class="row"><a class="wa" target="_blank" rel="noopener">Recordar por WhatsApp</a><button type="button" class="copy">Copiar mensaje</button></div>
+          </div>`).join("") || `<p class="empty">${q ? "Nadie coincide con la búsqueda." : "¡Todos respondieron! 🎉"}</p>`}</div>`;
+        view.querySelectorAll(".card").forEach((card) => {
+          const f = familias.find((x) => x.codigo === card.dataset.codigo);
+          const uno = f.personas.length === 1;
+          const msg = `¡Hola ${f.familia}! 💌 ${uno ? "Te recordamos confirmar tu" : "Les recordamos confirmar su"} asistencia a nuestra boda antes del ${FECHA_LIMITE}. ` +
+            `${uno ? "Puedes hacerlo aquí, en tu invitación" : "Pueden hacerlo aquí, en su invitación"}:\n${base}?i=${encodeURIComponent(f.codigo)}`;
+          card.querySelector(".wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+          const b = card.querySelector(".copy");
+          b.onclick = () => navigator.clipboard.writeText(msg).then(() => { b.textContent = "¡Copiado!"; setTimeout(() => { b.textContent = "Copiar mensaje"; }, 1500); });
+        });
+      } else if (tab === "confirmados") {
+        const lista = familias.filter((f) => f.van && coincide(f, q));
+        view.innerHTML = `<div class="list">${lista.map((f) => {
+          const mesas = [...new Set(f.personas.filter((p) => p.estado === "si" && p.mesa).map((p) => p.mesa))];
+          return `<div class="card"><h3>${esc(f.familia)} <small>${f.van} de ${f.personas.length}</small></h3>${personasHtml(f)}
+            <p class="meta">${[f.confirmacion.fecha ? `Respondió el ${fecha(f.confirmacion.fecha)}` : "", mesas.length ? `Mesa ${mesas.map(esc).join(", ")}` : "Sin mesa"].filter(Boolean).join(" · ")}</p></div>`;
+        }).join("") || `<p class="empty">${q ? "Nadie coincide con la búsqueda." : "Todavía no hay confirmaciones."}</p>`}</div>`;
+      } else if (tab === "noasisten") {
+        const lista = familias.filter((f) => f.personas.some((p) => p.estado === "no") && coincide(f, q));
+        view.innerHTML = `<div class="list">${lista.map((f) => `<div class="card"><h3>${esc(f.familia)}
+          <small>${f.van ? `van ${f.van} de ${f.personas.length}` : "no asiste nadie"}</small></h3>
+          <ul class="people">${f.personas.filter((p) => p.estado === "no").map((p) => `<li class="no">${esc(p.nombre)}</li>`).join("")}</ul></div>`).join("")
+          || `<p class="empty">${q ? "Nadie coincide con la búsqueda." : "Nadie ha dicho que no. 💛"}</p>`}</div>`;
+      } else if (tab === "catering") {
+        const van = familias.flatMap((f) => f.personas.filter((p) => p.estado === "si").map((p) => ({ ...p, familia: f.familia })));
+        const con = van.filter((p) => p.restriccion);
+        const cuenta = (re) => con.filter((p) => re.test(p.restriccion)).length;
+        const tiles = DIETAS.map((d) => [d, cuenta(new RegExp(d, "i"))])
+          .concat([["Alergias", cuenta(/alergia/i)]])
+          .filter(([, n]) => n);
+        const otras = con.filter((p) => !DIETAS.some((d) => new RegExp(d, "i").test(p.restriccion)) && !/alergia/i.test(p.restriccion)).length;
+        if (otras) tiles.push(["Otras", otras]);
+        hint.textContent = `${plural(van.length, "plato confirmado", "platos confirmados")} · ${plural(con.length, "persona con restricción", "personas con restricción")}. Usa "Imprimir" para pasárselo al catering.`;
+        const filas = con.filter((p) => !q || norm(p.nombre).includes(q) || norm(p.familia).includes(q))
+          .sort((a, b) => String(a.mesa).localeCompare(String(b.mesa), "es", { numeric: true }));
+        view.innerHTML = `<div class="diet-tiles">${tiles.map(([d, n]) => `<span>${esc(d)}: <b>${n}</b></span>`).join("") || "<span>Sin restricciones por ahora</span>"}</div>` +
+          (filas.length ? `<table><thead><tr><th>Mesa</th><th>Invitado</th><th>Restricción</th></tr></thead><tbody>${filas.map((p) =>
+            `<tr><td>${esc(p.mesa || "—")}</td><td>${esc(p.nombre)}<br><em class="meta">${esc(p.familia)}</em></td><td>${esc(p.restriccion)}</td></tr>`).join("")}</tbody></table>`
+            : `<p class="empty">${q ? "Nadie coincide con la búsqueda." : "Nadie ha indicado restricciones todavía."}</p>`);
+      } else if (tab === "canciones") {
+        const lista = familias.filter((f) => f.confirmacion && f.confirmacion.cancion && coincide(f, q));
+        hint.textContent = "Las canciones se agregan solas a la playlist de YouTube.";
+        view.innerHTML = lista.length ? `<table><thead><tr><th>Familia</th><th>Canción</th></tr></thead><tbody>${lista.map((f) =>
+          `<tr><td>${esc(f.familia)}</td><td class="song"><a href="${esc(f.confirmacion.cancion)}" target="_blank" rel="noopener">${esc(f.confirmacion.cancion)}</a></td></tr>`).join("")}</tbody></table>`
+          : `<p class="empty">${q ? "Nadie coincide con la búsqueda." : "Todavía no hay canciones sugeridas."}</p>`;
+      }
+    }
+
+    $("#tabs").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-tab]");
+      if (!b) return;
+      tab = b.dataset.tab;
+      document.querySelectorAll("#tabs button").forEach((x) => x.setAttribute("aria-selected", x === b));
+      vista();
+    });
+    $("#search").addEventListener("input", vista);
+    $("#print").addEventListener("click", () => window.print());
+
+    Panel.cargarLista().then((r) => {
+      familias = preparar(r);
+      resumen();
+      vista();
+    }).catch((err) => {
+      $("#view").innerHTML = `<p class="err">${esc(err.message)}</p>`;
+    });
+  </script>
+</body>
+</html>

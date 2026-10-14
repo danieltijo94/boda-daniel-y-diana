@@ -14,6 +14,7 @@ Si alguien cambia el código del enlace por uno que no existe, verá la invitaci
 
 Páginas de los novios (piden la clave `CLAVE_NOVIOS` del script):
 - **`enlaces.html`**: todos los enlaces con botones de copiar y enviar por WhatsApp.
+- **`novios.html`**: panel con confirmados, pendientes (recordatorio por WhatsApp), catering y canciones.
 - **`mesas.html`**: plano de mesas para crear mesas y sentar a cada invitado; guarda en Google Sheets.
 
 ## Qué editar

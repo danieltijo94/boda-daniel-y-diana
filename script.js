@@ -371,7 +371,7 @@ function setupRSVP() {
       const dado = rename ? rename.value.trim() : "";
       return {
         nombre: card.dataset.nombre, dado,
-        visible: dado ? `${dado} (${card.dataset.nombre.toLowerCase()})` : card.dataset.nombre,
+        visible: dado ? `${dado} (${card.dataset.nombre.replace(/^Acompañante/, "acompañante")})` : card.dataset.nombre,
         asiste, dieta: asiste ? readDiet(card.querySelector(".diet")) : null,
       };
     });

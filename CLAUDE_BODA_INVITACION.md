@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 14 de octubre de 2026 (fotos de los invitados directo a Google Drive)
+> **Última actualización:** 14 de octubre de 2026 (punto 7: panel de los novios)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -17,6 +17,7 @@ Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta 
 | **Enlaces para enviar por WhatsApp** | https://danieltijo94.github.io/boda-daniel-y-diana/enlaces.html |
 | **Página de fotos (destino del QR)** | https://danieltijo94.github.io/boda-daniel-y-diana/fotos.html |
 | **Tarjeta QR para imprimir (mesas)** | https://danieltijo94.github.io/boda-daniel-y-diana/qr-mesa.html |
+| **Panel de los novios (con clave)** | https://danieltijo94.github.io/boda-daniel-y-diana/novios.html |
 | **Plano de mesas (novios, con clave)** | https://danieltijo94.github.io/boda-daniel-y-diana/mesas.html |
 | **Hoja de confirmaciones (Google Sheets)** | https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit |
 | **Script de confirmaciones (URL publicada)** | configurada en `script.js` → `CONFIG.rsvpEndpoint` |
@@ -93,6 +94,7 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 | `panel.js` | Compartido por las páginas de los novios: `ENDPOINT` (misma URL que `CONFIG.rsvpEndpoint`), pide la clave `CLAVE_NOVIOS` (la recuerda en ese navegador), lee la lista y guarda el plano |
 | `enlaces.html` | Lista de todos los enlaces personalizados con botón de WhatsApp: pases, mesa y si ya confirmó (con clave) |
 | `mesas.html` | **Editor del plano de mesas** (con clave): crear/renombrar/eliminar mesas, sillas con −/+, arrastrar personas o familias, ✓/✗ de confirmación, Guardar en Google Sheets e Imprimir |
+| `novios.html` | **Panel de los novios** (con clave): totales (invitados, confirmados, no asisten, sin responder) y avance; pestañas Pendientes (recordatorio por WhatsApp o copiar mensaje), Confirmados, No asisten, Catering (conteo por tipo de restricción + tabla por mesa, para imprimir) y Canciones |
 | `INVITADOS-Y-MESAS.md` | Guía: pestañas Lista de Invitados y Mesas, primera configuración y uso del plano |
 | `fotos.html` | Página del QR: **sube fotos y videos a la carpeta "Fotos boda – invitados" de Drive** sin cuenta de Google (reduce las fotos a 2560 px; videos hasta 45 MB; nombre del archivo con la familia y la hora) y botón "Ver las fotos de todos" |
 | `qr-mesa.html` | Tarjeta A6 para imprimir con el QR de fotos |
@@ -200,7 +202,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 4 | Pase QR de entrada por familia | ⏭️ Omitido (decisión del usuario) |
 | 5 | Modo "día de la boda" | ✅ Hecho (aprobado) |
 | 6 | Página de agradecimiento | ✅ Hecho (aprobado) |
-| 7 | Panel de los novios | ⏳ En curso (el último) |
+| 7 | Panel de los novios | ✅ Hecho (esperando visto bueno) |
 
 **1. Información de llegada y transporte** (en vez de preguntas frecuentes)
 - Nueva sección elegante junto a "¿Dónde y cuándo?", con íconos dorados:
@@ -265,7 +267,9 @@ la boda", porque ambos muestran la mesa de cada familia.
   "Muy pronto las compartiremos aquí"). Sin playlist (se quitó a pedido del usuario).
 - Pruebas: `?modo=gracias`.
 
-**7. Panel de los novios** *(se hace al final)*
+**7. Panel de los novios** — ✅ programado en `novios.html` (con `CLAVE_NOVIOS`). El script ahora también entrega
+la canción, la fecha de respuesta y los nombres escritos para los acompañantes en `?accion=lista`.
+*(Descripción original:)*
 - Página con clave: confirmados, pendientes y quiénes no asisten; resumen de restricciones para el catering;
   canciones sugeridas; recordatorio por WhatsApp a los pendientes. Incluye la idea del "recordatorio de pendientes".
 
@@ -352,7 +356,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `3ea1dee` | 2026-10-14 | Se quita el botón "Nuestra playlist" del modo día de la boda |
 | `060366e` | 2026-10-14 | Punto 5 aprobado. Punto 6: página de agradecimiento (desde el 20 de junio; mensaje por familia, fotos de invitados y oficiales) |
 | `9693b9c` | 2026-10-14 | Fotos de los invitados directo a una carpeta de Google Drive desde `fotos.html` (sin cuenta de Google); el script crea la carpeta y la comparte solo para ver |
-| — | 2026-10-14 | Punto 6 aprobado. `fotos.html` explica la causa real cuando no sube (sin permiso de Drive, versión vieja del script o sin internet) |
+| `95da71a` | 2026-10-14 | Punto 6 aprobado. `fotos.html` explica la causa real cuando no sube (sin permiso de Drive, versión vieja del script o sin internet) |
+| — | 2026-10-14 | Punto 7: panel de los novios (`novios.html`): totales, pendientes con recordatorio por WhatsApp, confirmados, no asisten, catering y canciones |
 
 ---
 
@@ -777,7 +782,12 @@ function listaCompleta() {
   if (n > 0) {
     hc.getRange(2, 1, n, COLUMNAS.length).getValues().forEach((r) => {
       const c = String(r[1]).trim().toUpperCase();
-      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean), restricciones: {} };
+      if (c) {
+        conf[c] = {
+          asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean), restricciones: {},
+          cancion: String(r[8] || ""), fecha: r[0] instanceof Date ? r[0].toISOString() : String(r[0] || ""),
+        };
+      }
     });
   }
   // La asistencia por persona (formulario nuevo) manda sobre el resumen de la fila
@@ -788,12 +798,13 @@ function listaCompleta() {
     hp.getRange(2, 1, np, COL_PERSONAS.length).getValues().forEach((r) => {
       const c = String(r[0]).trim().toUpperCase();
       if (!c) return;
-      porCodigo[c] = porCodigo[c] || { asistentes: [], restricciones: {} };
+      porCodigo[c] = porCodigo[c] || { asistentes: [], restricciones: {}, dados: {} };
       if (r[4] === "Sí") porCodigo[c].asistentes.push(String(r[2]));
+      if (r[3]) porCodigo[c].dados[String(r[2])] = String(r[3]);
       if (r[5]) porCodigo[c].restricciones[String(r[2])] = String(r[5]);
     });
     Object.keys(porCodigo).forEach((c) => {
-      conf[c] = { asistencia: porCodigo[c].asistentes.length ? "Sí" : "No", ...porCodigo[c] };
+      conf[c] = Object.assign(conf[c] || {}, { asistencia: porCodigo[c].asistentes.length ? "Sí" : "No" }, porCodigo[c]);
     });
   }
   const familias = [];

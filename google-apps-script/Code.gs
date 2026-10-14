@@ -406,7 +406,12 @@ function listaCompleta() {
   if (n > 0) {
     hc.getRange(2, 1, n, COLUMNAS.length).getValues().forEach((r) => {
       const c = String(r[1]).trim().toUpperCase();
-      if (c) conf[c] = { asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean), restricciones: {} };
+      if (c) {
+        conf[c] = {
+          asistencia: r[3], asistentes: String(r[6]).split(",").map((x) => x.trim()).filter(Boolean), restricciones: {},
+          cancion: String(r[8] || ""), fecha: r[0] instanceof Date ? r[0].toISOString() : String(r[0] || ""),
+        };
+      }
     });
   }
   // La asistencia por persona (formulario nuevo) manda sobre el resumen de la fila
@@ -417,12 +422,13 @@ function listaCompleta() {
     hp.getRange(2, 1, np, COL_PERSONAS.length).getValues().forEach((r) => {
       const c = String(r[0]).trim().toUpperCase();
       if (!c) return;
-      porCodigo[c] = porCodigo[c] || { asistentes: [], restricciones: {} };
+      porCodigo[c] = porCodigo[c] || { asistentes: [], restricciones: {}, dados: {} };
       if (r[4] === "Sí") porCodigo[c].asistentes.push(String(r[2]));
+      if (r[3]) porCodigo[c].dados[String(r[2])] = String(r[3]);
       if (r[5]) porCodigo[c].restricciones[String(r[2])] = String(r[5]);
     });
     Object.keys(porCodigo).forEach((c) => {
-      conf[c] = { asistencia: porCodigo[c].asistentes.length ? "Sí" : "No", ...porCodigo[c] };
+      conf[c] = Object.assign(conf[c] || {}, { asistencia: porCodigo[c].asistentes.length ? "Sí" : "No" }, porCodigo[c]);
     });
   }
   const familias = [];
