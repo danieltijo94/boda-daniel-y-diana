@@ -17,6 +17,8 @@ const CONFIG = {
   lugarCalendario: "Hacienda Chic, Bogotá",
   // Duración aproximada del evento (horas) para el calendario
   duracionHoras: 8,
+  // Álbum de las fotos oficiales (del fotógrafo) para la página de agradecimiento. Vacío = "Muy pronto".
+  fotosOficialesUrl: "",
   // Punto para el clima: Hacienda Chic (Cra. 7 #247-15, norte de Bogotá, límite con Chía)
   clima: { lat: 4.8270, lon: -74.0314, lugar: "Hacienda Chic" },
 };
@@ -681,7 +683,7 @@ async function climaTipico() {
 }
 
 async function setupWeather() {
-  if (!$("#weatherCard")) return;
+  if (!$("#weatherCard") || enModoGracias()) return;
   const modo = params.get("clima"); // pruebas: ?clima=hoy o ?clima=tipico
   const diaBoda = CONFIG.fecha.slice(0, 10);
   const hoy = fechaBogota(Date.now());
@@ -809,10 +811,53 @@ function renderMesa() {
   card.hidden = false;
 }
 
+/* ---------- Página de agradecimiento (desde el 20 de junio; pruebas: ?modo=gracias) ---------- */
+const enModoGracias = () => {
+  if (params.get("modo") === "gracias") return true;
+  if (params.get("modo")) return false;
+  const hoyBogota = new Date(Date.now() - 5 * 3600e3).toISOString().slice(0, 10);
+  return hoyBogota > CONFIG.fecha.slice(0, 10);
+};
+
+function setupThanks() {
+  if (!enModoGracias()) return;
+  document.documentElement.classList.add("modo-gracias");
+  // Se queda la portada, el agradecimiento, "Nuestra historia" y el pie; lo demás era para antes de la boda
+  ["hoy", "invitado", "cuenta", "lugar", "clima", "llegada", "itinerario", "vestimenta", "regalos", "fotos", "confirmar"]
+    .forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = true; });
+  $("#gracias").hidden = false;
+  $("#heroSub").textContent = "¡Recién casados!";
+  const oficial = $("#officialTile");
+  if (CONFIG.fotosOficialesUrl) {
+    oficial.href = CONFIG.fotosOficialesUrl;
+    $("#officialText").textContent = "El álbum del fotógrafo";
+  } else {
+    oficial.removeAttribute("href");
+    oficial.classList.add("soon");
+  }
+}
+
+// Mensaje con el nombre de la familia (y distinto si no pudieron ir)
+function renderThanks() {
+  if (!enModoGracias() || !guest) return;
+  const uno = guest.nombres.length === 1;
+  const resp = guest.respuesta && guest.respuesta.personas;
+  const nadieFue = resp && resp.every((p) => !p.asiste);
+  $("#thanksTo").textContent = guest.familia;
+  $("#thanksText").textContent = nadieFue
+    ? (uno
+      ? "Aunque no pudiste acompañarnos, sentimos tu cariño en todo momento. Gracias por estar pendiente de nosotros y por tus buenos deseos."
+      : "Aunque no pudieron acompañarnos, sentimos su cariño en todo momento. Gracias por estar pendientes de nosotros y por sus buenos deseos.")
+    : (uno
+      ? "Gracias por acompañarnos en el día más feliz de nuestras vidas. Tu cariño, tus abrazos y tu alegría hicieron de nuestra boda un recuerdo que guardaremos para siempre."
+      : "Gracias por acompañarnos en el día más feliz de nuestras vidas. Su cariño, sus abrazos y su alegría hicieron de nuestra boda un recuerdo que guardaremos para siempre.");
+}
+
 /* ---------- Inicio ---------- */
 setupChromeGate();
 fillDates();
-fillGuest().then(() => { setupRSVP(); renderMesa(); });
+fillGuest().then(() => { setupRSVP(); renderMesa(); renderThanks(); });
+setupThanks();
 setupWeddingDay();
 setupIntro();
 setupReveal();

@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 14 de octubre de 2026 (cierre de confirmaciones después de la fecha límite)
+> **Última actualización:** 14 de octubre de 2026 (punto 6: página de agradecimiento)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -39,6 +39,8 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 3. **Portada**: marco dorado doble, monograma D&D, "Con la bendición de Dios y de nuestras familias", nombres en caligrafía, fecha y lugar, ramas de orquídeas animadas.
 4. **Tarjeta del invitado**: cita de Cantares 8:7, nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
+5a. **¡Gracias!** (desde el 20 de junio de 2027 o con `?modo=gracias`): mensaje personalizado por familia y
+   accesos a las fotos de los invitados y las oficiales; se ocultan las secciones de antes de la boda.
 5b. **¡Hoy nos casamos!** (solo el 19 de junio de 2027 o con `?modo=boda`): itinerario en vivo, "Tu mesa",
    botones de fotos y cómo llegar; se ocultan la cuenta regresiva y la confirmación.
 6. **¿Dónde y cuándo?**: Hacienda Chic (Cra. 7 #247-15, 4.8270016, -74.0314436), botones **Google Maps** y **Waze** (Waze va a las coordenadas exactas).
@@ -175,6 +177,7 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
+- [ ] (Después de la boda) Pasar el link del **álbum de las fotos oficiales** del fotógrafo (`CONFIG.fotosOficialesUrl`).
 - [x] Números de WhatsApp de Diana y Daniel configurados en `CONFIG.whatsapp` (botones del cierre de confirmaciones).
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
@@ -190,9 +193,9 @@ la boda", porque ambos muestran la mesa de cada familia.
 | 3 | Plano de mesas (editor + lista en Google Sheets) | ✅ Hecho (aprobado) |
 | ★ | **Confirmación por persona** (prioridad) | ✅ Hecho (aprobado) |
 | 4 | Pase QR de entrada por familia | ⏭️ Omitido (decisión del usuario) |
-| 5 | Modo "día de la boda" | ✅ Hecho (esperando visto bueno) |
-| 6 | Página de agradecimiento | ⏳ Siguiente |
-| 7 | Panel de los novios | 🔜 Por hacer (al final) |
+| 5 | Modo "día de la boda" | ✅ Hecho (aprobado) |
+| 6 | Página de agradecimiento | ✅ Hecho (esperando visto bueno) |
+| 7 | Panel de los novios | ⏳ Siguiente (el último) |
 
 **1. Información de llegada y transporte** (en vez de preguntas frecuentes)
 - Nueva sección elegante junto a "¿Dónde y cuándo?", con íconos dorados:
@@ -247,10 +250,15 @@ la boda", porque ambos muestran la mesa de cada familia.
 - Pruebas: `?modo=boda` y, para simular la hora, `&hora=18:10` (ej. `?i=CODIGO&modo=boda&hora=18:10`).
 - El pase QR quedó fuera porque el punto 4 se omitió.
 
-**6. Página de agradecimiento**
-- Desde el 20 de junio de 2027 la invitación se convierte en "¡Gracias por acompañarnos!", con el álbum de
-  fotos de los invitados, la playlist y el espacio para las fotos oficiales.
-- Para probarlo antes: `?modo=gracias`.
+**6. Página de agradecimiento** — ✅ programada
+- Desde el 20 de junio de 2027 (hora de Colombia) la invitación se transforma: la portada dice "¡Recién casados!" y
+  quedan solo la portada, la sección **¡Gracias!**, "Nuestra historia" y el pie (el resto se oculta y no se consulta el clima).
+- Tarjeta de agradecimiento con el **nombre de la familia** y mensaje firmado "Con amor, Daniel & Diana";
+  si no pudieron ir (todos marcaron "No podrá"), el mensaje cambia ("Aunque no pudieron acompañarnos…");
+  usa "tú" si la invitación es de 1 persona y "ustedes" si es de varias. Sin código: "Querida familia y amigos".
+- **Los recuerdos:** "Fotos de los invitados" (`fotos.html`) y "Fotos oficiales" (`CONFIG.fotosOficialesUrl`; vacío =
+  "Muy pronto las compartiremos aquí"). Sin playlist (se quitó a pedido del usuario).
+- Pruebas: `?modo=gracias`.
 
 **7. Panel de los novios** *(se hace al final)*
 - Página con clave: confirmados, pendientes y quiénes no asisten; resumen de restricciones para el catering;
@@ -335,7 +343,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `9d2dfb9` | 2026-10-13 | Punto 4 omitido. Punto 5: modo "día de la boda" (sección ¡Hoy nos casamos!, itinerario en vivo, tu mesa, botones de fotos/playlist/cómo llegar; el script envía la mesa de cada persona) |
 | `e3039f4` | 2026-10-14 | Cierre automático de confirmaciones después del 30 de abril de 2027, con botones de WhatsApp "Escribe a Diana" / "Escribe a Daniel"; el script rechaza confirmaciones tardías |
 | `049076a` | 2026-10-14 | Números de WhatsApp de Diana y Daniel en los botones del cierre de confirmaciones |
-| — | 2026-10-14 | Se quita el botón "Nuestra playlist" del modo día de la boda |
+| `3ea1dee` | 2026-10-14 | Se quita el botón "Nuestra playlist" del modo día de la boda |
+| — | 2026-10-14 | Punto 5 aprobado. Punto 6: página de agradecimiento (desde el 20 de junio; mensaje por familia, fotos de invitados y oficiales) |
 
 ---
 
