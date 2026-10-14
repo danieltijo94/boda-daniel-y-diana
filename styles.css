@@ -76,8 +76,8 @@ main {
 }
 .intro.hide { opacity: 0; visibility: hidden; }
 .intro-orchid { position: absolute; pointer-events: none; }
-.intro-posy { top: -6px; right: -14px; width: min(230px, 56vw); height: min(172px, 42vw); transform-origin: 100% 0; animation: swayR 7s ease-in-out infinite; }
-.intro-bouquet { bottom: -18px; left: -22px; width: min(260px, 62vw); height: min(325px, 77vw); transform-origin: 0 100%; animation: swayL 8s ease-in-out infinite; }
+.intro-posy { top: -8px; right: -12px; width: min(270px, 68vw); height: min(202px, 51vw); transform-origin: 100% 0; animation: swayR 7s ease-in-out infinite; }
+.intro-bouquet { bottom: -14px; left: -18px; width: min(320px, 80vw); height: min(320px, 80vw); transform-origin: 0 100%; animation: swayL 8s ease-in-out infinite; }
 .intro-hint {
   font-family: var(--caps); font-size: 12px; letter-spacing: .28em; text-transform: uppercase;
   color: var(--wine); animation: fadeUp 1s .3s both; text-align: center;
@@ -142,7 +142,7 @@ main {
 }
 .seal {
   position: absolute; z-index: 4; left: 50%; top: 58%;
-  width: 96px; height: 96px; margin: -48px 0 0 -48px;
+  width: 70px; height: 70px; margin: -35px 0 0 -35px;
   filter: drop-shadow(0 5px 8px rgba(60, 20, 30, .4));
   transition: transform .6s var(--ease), opacity .5s;
 }
@@ -212,8 +212,15 @@ main {
   filter: drop-shadow(0 10px 12px rgba(91, 70, 50, .25)); overflow: visible;
 }
 .corner { position: absolute; pointer-events: none; z-index: 1; }
-.corner-tr { top: 6px; right: -10px; width: min(230px, 56vw); height: min(172px, 42vw); transform-origin: 100% 0; animation: swayR 7s ease-in-out infinite; }
-.corner-bl { bottom: -6px; left: -16px; width: min(270px, 64vw); height: min(338px, 80vw); transform-origin: 0 100%; animation: swayL 8s ease-in-out infinite; }
+.corner-tr { top: 4px; right: -8px; width: min(260px, 66vw); height: min(195px, 49.5vw); transform-origin: 100% 0; animation: swayR 7s ease-in-out infinite; }
+.corner-bl { bottom: -4px; left: -14px; width: min(290px, 73vw); height: min(290px, 73vw); transform-origin: 0 100%; animation: swayL 8s ease-in-out infinite; }
+@media (min-width: 900px) {
+  .corner-tr { width: 400px; height: 300px; }
+  .corner-bl { width: 440px; height: 440px; }
+  .intro-posy { width: 400px; height: 300px; }
+  .intro-bouquet { width: 440px; height: 440px; }
+  .monogram { width: 92px; height: 92px; }
+}
 @keyframes swayR { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-2deg); } }
 @keyframes swayL { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(1.5deg); } }
 @keyframes sway  { 0%,100% { transform: rotate(170deg); } 50% { transform: rotate(173deg); } }
@@ -221,7 +228,7 @@ main {
 
 .hero-inner { position: relative; z-index: 1; max-width: 640px; }
 /* Monograma: sello de cera vino con D&D */
-.monogram { display: block; width: 112px; height: 112px; margin: 0 auto 18px; filter: drop-shadow(0 6px 8px rgba(60, 20, 30, .3)); }
+.monogram { display: block; width: 80px; height: 80px; margin: 0 auto 18px; filter: drop-shadow(0 6px 8px rgba(60, 20, 30, .3)); }
 .eyebrow {
   font-family: var(--caps); font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
   color: var(--ink-soft); max-width: 320px; margin: 0 auto 22px; line-height: 1.8;

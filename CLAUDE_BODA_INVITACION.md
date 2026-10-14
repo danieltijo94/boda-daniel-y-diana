@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 20 de octubre de 2026 (diseño nuevo: rosas, marfil y sello vino)
+> **Última actualización:** 20 de octubre de 2026 (ajuste del diseño: sello más pequeño y ramos de rosas más grandes y naturales)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -27,7 +27,9 @@ siempre; cambian el estilo y las flores:
 - Paleta marfil / champaña / dorado, con el vino burdeos en nombres, títulos, botones y el sello.
 - **Sobre** marfil con el **sello de cera vino** (monograma "D & D": D con rulos y línea grabada en oro, "&" itálica clásica).
 - **Portada**: tarjeta de **papel artesanal con borde rasgado suave** (sin marco dorado), el sello como monograma,
-  un arreglo pequeño de rosas arriba a la derecha y un ramo de rosas con flores secas abajo a la izquierda.
+  un arreglo de rosas arriba a la derecha y un ramo de rosas con flores secas abajo a la izquierda. Las rosas van
+  grandes y juntas como un ramo de verdad (hojas asomando entre ellas, pampa y paniculata detrás); el sello es
+  discreto (70 px en el sobre, 80 px en la portada).
 - **Rosas de jardín** (marfil, rubor y vino) en todos los adornos (separadores, tarjeta del lugar, gracias, pie).
 - **Pétalos de rosa** cayendo (marfil, rubor y vino) con destellos dorados.
 - Los dibujos se generan con `diseno/rosas/` (ver su `LEEME.md`).
@@ -312,7 +314,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
   **cursiva vino**; **sin marco** y **sin esquina rasgada** (borde suave en los cuatro lados); un solo ramo abajo a la
   izquierda + arreglo pequeño arriba a la derecha (no flores repetidas en dos esquinas); monograma en **sello de cera
   vino** con D ornamentadas y **"&" itálica clásica** (opción 3); **rosas** en vez de orquídeas; **mismos textos y
-  misma distribución** que antes.
+  misma distribución** que antes. Después: sello más pequeño y ramos con rosas más grandes y naturales (los pétalos
+  de rosa que caen gustaron y no se tocan).
 - **Fecha límite real:** después del 30 de abril de 2027 se cierran las confirmaciones (en la invitación y en el script); los
   invitados pueden escribir por WhatsApp a Diana o a Daniel.
 - **Confirmación por persona** (no por familia): cada invitado de la tarjeta marca si va y su propia restricción.
@@ -372,7 +375,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `9693b9c` | 2026-10-14 | Fotos de los invitados directo a una carpeta de Google Drive desde `fotos.html` (sin cuenta de Google); el script crea la carpeta y la comparte solo para ver |
 | `95da71a` | 2026-10-14 | Punto 6 aprobado. `fotos.html` explica la causa real cuando no sube (sin permiso de Drive, versión vieja del script o sin internet) |
 | `fc59a9a` | 2026-10-14 | Punto 7: panel de los novios (`novios.html`): totales, pendientes con recordatorio por WhatsApp, confirmados, no asisten, catering y canciones |
-| — | 2026-10-20 | Diseño nuevo con los mismos textos: marfil, papel artesanal, sello de cera vino con monograma D&D, rosas de jardín y pétalos de rosa; generador en `diseno/rosas/` |
+| `fb180dc` | 2026-10-20 | Diseño nuevo con los mismos textos: marfil, papel artesanal, sello de cera vino con monograma D&D, rosas de jardín y pétalos de rosa; generador en `diseno/rosas/` |
+| — | 2026-10-20 | Ajuste de proporciones: sello más pequeño (sobre 70 px, portada 80 px), ramos rehechos con rosas más grandes y juntas (hojas entre las rosas, flores secas detrás) y más grandes en la tarjeta y el sobre; en computador, ramos aún más grandes. Pétalos sin cambios |
 
 ---
 
