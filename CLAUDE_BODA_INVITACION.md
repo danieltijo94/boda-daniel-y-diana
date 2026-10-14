@@ -178,6 +178,8 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   y armar las mesas en `mesas.html` (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
 - [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
+- [ ] ⚠️ **La primera prueba de fotos falló** (en el Drive no existe la carpeta "Fotos boda – invitados": falta el permiso de Drive
+  o publicar la nueva versión).
 - [ ] Activar las **fotos en Drive**: pegar el nuevo `Code.gs`, ejecutar `probarFotos` (acepta el permiso de Drive) y publicar una nueva versión (ver `FOTOS.md`).
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
 - [ ] (Después de la boda) Pasar el link del **álbum de las fotos oficiales** del fotógrafo (`CONFIG.fotosOficialesUrl`).
@@ -197,8 +199,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | ★ | **Confirmación por persona** (prioridad) | ✅ Hecho (aprobado) |
 | 4 | Pase QR de entrada por familia | ⏭️ Omitido (decisión del usuario) |
 | 5 | Modo "día de la boda" | ✅ Hecho (aprobado) |
-| 6 | Página de agradecimiento | ✅ Hecho (esperando visto bueno) |
-| 7 | Panel de los novios | ⏳ Siguiente (el último) |
+| 6 | Página de agradecimiento | ✅ Hecho (aprobado) |
+| 7 | Panel de los novios | ⏳ En curso (el último) |
 
 **1. Información de llegada y transporte** (en vez de preguntas frecuentes)
 - Nueva sección elegante junto a "¿Dónde y cuándo?", con íconos dorados:
@@ -349,7 +351,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `049076a` | 2026-10-14 | Números de WhatsApp de Diana y Daniel en los botones del cierre de confirmaciones |
 | `3ea1dee` | 2026-10-14 | Se quita el botón "Nuestra playlist" del modo día de la boda |
 | `060366e` | 2026-10-14 | Punto 5 aprobado. Punto 6: página de agradecimiento (desde el 20 de junio; mensaje por familia, fotos de invitados y oficiales) |
-| — | 2026-10-14 | Fotos de los invitados directo a una carpeta de Google Drive desde `fotos.html` (sin cuenta de Google); el script crea la carpeta y la comparte solo para ver |
+| `9693b9c` | 2026-10-14 | Fotos de los invitados directo a una carpeta de Google Drive desde `fotos.html` (sin cuenta de Google); el script crea la carpeta y la comparte solo para ver |
+| — | 2026-10-14 | Punto 6 aprobado. `fotos.html` explica la causa real cuando no sube (sin permiso de Drive, versión vieja del script o sin internet) |
 
 ---
 

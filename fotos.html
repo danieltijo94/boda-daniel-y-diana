@@ -118,14 +118,21 @@
       return { blob: file, tipo: file.type || "application/octet-stream", nombre: file.name };
     }
 
+    // Devuelve "" si subió; si no, el motivo: grande | conexion | sinpermiso | version | otro
     async function subir(file) {
       const f = await preparar(file);
       if (f.blob.size > MAX_MB * 1024 * 1024) return "grande";
-      const r = await (await fetch(ENDPOINT, {
-        method: "POST",
-        body: JSON.stringify({ accion: "subirFoto", codigo, quien: $("#quien").value.trim(), nombre: f.nombre, tipo: f.tipo, datos: await leerBase64(f.blob) }),
-      })).json();
-      return r.ok ? "" : r.error || "error";
+      let res;
+      try {
+        res = await fetch(ENDPOINT, {
+          method: "POST",
+          body: JSON.stringify({ accion: "subirFoto", codigo, quien: $("#quien").value.trim(), nombre: f.nombre, tipo: f.tipo, datos: await leerBase64(f.blob) }),
+        });
+      } catch { return "conexion"; }
+      let r;
+      try { r = await res.json(); } catch { return "sinpermiso"; } // Google respondió una página de error
+      if (r.ok) return "";
+      return r.error === "accion" ? "version" : r.error === "grande" ? "grande" : "otro";
     }
 
     $("#pick").addEventListener("click", () => $("#files").click());
@@ -142,6 +149,7 @@
       const hayVideos = files.some((f) => f.type.startsWith("video/"));
       const grandes = [];
       let fallos = 0;
+      const motivos = new Set();
       for (let i = 0; i < files.length; i++) {
         $("#progressText").textContent = `Subiendo ${i + 1} de ${files.length}…`;
         $("#bar").style.width = `${(i / files.length) * 100}%`;
@@ -149,8 +157,8 @@
           const error = await subir(files[i]);
           if (!error) bien++;
           else if (error === "grande") grandes.push(files[i].name);
-          else fallos++;
-        } catch { fallos++; }
+          else { fallos++; motivos.add(error); }
+        } catch { fallos++; motivos.add("otro"); }
       }
       $("#bar").style.width = "100%";
       $("#progress").hidden = true;
@@ -163,7 +171,16 @@
       }
       const avisos = [];
       if (grandes.length) avisos.push(`${grandes.length === 1 ? "Un archivo es muy pesado" : `${grandes.length} archivos son muy pesados`} (más de ${MAX_MB} MB); prueba con un video más corto.`);
-      if (fallos) avisos.push(`${fallos === 1 ? "No se pudo subir 1" : `No se pudieron subir ${fallos}`}. Revisa tu conexión e inténtalo de nuevo con esas.`);
+      if (fallos) {
+        const cuantas = fallos === 1 ? "No se pudo subir 1" : `No se pudieron subir ${fallos}`;
+        avisos.push(motivos.has("conexion") && motivos.size === 1
+          ? `${cuantas}. Revisa tu conexión a internet e inténtalo de nuevo con esas.`
+          : motivos.has("version")
+            ? `${cuantas}: el álbum todavía no está activado (los novios deben publicar la nueva versión del script de Google).`
+            : motivos.has("sinpermiso")
+              ? `${cuantas}: el álbum todavía no está activado (los novios deben ejecutar "probarFotos" en el script de Google, aceptar el permiso de Drive y publicar una nueva versión).`
+              : `${cuantas}. Inténtalo de nuevo en un momento.`);
+      }
       if (avisos.length) { $("#err").textContent = avisos.join(" "); $("#err").hidden = false; }
     });
   </script>
