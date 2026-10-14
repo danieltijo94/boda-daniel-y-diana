@@ -175,8 +175,7 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
-- [ ] Pasar los **números de WhatsApp de Diana y Daniel** para los botones del cierre de confirmaciones
-  (van en `CONFIG.whatsapp` de `script.js`; quedan visibles en la invitación, que es pública).
+- [x] Números de WhatsApp de Diana y Daniel configurados en `CONFIG.whatsapp` (botones del cierre de confirmaciones).
 - [ ] Revisar que la **playlist** sea pública u "oculta" (no privada), para que los invitados puedan abrirla el día de la boda.
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
@@ -335,7 +334,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `8d0772e` | 2026-09-25 | Arreglo: la respuesta se lee de la hoja por código (antes solo se recordaba en el mismo celular); toda la familia ve y edita el mismo registro |
 | `e476660` | 2026-10-04 | ★ Confirmación por persona aprobada por el usuario (probada con la hoja real) |
 | `9d2dfb9` | 2026-10-13 | Punto 4 omitido. Punto 5: modo "día de la boda" (sección ¡Hoy nos casamos!, itinerario en vivo, tu mesa, botones de fotos/playlist/cómo llegar; el script envía la mesa de cada persona) |
-| — | 2026-10-14 | Cierre automático de confirmaciones después del 30 de abril de 2027, con botones de WhatsApp "Escribe a Diana" / "Escribe a Daniel"; el script rechaza confirmaciones tardías |
+| `e3039f4` | 2026-10-14 | Cierre automático de confirmaciones después del 30 de abril de 2027, con botones de WhatsApp "Escribe a Diana" / "Escribe a Daniel"; el script rechaza confirmaciones tardías |
+| — | 2026-10-14 | Números de WhatsApp de Diana y Daniel en los botones del cierre de confirmaciones |
 
 ---
 

@@ -9,7 +9,7 @@ const CONFIG = {
   // Desde este momento ya no se puede confirmar ni cambiar la respuesta (pruebas: ?modo=cerrado)
   cierreConfirmacion: "2027-05-01T00:00:00-05:00",
   // WhatsApp de los novios con código de país, solo números (ej. "573001234567"). Vacío = no se muestra ese botón.
-  whatsapp: { Diana: "", Daniel: "" },
+  whatsapp: { Diana: "573133624069", Daniel: "573125110633" },
   // URL de tu Google Apps Script (ver CONFIGURAR-CORREO.md): confirmaciones y lista de invitados.
   // Es la misma que ENDPOINT en panel.js. Vacío = modo de prueba.
   rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzUn2L-ukmTA2qxZPqtL_NP07KkcwTBhho45IDfBYrYjcCo_oL6x7sbNQ4qjci7HAtZnQ/exec",
