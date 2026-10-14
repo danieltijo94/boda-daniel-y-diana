@@ -6,6 +6,10 @@ const CONFIG = {
   fecha: "2027-06-19T16:00:00-05:00",
   // Fecha límite para confirmar
   fechaLimiteConfirmacion: "30 de abril de 2027",
+  // Desde este momento ya no se puede confirmar ni cambiar la respuesta (pruebas: ?modo=cerrado)
+  cierreConfirmacion: "2027-05-01T00:00:00-05:00",
+  // WhatsApp de los novios con código de país, solo números (ej. "573001234567"). Vacío = no se muestra ese botón.
+  whatsapp: { Diana: "", Daniel: "" },
   // URL de tu Google Apps Script (ver CONFIGURAR-CORREO.md): confirmaciones y lista de invitados.
   // Es la misma que ENDPOINT en panel.js. Vacío = modo de prueba.
   rsvpEndpoint: "https://script.google.com/macros/s/AKfycbzUn2L-ukmTA2qxZPqtL_NP07KkcwTBhho45IDfBYrYjcCo_oL6x7sbNQ4qjci7HAtZnQ/exec",
@@ -270,6 +274,36 @@ function fillDiet(box, prev) {
   box.querySelector(".diet-detail").value = prev.detalle || "";
 }
 
+const confirmacionesCerradas = () =>
+  params.get("modo") === "cerrado" || Date.now() >= new Date(CONFIG.cierreConfirmacion).getTime();
+
+// Botones "Escribe a Diana" / "Escribe a Daniel" con un mensaje listo
+function whatsappButtons(box, intro) {
+  const quien = guest ? guest.familia : "";
+  const botones = Object.entries(CONFIG.whatsapp).filter(([, numero]) => numero).map(([nombre, numero]) => {
+    const texto = quien ? `¡Hola ${nombre}! 💍 Te escribe ${quien} por la invitación a la boda.`
+      : `¡Hola ${nombre}! 💍 Te escribo por la invitación a la boda.`;
+    const a = document.createElement("a");
+    a.className = "btn wa-btn";
+    a.href = `https://wa.me/${numero.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>';
+    a.append(`Escribe a ${nombre}`);
+    return a;
+  });
+  box.replaceChildren();
+  if (!botones.length) return false;
+  const p = document.createElement("p");
+  p.className = "wa-intro";
+  p.textContent = intro;
+  const fila = document.createElement("div");
+  fila.className = "wa-btns";
+  fila.append(...botones);
+  box.append(p, fila);
+  return true;
+}
+
 function setupRSVP() {
   const form = $("#rsvpForm");
   const done = $("#rsvpDone");
@@ -435,6 +469,22 @@ function setupRSVP() {
       showDone([{ nombre: "", asiste: prev.asistencia === "Sí" }]);
     }
   } catch { /* sin almacenamiento */ }
+
+  // Después de la fecha límite: sin formulario ni "Cambiar mi respuesta"; quedan los WhatsApp de los novios
+  if (confirmacionesCerradas()) {
+    form.hidden = true;
+    $("#rsvpAgain").hidden = true;
+    $("#rsvpIntro").textContent = `Las confirmaciones cerraron el ${CONFIG.fechaLimiteConfirmacion}.`;
+    if (!done.hidden) {
+      doneWhen.textContent = "El plazo para cambiar la respuesta ya terminó.";
+      doneWhen.hidden = false;
+      $("#rsvpDoneWa").hidden = !whatsappButtons($("#rsvpDoneWa"), "¿Algún cambio de último momento? Escríbenos:");
+    } else {
+      whatsappButtons($("#rsvpClosedWa"), "Si necesitas hablar con nosotros, escríbenos:");
+      $("#rsvpClosed").hidden = false;
+    }
+    return;
+  }
 
   $("#rsvpAgain").addEventListener("click", () => {
     done.hidden = true;

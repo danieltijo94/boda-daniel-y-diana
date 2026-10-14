@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 13 de octubre de 2026 (punto 5: modo "día de la boda")
+> **Última actualización:** 14 de octubre de 2026 (cierre de confirmaciones después de la fecha límite)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -64,6 +64,10 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
       si marca Alergia debe escribir a qué). Los "Acompañante de …" pueden escribir su nombre.
     - **Resumen** antes de enviar ("Asistirán 2 de 3: … · No asistirá: …") y **link de YouTube** de la canción (uno por familia).
     - **Sin código:** nombre + "¿Nos acompañarás?" + restricción.
+    - **Desde el 1 de mayo de 2027** (`CONFIG.cierreConfirmacion`; pruebas: `?modo=cerrado`) ya no se puede confirmar ni cambiar:
+      quien respondió ve su resumen sin "Cambiar mi respuesta"; quien no, ve "Las confirmaciones cerraron". En ambos casos,
+      botones **"Escribe a Diana"** y **"Escribe a Daniel"** por WhatsApp (`CONFIG.whatsapp`, mensaje con el nombre de la familia).
+      El script también rechaza confirmaciones después de esa fecha (`CIERRE_CONFIRMACIONES`).
     - Al enviar: destellos y gracias con nombres ("Te esperamos a Carlos y María. Extrañaremos a Juan.");
       **"Cambiar mi respuesta"** vuelve a cargar lo marcado.
     - **La respuesta es una sola por código** (la guarda la hoja): al abrir el link, la invitación trae la última respuesta
@@ -171,6 +175,8 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
+- [ ] Pasar los **números de WhatsApp de Diana y Daniel** para los botones del cierre de confirmaciones
+  (van en `CONFIG.whatsapp` de `script.js`; quedan visibles en la invitación, que es pública).
 - [ ] Revisar que la **playlist** sea pública u "oculta" (no privada), para que los invitados puedan abrirla el día de la boda.
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
@@ -278,6 +284,8 @@ la boda", porque ambos muestran la mesa de cada familia.
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
 - **El código es la llave**: una sola respuesta por invitación, guardada en la hoja y visible/editable desde cualquier celular.
 - **Pase QR de entrada (punto 4): omitido** por decisión del usuario.
+- **Fecha límite real:** después del 30 de abril de 2027 se cierran las confirmaciones (en la invitación y en el script); los
+  invitados pueden escribir por WhatsApp a Diana o a Daniel.
 - **Confirmación por persona** (no por familia): cada invitado de la tarjeta marca si va y su propia restricción.
 - Se usa la pestaña que creó el usuario (**Lista de Invitados**) en vez de una nueva; el script solo le agrega
   las columnas Familia y Código. Las invitaciones se agrupan por la columna **Familia**.
@@ -326,7 +334,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `c64758a` | 2026-09-25 | ★ Confirmación por persona: tarjetas Asistirá/No podrá, restricción por persona, nombre de acompañantes, resumen y gracias con nombres; script con columna "No asisten", pestaña "Asistencia por persona" y correo detallado; 🍽 en el plano |
 | `8d0772e` | 2026-09-25 | Arreglo: la respuesta se lee de la hoja por código (antes solo se recordaba en el mismo celular); toda la familia ve y edita el mismo registro |
 | `e476660` | 2026-10-04 | ★ Confirmación por persona aprobada por el usuario (probada con la hoja real) |
-| — | 2026-10-13 | Punto 4 omitido. Punto 5: modo "día de la boda" (sección ¡Hoy nos casamos!, itinerario en vivo, tu mesa, botones de fotos/playlist/cómo llegar; el script envía la mesa de cada persona) |
+| `9d2dfb9` | 2026-10-13 | Punto 4 omitido. Punto 5: modo "día de la boda" (sección ¡Hoy nos casamos!, itinerario en vivo, tu mesa, botones de fotos/playlist/cómo llegar; el script envía la mesa de cada persona) |
+| — | 2026-10-14 | Cierre automático de confirmaciones después del 30 de abril de 2027, con botones de WhatsApp "Escribe a Diana" / "Escribe a Daniel"; el script rechaza confirmaciones tardías |
 
 ---
 
@@ -368,6 +377,8 @@ const CLAVE_NOVIOS = "";
 // Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
 const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
+// Después de este momento ya no se aceptan confirmaciones ni cambios (fecha límite: 30 de abril de 2027)
+const CIERRE_CONFIRMACIONES = new Date("2027-05-01T00:00:00-05:00");
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción", "No asisten"];
 // Una fila por persona: quién va, quién no y su restricción (para el catering y el plano de mesas)
 const HOJA_PERSONAS = "Asistencia por persona";
@@ -406,6 +417,7 @@ function doPost(e) {
   try {
     const p = (e && e.parameter) || {};
     if (!p.nombre || !p.asistencia) return responder({ ok: false, error: "faltan datos" });
+    if (new Date() >= CIERRE_CONFIRMACIONES) return responder({ ok: false, error: "cerrado" });
     // Los pases y el nombre de la familia salen de la lista de invitados
     const inv = p.codigo ? buscarInvitado(p.codigo) : null;
     const pases = inv && inv.ok ? inv.invitados.length : toInt(p.pases, 1);

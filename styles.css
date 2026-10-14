@@ -713,3 +713,13 @@ html.samsung .chrome-gate {
 .modo-boda .timeline li.now .t-dot { border-color: var(--wine); background: var(--rose-light); box-shadow: 0 0 0 4px var(--ivory), 0 0 0 7px rgba(122, 46, 69, .25); animation: pulse 2s infinite; }
 .modo-boda .timeline li.now .t-text { color: var(--wine); font-weight: 600; }
 .modo-boda .timeline li.now .t-time::after { content: " · ahora"; color: var(--wine); }
+
+/* =================== CONFIRMACIONES CERRADAS / WHATSAPP =================== */
+.rsvp-closed p { font-size: 18px; }
+.wa-box { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(184, 145, 79, .25); }
+.rsvp-closed .wa-box { border-top: 0; padding-top: 0; margin-top: 10px; }
+.wa-intro { font-size: 17px; font-style: italic; color: var(--ink-soft); margin-bottom: 4px; }
+.wa-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 10px; }
+.wa-btn { background: #fff; color: #1f7a4d; border: 1px solid #25d366; box-shadow: 0 10px 22px -16px rgba(18, 140, 76, .7); }
+.wa-btn:hover { background: #effbf4; }
+.wa-btn svg { width: 18px; height: 18px; fill: #25d366; }

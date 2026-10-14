@@ -22,7 +22,7 @@
       if (!seguirAqui) document.documentElement.classList.add("samsung");
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=202610130100">
+  <link rel="stylesheet" href="styles.css?v=202610130200">
 </head>
 <body class="locked">
 
@@ -429,7 +429,7 @@
     <section class="section rsvp" id="confirmar">
       <svg class="divider reveal" aria-hidden="true"><use href="#garland"/></svg>
       <h2 class="section-title reveal">Confirma tu asistencia</h2>
-      <p class="reveal">Por favor confírmanos antes del <strong data-cfg="rsvpDeadline">30 de abril de 2027</strong>.</p>
+      <p class="reveal" id="rsvpIntro">Por favor confírmanos antes del <strong data-cfg="rsvpDeadline">30 de abril de 2027</strong>.</p>
       <p class="rsvp-adults reveal">Evento solo para adultos</p>
 
       <form class="rsvp-form reveal" id="rsvpForm" novalidate>
@@ -497,6 +497,15 @@
         <p id="rsvpDoneText">Te esperamos con mucha ilusión.</p>
         <p class="done-when" id="rsvpDoneWhen" hidden></p>
         <button type="button" class="btn btn-ghost btn-small" id="rsvpAgain">Cambiar mi respuesta</button>
+        <div class="wa-box" id="rsvpDoneWa" hidden></div>
+      </div>
+
+      <!-- Después de la fecha límite: sin formulario, con WhatsApp de los novios -->
+      <div class="rsvp-done rsvp-closed" id="rsvpClosed" hidden>
+        <svg class="done-orchid" aria-hidden="true"><use href="#orchid"/></svg>
+        <h3>Las confirmaciones cerraron</h3>
+        <p>El plazo para confirmar terminó el <span data-cfg="rsvpDeadline">30 de abril de 2027</span>.</p>
+        <div class="wa-box" id="rsvpClosedWa"></div>
       </div>
     </section>
 
@@ -511,6 +520,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=202610130100"></script>
+  <script src="script.js?v=202610130200"></script>
 </body>
 </html>

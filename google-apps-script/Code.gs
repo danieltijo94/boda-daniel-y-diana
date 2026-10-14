@@ -23,6 +23,8 @@ const CLAVE_NOVIOS = "";
 // Las filas con la misma Familia reciben una sola invitación; si Familia está vacía, la persona va sola.
 const HOJA_INVITADOS = "Lista de Invitados";
 const COL_MESAS = ["Mesa", "Sillas"];
+// Después de este momento ya no se aceptan confirmaciones ni cambios (fecha límite: 30 de abril de 2027)
+const CIERRE_CONFIRMACIONES = new Date("2027-05-01T00:00:00-05:00");
 const COLUMNAS = ["Fecha", "Código", "Familia", "Asistencia", "Personas", "Pases", "Asistentes", "Restricciones / alergias", "Canción", "No asisten"];
 // Una fila por persona: quién va, quién no y su restricción (para el catering y el plano de mesas)
 const HOJA_PERSONAS = "Asistencia por persona";
@@ -61,6 +63,7 @@ function doPost(e) {
   try {
     const p = (e && e.parameter) || {};
     if (!p.nombre || !p.asistencia) return responder({ ok: false, error: "faltan datos" });
+    if (new Date() >= CIERRE_CONFIRMACIONES) return responder({ ok: false, error: "cerrado" });
     // Los pases y el nombre de la familia salen de la lista de invitados
     const inv = p.codigo ? buscarInvitado(p.codigo) : null;
     const pases = inv && inv.ok ? inv.invitados.length : toInt(p.pases, 1);
