@@ -1,6 +1,6 @@
 // Rosas de jardín "realistas" (estilo ilustración botánica): pétalos en perspectiva que forman una copa
 const PALETA = {
-  marfil: { base: "#cdb894", medio: "#ece0cb", borde: "#fffaf1", sombra: "#9f8a68", trazo: "#c8b28c" },
+  marfil: { base: "#d5c3a2", medio: "#efe5d3", borde: "#fffbf4", sombra: "#b09a76", trazo: "#cbb894" },
   rubor:  { base: "#c99088", medio: "#efcfc8", borde: "#fff4f1", sombra: "#9d655e", trazo: "#d1a299" },
   vino:   { base: "#3d0f1f", medio: "#7a2a44", borde: "#b8607a", sombra: "#2a0915", trazo: "#5c1d31" },
 };

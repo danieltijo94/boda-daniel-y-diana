@@ -7,7 +7,7 @@ dentro del `<svg>` del principio de `index.html` (rosas, ramos, guirnalda, hoja,
 - `rosas.js`: rosa de jardín realista (`rosaReal`), hoja dentada (`hojaReal`).
 - `sello2.js`: sello de cera vino con el monograma D&D (D en Berkshire Swash con línea grabada y rulos; "&" en Cormorant itálica).
 - `insertar.mjs`: mete el resultado en `index.html` (`node insertar.mjs` después de `node gen.mjs`).
-- `gen.html`: arma los símbolos con los mismos ids que usa la invitación (`orchid` = rosa marfil, `orchidBlush` = rosa rubor,
+- `gen.html`: arma los símbolos con los mismos ids que usa la invitación (`orchid` = rosa marfil, `orchidBlush` = rosa rubor, `cluster` = ramito de 3 rosas para tarjetas,
   `roseWine` = rosa vino, `obud`, `oleaf`, `spray`, `garland`, `bouquet`, `posy`, `sealMono`).
 
 Para regenerar: servir esta carpeta (`python3 -m http.server 8771`) y correr `node gen.mjs` (Playwright).

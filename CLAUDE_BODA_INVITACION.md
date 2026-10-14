@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 20 de octubre de 2026 (ajuste del diseño: sello más pequeño y ramos de rosas más grandes y naturales)
+> **Última actualización:** 20 de octubre de 2026 (revisión de elegancia: separadores y adornos de rosas más grandes, tarjetas en marfil claro)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -30,6 +30,8 @@ siempre; cambian el estilo y las flores:
   un arreglo de rosas arriba a la derecha y un ramo de rosas con flores secas abajo a la izquierda. Las rosas van
   grandes y juntas como un ramo de verdad (hojas asomando entre ellas, pampa y paniculata detrás); el sello es
   discreto (70 px en el sobre, 80 px en la portada).
+- **Separadores** (antes de la frase bíblica, mesa, confirmación y pie): guirnalda ancha de rosas con flores secas
+  (casi todo el ancho del celular). Encima de cada tarjeta, un **ramito de 3 rosas** (`cluster`). Tarjetas en marfil claro (`--card`).
 - **Rosas de jardín** (marfil, rubor y vino) en todos los adornos (separadores, tarjeta del lugar, gracias, pie).
 - **Pétalos de rosa** cayendo (marfil, rubor y vino) con destellos dorados.
 - Los dibujos se generan con `diseno/rosas/` (ver su `LEEME.md`).
@@ -376,7 +378,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `95da71a` | 2026-10-14 | Punto 6 aprobado. `fotos.html` explica la causa real cuando no sube (sin permiso de Drive, versión vieja del script o sin internet) |
 | `fc59a9a` | 2026-10-14 | Punto 7: panel de los novios (`novios.html`): totales, pendientes con recordatorio por WhatsApp, confirmados, no asisten, catering y canciones |
 | `fb180dc` | 2026-10-20 | Diseño nuevo con los mismos textos: marfil, papel artesanal, sello de cera vino con monograma D&D, rosas de jardín y pétalos de rosa; generador en `diseno/rosas/` |
-| — | 2026-10-20 | Ajuste de proporciones: sello más pequeño (sobre 70 px, portada 80 px), ramos rehechos con rosas más grandes y juntas (hojas entre las rosas, flores secas detrás) y más grandes en la tarjeta y el sobre; en computador, ramos aún más grandes. Pétalos sin cambios |
+| `7f72c9c` | 2026-10-20 | Ajuste de proporciones: sello más pequeño (sobre 70 px, portada 80 px), ramos rehechos con rosas más grandes y juntas (hojas entre las rosas, flores secas detrás) y más grandes en la tarjeta y el sobre; en computador, ramos aún más grandes. Pétalos sin cambios |
+| — | 2026-10-20 | Revisión de elegancia: separadores de rosas y pie de página rehechos y más grandes (rosas juntas, hojas, pampa y paniculata a los lados, línea dorada); ramito nuevo de 3 rosas encima de las tarjetas (lugar, mesa, agradecimiento y gracias del formulario) en vez de una rosa sola; rosas marfil con centro más suave; tarjetas en marfil claro en vez de blanco puro; más aire en la tarjeta del clima |
 
 ---
 

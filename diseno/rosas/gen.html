@@ -21,18 +21,31 @@ hojaReal(sym("oleaf", "0 0 120 50"), 4, 26, 3.1, -6);
   use(g, "oleaf", 158, 44, 48, 20, { transform: "rotate(-150 182 54)" });
   use(g, "orchid", 34, 82, 92, 92); use(g, "roseWine", 108, 46, 76, 76); use(g, "orchidBlush", 176, 28, 64, 64); use(g, "orchid", 236, 26, 44, 44);
   use(g, "obud", 280, 30, 14, 20, { transform: "rotate(70 287 40)" }); use(g, "obud", 296, 36, 10, 14, { transform: "rotate(80 301 43)" }); }
-// Guirnalda centrada (separadores)
-{ const g = sym("garland", "0 0 320 120");
-  el(g, "path", { d: "M20 70C80 50 120 62 160 62S240 50 300 70", stroke: "url(#gGold)", "stroke-width": 1.4, fill: "none" });
-  use(g, "oleaf", 66, 66, 44, 18, { transform: "rotate(170 88 75)" }); use(g, "oleaf", 210, 66, 44, 18, { transform: "rotate(10 232 75)" });
-  use(g, "obud", 22, 58, 12, 18, { transform: "rotate(-70 28 67)" }); use(g, "obud", 286, 58, 12, 18, { transform: "rotate(70 292 67)" });
-  use(g, "orchidBlush", 46, 44, 42, 42); use(g, "orchidBlush", 232, 44, 42, 42);
-  use(g, "orchid", 86, 30, 58, 58); use(g, "orchid", 176, 30, 58, 58); use(g, "roseWine", 124, 12, 72, 72); }
 // Variantes de rosa (solo para los ramos, para que no se vean todas iguales)
 rosaReal(sym("roseIvory2", "-50 -50 100 100"), 0, 4, 42, "marfil", 35, .74);
 rosaReal(sym("roseBlush2", "-50 -50 100 100"), 0, 4, 42, "rubor", -25, .7);
 const R = (g, href, cx, cy, w, rot = 0) => use(g, href, cx - w / 2, cy - w / 2, w, w, rot ? { transform: `rotate(${rot} ${cx} ${cy})` } : {});
 const H = (g, x, y, w, rot) => use(g, "oleaf", x, y - w * .21, w, w * .42, { transform: `rotate(${rot} ${x} ${y})` }); // hoja que nace en (x,y)
+// Guirnalda centrada (separadores y pie): rosas juntas al centro, hojas y flores secas que se abren a los lados
+{ const g = sym("garland", "0 0 360 130");
+  [[-1], [1]].forEach(([k]) => {
+    const X = (x) => 180 + k * x;
+    pampa(g, X(40), 74, X(176), 58, 96, "#d8c8aa"); pampa(g, X(40), 80, X(160), 98, 80, "#dfd1b6");
+    rama(g, X(30), 70, X(150), 34, 6); paniculata(g, X(40), 76, X(132), 46, 14, 11); paniculata(g, X(40), 80, X(150), 92, 12, 10);
+  });
+  el(g, "path", { d: "M24 82C80 64 128 74 180 72S280 64 336 82", stroke: "url(#gGold)", "stroke-width": 1.1, fill: "none" });
+  H(g, 150, 70, 62, 196); H(g, 140, 80, 56, 160); H(g, 210, 70, 62, -16); H(g, 220, 80, 56, 20);
+  H(g, 160, 62, 36, -150); H(g, 200, 62, 36, -30);
+  use(g, "obud", 76, 70, 14, 20, { transform: "rotate(-80 83 80)" }); use(g, "obud", 270, 70, 14, 20, { transform: "rotate(80 277 80)" });
+  R(g, "roseBlush2", 98, 80, 46, -10); R(g, "orchidBlush", 262, 80, 46, 12);
+  R(g, "orchid", 136, 72, 64, -6); R(g, "roseIvory2", 224, 72, 64, 8);
+  R(g, "roseWine", 180, 64, 82, 0); }
+// Ramito para la parte de arriba de las tarjetas (lugar, mesa, agradecimiento, gracias del formulario)
+{ const g = sym("cluster", "0 0 200 120");
+  pampa(g, 80, 70, 4, 52, 70, "#d8c8aa"); pampa(g, 120, 70, 196, 52, 70, "#dfd1b6");
+  paniculata(g, 80, 70, 26, 80, 12, 10); paniculata(g, 120, 70, 174, 80, 12, 10);
+  H(g, 84, 68, 56, 190); H(g, 116, 68, 56, -10); H(g, 86, 60, 32, -160); H(g, 114, 60, 32, -20);
+  R(g, "roseIvory2", 62, 72, 54, -8); R(g, "roseBlush2", 140, 72, 52, 10); R(g, "roseWine", 100, 60, 74, 0); }
 // Ramo grande (abajo a la izquierda de la portada y del sobre): rosas juntas como un ramo de verdad,
 // hojas que asoman entre ellas y flores secas detrás, todo nace de la esquina
 { const g = sym("bouquet", "0 0 300 300");

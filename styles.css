@@ -4,6 +4,7 @@
 :root {
   color-scheme: light dark;
   --ivory: #fdf9f4;
+  --card: #fffdf9;
   --champagne: #f4ede2;
   --blush: #ebe1d3;
   --linen: #e6ddcf;
@@ -270,7 +271,7 @@ main {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20'%3E%3Cdefs%3E%3ClinearGradient id='g' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='200' y2='0'%3E%3Cstop offset='0' stop-color='%23a47a36'/%3E%3Cstop offset='.5' stop-color='%23ecd49c'/%3E%3Cstop offset='1' stop-color='%23a47a36'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 10H80M120 10H200' stroke='url(%23g)'/%3E%3Cpath d='M100 2l8 8-8 8-8-8z' fill='none' stroke='url(%23g)' stroke-width='1.2'/%3E%3Ccircle cx='100' cy='10' r='2' fill='%23b8914f'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .section-sub { color: var(--ink-soft); font-style: italic; margin-bottom: 30px; }
-.divider { width: 240px; height: 90px; display: block; margin: 0 auto 26px; }
+.divider { width: min(360px, 92vw); height: auto; aspect-ratio: 360 / 130; display: block; margin: 0 auto 30px; overflow: visible; }
 
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
@@ -330,7 +331,7 @@ main {
 .countdown { display: flex; justify-content: center; gap: clamp(8px, 2.5vw, 20px); }
 .cd-item {
   display: flex; flex-direction: column; align-items: center;
-  background: #fff; border-radius: 999px 999px 12px 12px; padding: 20px 0 14px;
+  background: var(--card); border-radius: 999px 999px 12px 12px; padding: 20px 0 14px;
   width: clamp(68px, 20vw, 112px);
   border: 1px solid rgba(184, 145, 79, .6);
   box-shadow: 0 14px 28px -18px rgba(90, 31, 51, .45), inset 0 0 0 4px #fff, inset 0 0 0 5px rgba(184,145,79,.2);
@@ -343,12 +344,12 @@ main {
 
 /* Lugar */
 .place-card {
-  position: relative; max-width: 440px; margin: 0 auto;
-  background: #fff; border-radius: 16px; padding: 70px 26px 38px;
+  position: relative; max-width: 440px; margin: 70px auto 0;
+  background: var(--card); border-radius: 16px; padding: 70px 26px 38px;
   border: 1px solid rgba(184, 145, 79, .6);
-  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(184,145,79,.25);
 }
-.place-orchid { position: absolute; top: -46px; left: 50%; width: 96px; height: 96px; margin-left: -48px; animation: bob 5s ease-in-out infinite; }
+.place-orchid { position: absolute; top: -64px; left: 50%; width: 180px; height: 108px; margin-left: -90px; animation: bob 5s ease-in-out infinite; }
 .place-kicker { font-family: var(--caps); font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); }
 .place-card h3 { font-family: var(--script); font-weight: normal; font-size: 52px; color: var(--wine); line-height: 1.2; margin: 6px 0 2px; }
 .place-addr { color: var(--ink-soft); font-style: italic; }
@@ -364,7 +365,7 @@ main {
 .timeline li { display: grid; grid-template-columns: 1fr 64px 1fr; align-items: center; margin-bottom: 28px; }
 .t-time { text-align: right; font-family: var(--caps); font-size: 14px; letter-spacing: .08em; color: var(--gold); padding-right: 16px; }
 .t-dot {
-  width: 54px; height: 54px; border-radius: 50%; background: #fff; display: grid; place-items: center; margin: 0 auto;
+  width: 54px; height: 54px; border-radius: 50%; background: var(--card); display: grid; place-items: center; margin: 0 auto;
   border: 1px solid var(--gold); box-shadow: 0 0 0 4px var(--ivory); z-index: 1; position: relative;
 }
 .t-dot svg { width: 26px; height: 26px; fill: none; stroke: var(--wine); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -413,7 +414,7 @@ main {
 
 /* Footer */
 .footer { text-align: center; padding: 40px 16px 110px; background: linear-gradient(180deg, transparent, var(--blush)); }
-.footer-flower { width: 220px; height: 82px; }
+.footer-flower { width: min(340px, 88vw); height: auto; aspect-ratio: 360 / 130; overflow: visible; }
 .footer-names { font-family: var(--script); font-size: clamp(36px, 10vw, 52px); color: var(--wine); line-height: 1.2; }
 .footer-flourish { width: 160px; height: 16px; display: block; margin: 10px auto; }
 .footer-date { font-family: var(--caps); letter-spacing: .3em; font-size: 13px; color: var(--gold); }
@@ -459,7 +460,7 @@ main {
 .choice-box {
   display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
   padding: 16px 8px; border-radius: 14px; cursor: pointer; font-size: 17px; line-height: 1.2;
-  border: 1px solid rgba(184, 145, 79, .45); background: #fff;
+  border: 1px solid rgba(184, 145, 79, .45); background: var(--card);
   transition: all .35s var(--ease);
 }
 .choice-box svg { width: 30px; height: 30px; fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linejoin: round; transition: transform .4s var(--ease), stroke .3s; }
@@ -478,11 +479,11 @@ main {
   font: inherit; font-size: 15px; padding: 9px 8px; border-radius: 999px; cursor: pointer;
   border: 1px dashed rgba(184, 145, 79, .7); background: transparent; color: var(--wine); transition: all .3s var(--ease);
 }
-.quick-btn:hover { background: #fff; border-style: solid; }
+.quick-btn:hover { background: var(--card); border-style: solid; }
 
 /* Tarjeta de cada invitado */
 .rsvp-person {
-  background: #fff; border: 1px solid rgba(184, 145, 79, .4); border-radius: 14px; padding: 12px 14px;
+  background: var(--card); border: 1px solid rgba(184, 145, 79, .4); border-radius: 14px; padding: 12px 14px;
   transition: border-color .3s, background .3s, box-shadow .3s;
 }
 .rsvp-person.yes { border-color: var(--wine); box-shadow: 0 10px 22px -18px rgba(90, 31, 51, .8); }
@@ -516,7 +517,7 @@ main {
 .diet-chip input { position: absolute; opacity: 0; pointer-events: none; }
 .diet-chip span {
   display: inline-block; padding: 5px 12px; border-radius: 999px; cursor: pointer; font-size: 15px;
-  border: 1px solid rgba(184, 145, 79, .45); background: #fff; transition: all .25s var(--ease);
+  border: 1px solid rgba(184, 145, 79, .45); background: var(--card); transition: all .25s var(--ease);
 }
 .diet-chip input:checked + span { background: var(--rose-light); border-color: var(--wine); color: var(--wine); }
 .diet-chip input:focus-visible + span { outline: 1px dashed var(--wine); outline-offset: 2px; }
@@ -546,13 +547,13 @@ main {
 
 .rsvp-done {
   max-width: 420px; margin: 30px auto 0; padding: 30px 24px; border-radius: 18px;
-  background: #fff; border: 1px solid rgba(184, 145, 79, .6);
+  background: var(--card); border: 1px solid rgba(184, 145, 79, .6);
   box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45);
   animation: popIn .7s var(--ease);
 }
 .rsvp-done h3 { font-family: var(--script); font-weight: normal; font-size: 46px; color: var(--wine); line-height: 1.15; margin: 4px 0 8px; }
 .done-when { font-size: 15px; font-style: italic; color: var(--ink-soft); margin: 10px 0 16px; line-height: 1.45; }
-.done-orchid { width: 90px; height: 90px; animation: heartbeat 1.8s ease-in-out infinite; }
+.done-orchid { width: 150px; height: 90px; animation: heartbeat 1.8s ease-in-out infinite; }
 @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.12); } 30% { transform: scale(1); } 45% { transform: scale(1.08); } }
 @keyframes popIn { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
 
@@ -617,9 +618,9 @@ html.samsung .chrome-gate {
 .map-btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 0 12px; }
 .photos p { max-width: 480px; margin: 0 auto; }
 .qr-card {
-  width: 230px; margin: 28px auto 6px; padding: 22px 22px 14px; background: #fff; border-radius: 14px;
+  width: 230px; margin: 28px auto 6px; padding: 22px 22px 14px; background: var(--card); border-radius: 14px;
   border: 1px solid rgba(184, 145, 79, .6);
-  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(184,145,79,.25);
 }
 .qr-card img { width: 100%; height: auto; }
 .qr-card span { display: block; margin-top: 8px; font-family: var(--caps); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
@@ -628,8 +629,8 @@ html.samsung .chrome-gate {
 .arrival-intro { max-width: 460px; margin: 0 auto 22px; font-style: italic; color: var(--ink-soft); }
 .arrival-list {
   list-style: none; max-width: 460px; margin: 0 auto; padding: 10px 24px; text-align: left;
-  background: #fff; border-radius: 16px; border: 1px solid rgba(184, 145, 79, .6);
-  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+  background: var(--card); border-radius: 16px; border: 1px solid rgba(184, 145, 79, .6);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(184,145,79,.25);
 }
 .arrival-list li { display: grid; grid-template-columns: 52px 1fr; gap: 16px; align-items: center; padding: 18px 0; }
 .arrival-list li + li { border-top: 1px solid rgba(184, 145, 79, .25); }
@@ -645,13 +646,14 @@ html.samsung .chrome-gate {
 
 /* =================== CLIMA =================== */
 .weather-card {
-  max-width: 460px; margin: 0 auto; padding: 26px 18px 22px; background: #fff; border-radius: 16px;
+  max-width: 460px; margin: 0 auto; padding: 32px 24px 28px; background: var(--card); border-radius: 16px;
   border: 1px solid rgba(184, 145, 79, .6);
-  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(184,145,79,.25);
 }
 .w-kicker { font-family: var(--caps); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); line-height: 1.7; }
 .w-slots { display: flex; gap: 6px; margin: 18px 0 14px; }
 .w-slots:empty { display: none; }
+.w-slots:empty + .w-tip { margin-top: 12px; }
 .w-slot {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0 10px;
   border-radius: 999px 999px 12px 12px; background: linear-gradient(180deg, var(--ivory), #fff);
@@ -674,7 +676,7 @@ html.samsung .chrome-gate {
 .now-card {
   position: relative; max-width: 440px; margin: 0 auto; padding: 26px 24px 22px; border-radius: 18px; overflow: hidden;
   background: linear-gradient(160deg, #fff, var(--ivory)); border: 1px solid rgba(184, 145, 79, .6);
-  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(184,145,79,.25);
+  box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(184,145,79,.25);
 }
 .now-label { font-family: var(--caps); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--wine); }
 .now-label::before {
@@ -683,7 +685,7 @@ html.samsung .chrome-gate {
 }
 @keyframes pulseDot { 50% { opacity: .25; transform: scale(.7); } }
 .now-main { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 8px; }
-.now-icon { width: 58px; height: 58px; flex: none; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--gold); background: #fff; box-shadow: 0 0 0 4px var(--ivory); }
+.now-icon { width: 58px; height: 58px; flex: none; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--gold); background: var(--card); box-shadow: 0 0 0 4px var(--ivory); }
 .now-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--wine); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .now-what { font-family: var(--script); font-size: 44px; line-height: 1.1; color: var(--wine); text-align: left; }
 .now-next { font-size: 18px; color: var(--ink-soft); font-style: italic; }
@@ -692,10 +694,10 @@ html.samsung .chrome-gate {
 
 .table-card {
   position: relative; max-width: 300px; margin: 52px auto 0; padding: 46px 22px 24px; border-radius: 160px 160px 16px 16px;
-  background: #fff; border: 1px solid var(--gold); box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45);
+  background: var(--card); border: 1px solid var(--gold); box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45);
   animation: popIn .7s var(--ease);
 }
-.table-orchid { position: absolute; top: -34px; left: 50%; width: 70px; height: 70px; margin-left: -35px; animation: bob 5s ease-in-out infinite; }
+.table-orchid { position: absolute; top: -50px; left: 50%; width: 140px; height: 84px; margin-left: -70px; animation: bob 5s ease-in-out infinite; }
 .table-label { font-family: var(--caps); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
 .table-num { display: block; font-size: 84px; line-height: 1; font-weight: 500; color: var(--wine); font-variant-numeric: lining-nums; margin-top: 6px; }
 .table-name { display: block; font-family: var(--script); font-size: 48px; line-height: 1.2; color: var(--wine); margin-top: 4px; }
@@ -720,7 +722,7 @@ html.samsung .chrome-gate {
 .rsvp-closed .wa-box { border-top: 0; padding-top: 0; margin-top: 10px; }
 .wa-intro { font-size: 17px; font-style: italic; color: var(--ink-soft); margin-bottom: 4px; }
 .wa-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 10px; }
-.wa-btn { background: #fff; color: #1f7a4d; border: 1px solid #25d366; box-shadow: 0 10px 22px -16px rgba(18, 140, 76, .7); }
+.wa-btn { background: var(--card); color: #1f7a4d; border: 1px solid #25d366; box-shadow: 0 10px 22px -16px rgba(18, 140, 76, .7); }
 .wa-btn:hover { background: #effbf4; }
 .wa-btn svg { width: 18px; height: 18px; fill: #25d366; }
 
@@ -728,13 +730,13 @@ html.samsung .chrome-gate {
 .thanks { padding-top: 70px; }
 .thanks-card {
   position: relative; max-width: 440px; margin: 64px auto 0; padding: 70px 28px 36px; border-radius: 200px 200px 16px 16px;
-  background: #fff; border: 1px solid var(--gold); box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45);
+  background: var(--card); border: 1px solid var(--gold); box-shadow: 0 24px 44px -28px rgba(90, 31, 51, .45);
 }
 .thanks-card::before {
   content: ""; position: absolute; inset: 8px; border: 1px solid rgba(184, 145, 79, .35);
   border-radius: 192px 192px 10px 10px; pointer-events: none;
 }
-.thanks-orchid { position: absolute; top: -48px; left: 50%; width: 96px; height: 96px; margin-left: -48px; animation: bob 5s ease-in-out infinite; }
+.thanks-orchid { position: absolute; top: -64px; left: 50%; width: 180px; height: 108px; margin-left: -90px; animation: bob 5s ease-in-out infinite; }
 .thanks-to { font-family: var(--script); font-size: clamp(34px, 9vw, 44px); line-height: 1.2; color: var(--wine); margin-bottom: 14px; word-break: break-word; }
 .thanks-text { font-size: 20px; line-height: 1.6; }
 .thanks-sign { margin-top: 22px; font-style: italic; color: var(--ink-soft); }
@@ -744,7 +746,7 @@ html.samsung .chrome-gate {
 .photo-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 440px; margin: 0 auto; }
 .photo-tile {
   display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 22px 12px 18px; border-radius: 16px;
-  background: #fff; border: 1px solid rgba(184, 145, 79, .55); color: var(--ink); text-decoration: none;
+  background: var(--card); border: 1px solid rgba(184, 145, 79, .55); color: var(--ink); text-decoration: none;
   box-shadow: 0 18px 30px -24px rgba(90, 31, 51, .5); transition: transform .3s var(--ease), box-shadow .3s;
 }
 .photo-tile[href]:hover { transform: translateY(-3px); box-shadow: 0 22px 34px -22px rgba(90, 31, 51, .55); }
