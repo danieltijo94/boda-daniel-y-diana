@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="0" height="0"><defs></defs></svg>
+<script src="comun.js"></script><script src="rosas.js"></script><script src="sello2.js"></script>
+<script>
+const svg = document.getElementById("s");
+addDefs(svg); addSelloDefs(svg);
+const sym = (id, vb) => el(svg, "symbol", { id, viewBox: vb, overflow: "visible" });
+const use = (g, href, x, y, w, h, extra = {}) => el(g, "use", Object.assign({ href: "#" + href, x, y, width: w, height: h }, extra));
+// Rosas (mismos ids que las orquídeas para que todo el sitio cambie solo)
+rosaReal(sym("orchid", "-50 -50 100 100"), 0, 4, 42, "marfil", 0);
+rosaReal(sym("orchidBlush", "-50 -50 100 100"), 0, 4, 42, "rubor", 15);
+rosaReal(sym("roseWine", "-50 -50 100 100"), 0, 4, 42, "vino", -10);
+boton(sym("obud", "-10 -14 20 28"), 0, 12, 1.05, 0, "rubor");
+hojaReal(sym("oleaf", "0 0 120 50"), 4, 26, 3.1, -6);
+// Vara de rosas (antes vara de orquídeas): ramas, flores secas y rosas
+{ const g = sym("spray", "0 0 320 190");
+  pampa(g, 40, 170, 150, 70, 90, "#d8c8aa"); pampa(g, 60, 168, 260, 60, 80, "#dfd1b6");
+  paniculata(g, 50, 160, 210, 70, 18, 16); paniculata(g, 60, 165, 290, 40, 14, 12);
+  el(g, "path", { d: "M40 160C70 90 150 40 300 44", stroke: "#a19c82", "stroke-width": 2.2, fill: "none", "stroke-linecap": "round" });
+  use(g, "oleaf", 10, 140, 80, 33); use(g, "oleaf", 30, 156, 66, 27, { transform: "rotate(-18 63 170)" });
+  use(g, "oleaf", 158, 44, 48, 20, { transform: "rotate(-150 182 54)" });
+  use(g, "orchid", 34, 82, 92, 92); use(g, "roseWine", 108, 46, 76, 76); use(g, "orchidBlush", 176, 28, 64, 64); use(g, "orchid", 236, 26, 44, 44);
+  use(g, "obud", 280, 30, 14, 20, { transform: "rotate(70 287 40)" }); use(g, "obud", 296, 36, 10, 14, { transform: "rotate(80 301 43)" }); }
+// Guirnalda centrada (separadores)
+{ const g = sym("garland", "0 0 320 120");
+  el(g, "path", { d: "M20 70C80 50 120 62 160 62S240 50 300 70", stroke: "url(#gGold)", "stroke-width": 1.4, fill: "none" });
+  use(g, "oleaf", 66, 66, 44, 18, { transform: "rotate(170 88 75)" }); use(g, "oleaf", 210, 66, 44, 18, { transform: "rotate(10 232 75)" });
+  use(g, "obud", 22, 58, 12, 18, { transform: "rotate(-70 28 67)" }); use(g, "obud", 286, 58, 12, 18, { transform: "rotate(70 292 67)" });
+  use(g, "orchidBlush", 46, 44, 42, 42); use(g, "orchidBlush", 232, 44, 42, 42);
+  use(g, "orchid", 86, 30, 58, 58); use(g, "orchid", 176, 30, 58, 58); use(g, "roseWine", 124, 12, 72, 72); }
+// Ramo grande (abajo a la izquierda de la portada y del sobre)
+{ const g = sym("bouquet", "0 0 240 300");
+  pampa(g, 70, 300, 0, 60, 130, "#d6c6a7"); pampa(g, 76, 300, 60, 40, 130, "#ddcfb4"); pampa(g, 80, 300, 128, 90, 110, "#d2c09e"); pampa(g, 74, 300, 180, 150, 100, "#dccdb0");
+  rama(g, 70, 300, 10, 130, 7); rama(g, 76, 300, 190, 170, 7);
+  paniculata(g, 70, 280, 34, 110, 26, 20); paniculata(g, 74, 280, 106, 120, 24, 18); paniculata(g, 74, 286, 168, 200, 20, 16);
+  lunaria(g, 28, 170, 12); lunaria(g, 150, 180, 11); lunaria(g, 56, 130, 9); lunaria(g, 186, 236, 9);
+  use(g, "oleaf", 4, 192, 46, 19, { transform: "rotate(-150 27 201)" }); use(g, "oleaf", 112, 220, 46, 19, { transform: "rotate(-25 135 229)" });
+  use(g, "oleaf", 90, 152, 42, 18, { transform: "rotate(-70 111 161)" }); use(g, "oleaf", 6, 256, 40, 17, { transform: "rotate(165 26 264)" });
+  use(g, "obud", 150, 136, 18, 26, { transform: "rotate(30 159 149)" }); use(g, "obud", 14, 150, 16, 22, { transform: "rotate(-30 22 161)" });
+  use(g, "orchidBlush", -6, 216, 56, 56); use(g, "roseWine", 108, 152, 60, 60); use(g, "orchid", 24, 170, 96, 96); use(g, "orchid", 104, 226, 48, 48); }
+// Arreglo pequeño (arriba a la derecha)
+{ const g = sym("posy", "0 0 200 150");
+  pampa(g, 200, 20, 90, 90, 80, "#d8c8aa"); pampa(g, 200, 32, 124, 124, 70, "#dfd1b6");
+  rama(g, 202, 10, 90, 36, 6); paniculata(g, 200, 20, 110, 30, 18, 14); paniculata(g, 200, 40, 150, 100, 14, 12); lunaria(g, 130, 74, 8);
+  use(g, "oleaf", 128, 54, 36, 15, { transform: "rotate(120 146 61)" }); use(g, "oleaf", 98, 28, 34, 14, { transform: "rotate(200 115 35)" });
+  use(g, "obud", 90, 64, 16, 22, { transform: "rotate(-140 98 75)" });
+  use(g, "roseWine", 98, 44, 36, 36); use(g, "orchid", 128, 8, 56, 56); }
+// Sello de cera vino con el monograma D&D
+selloCera(sym("sealMono", "-100 -100 200 200"), 96, { escala: .68 });
+window.listo = true;
+</script></body></html>

@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 14 de octubre de 2026 (punto 7: panel de los novios)
+> **Última actualización:** 20 de octubre de 2026 (diseño nuevo: rosas, marfil y sello vino)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -22,8 +22,15 @@ Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta 
 | **Hoja de confirmaciones (Google Sheets)** | https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit |
 | **Script de confirmaciones (URL publicada)** | configurada en `script.js` → `CONFIG.rsvpEndpoint` |
 
-**Versión actual del diseño:** *orquídeas + dorado* (rediseño del commit `e88c476`, con Waze, QR de fotos y
-playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de arriba.
+**Versión actual del diseño:** *rosas + marfil + sello vino* (octubre 2026). Misma distribución y mismos textos de
+siempre; cambian el estilo y las flores:
+- Paleta marfil / champaña / dorado, con el vino burdeos en nombres, títulos, botones y el sello.
+- **Sobre** marfil con el **sello de cera vino** (monograma "D & D": D con rulos y línea grabada en oro, "&" itálica clásica).
+- **Portada**: tarjeta de **papel artesanal con borde rasgado suave** (sin marco dorado), el sello como monograma,
+  un arreglo pequeño de rosas arriba a la derecha y un ramo de rosas con flores secas abajo a la izquierda.
+- **Rosas de jardín** (marfil, rubor y vino) en todos los adornos (separadores, tarjeta del lugar, gracias, pie).
+- **Pétalos de rosa** cayendo (marfil, rubor y vino) con destellos dorados.
+- Los dibujos se generan con `diseno/rosas/` (ver su `LEEME.md`).
 
 ### Datos de la boda
 - **Novios:** Daniel Alejandro & Diana Carolina
@@ -78,8 +85,9 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
       puede cambiarla desde su link". Cada cambio actualiza el mismo registro.
 15. **Pie**: nombres, fecha 19 · 06 · 2027 y agradecimiento.
 
-**Estilo:** fondo marfil y rosa, orquídeas phalaenopsis (SVG propias), detalles dorados, letras Pinyon Script
-(caligrafía), Cinzel (mayúsculas) y Cormorant Garamond (texto). Pétalos de orquídea y destellos dorados cayendo.
+**Estilo:** fondo marfil, rosas de jardín y flores secas (SVG propias), sello de cera vino, detalles dorados, letras Pinyon
+Script (caligrafía), Cinzel (mayúsculas), Cormorant Garamond (texto) y Berkshire Swash (solo las D del monograma).
+Pétalos de rosa y destellos dorados cayendo.
 
 ---
 
@@ -299,6 +307,12 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
 - **El código es la llave**: una sola respuesta por invitación, guardada en la hoja y visible/editable desde cualquier celular.
 - **Pase QR de entrada (punto 4): omitido** por decisión del usuario.
+- **Diseño (oct. 2026):** se pasó de orquídeas rosadas a **rosas + marfil + sello vino**, inspirado en una referencia
+  de papel artesanal con dorados. Se probaron ilustraciones antes de cambiar la invitación. Decisiones: nombres en
+  **cursiva vino**; **sin marco** y **sin esquina rasgada** (borde suave en los cuatro lados); un solo ramo abajo a la
+  izquierda + arreglo pequeño arriba a la derecha (no flores repetidas en dos esquinas); monograma en **sello de cera
+  vino** con D ornamentadas y **"&" itálica clásica** (opción 3); **rosas** en vez de orquídeas; **mismos textos y
+  misma distribución** que antes.
 - **Fecha límite real:** después del 30 de abril de 2027 se cierran las confirmaciones (en la invitación y en el script); los
   invitados pueden escribir por WhatsApp a Diana o a Daniel.
 - **Confirmación por persona** (no por familia): cada invitado de la tarjeta marca si va y su propia restricción.
@@ -357,7 +371,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `060366e` | 2026-10-14 | Punto 5 aprobado. Punto 6: página de agradecimiento (desde el 20 de junio; mensaje por familia, fotos de invitados y oficiales) |
 | `9693b9c` | 2026-10-14 | Fotos de los invitados directo a una carpeta de Google Drive desde `fotos.html` (sin cuenta de Google); el script crea la carpeta y la comparte solo para ver |
 | `95da71a` | 2026-10-14 | Punto 6 aprobado. `fotos.html` explica la causa real cuando no sube (sin permiso de Drive, versión vieja del script o sin internet) |
-| — | 2026-10-14 | Punto 7: panel de los novios (`novios.html`): totales, pendientes con recordatorio por WhatsApp, confirmados, no asisten, catering y canciones |
+| `fc59a9a` | 2026-10-14 | Punto 7: panel de los novios (`novios.html`): totales, pendientes con recordatorio por WhatsApp, confirmados, no asisten, catering y canciones |
+| — | 2026-10-20 | Diseño nuevo con los mismos textos: marfil, papel artesanal, sello de cera vino con monograma D&D, rosas de jardín y pétalos de rosa; generador en `diseno/rosas/` |
 
 ---
 

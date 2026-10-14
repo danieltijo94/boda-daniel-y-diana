@@ -131,7 +131,9 @@ function setupIntro() {
 /* ---------- Pétalos de orquídea y destellos dorados ---------- */
 function makePetal(container, { fromTop = true } = {}) {
   const p = document.createElement("span");
-  p.className = "petal" + (Math.random() < 0.3 ? " spark" : "");
+  // Pétalos de rosa (marfil, rubor y vino) con algunos destellos dorados
+  const r = Math.random();
+  p.className = "petal " + (r < 0.15 ? "spark" : r < 0.55 ? "p-marfil" : r < 0.8 ? "p-rubor" : "p-vino");
   const size = 10 + Math.random() * 12;
   p.style.left = Math.random() * 100 + "vw";
   p.style.width = size + "px";
@@ -856,8 +858,28 @@ function renderThanks() {
       : "Gracias por acompañarnos en el día más feliz de nuestras vidas. Su cariño, sus abrazos y su alegría hicieron de nuestra boda un recuerdo que guardaremos para siempre.");
 }
 
+/* ---------- Papel artesanal de la portada (se ajusta al tamaño de la pantalla) ---------- */
+function setupHeroPaper() {
+  const svg = $("#heroPaper");
+  if (!svg) return;
+  const ajustar = () => {
+    const w = svg.clientWidth, h = svg.clientHeight;
+    if (!w || !h) return;
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    ["#heroPaperRect", "#heroPaperTex"].forEach((id) => {
+      const r = $(id);
+      r.setAttribute("width", w - 12);
+      r.setAttribute("height", h - 12);
+    });
+  };
+  ajustar();
+  if ("ResizeObserver" in window) new ResizeObserver(ajustar).observe(svg);
+  else addEventListener("resize", ajustar);
+}
+
 /* ---------- Inicio ---------- */
 setupChromeGate();
+setupHeroPaper();
 fillDates();
 fillGuest().then(() => { setupRSVP(); renderMesa(); renderThanks(); });
 setupThanks();
