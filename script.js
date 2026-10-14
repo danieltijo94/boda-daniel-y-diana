@@ -17,8 +17,6 @@ const CONFIG = {
   lugarCalendario: "Hacienda Chic, Bogotá",
   // Duración aproximada del evento (horas) para el calendario
   duracionHoras: 8,
-  // Playlist de YouTube de la pareja (se muestra el día de la boda)
-  playlistUrl: "https://www.youtube.com/playlist?list=PLSZ7h_cwdW9k",
   // Punto para el clima: Hacienda Chic (Cra. 7 #247-15, norte de Bogotá, límite con Chía)
   clima: { lat: 4.8270, lon: -74.0314, lugar: "Hacienda Chic" },
 };
@@ -739,7 +737,6 @@ function setupWeddingDay() {
   $("#hoy").hidden = false;
   $("#cuenta").hidden = true;
   $("#confirmar").hidden = true;
-  $("#playlistBtn").href = CONFIG.playlistUrl;
 
   // El itinerario sale de la sección "Itinerario" (data-hora en cada momento)
   const items = [...document.querySelectorAll(".timeline li[data-hora]")].map((li) => {

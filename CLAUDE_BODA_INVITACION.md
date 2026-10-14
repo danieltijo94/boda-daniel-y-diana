@@ -40,7 +40,7 @@ playlist añadidos en `bf3d469` y posteriores). Es la que se ve en el link de ar
 4. **Tarjeta del invitado**: cita de Cantares 8:7, nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
 5b. **¡Hoy nos casamos!** (solo el 19 de junio de 2027 o con `?modo=boda`): itinerario en vivo, "Tu mesa",
-   botones de fotos, playlist y cómo llegar; se ocultan la cuenta regresiva y la confirmación.
+   botones de fotos y cómo llegar; se ocultan la cuenta regresiva y la confirmación.
 6. **¿Dónde y cuándo?**: Hacienda Chic (Cra. 7 #247-15, 4.8270016, -74.0314436), botones **Google Maps** y **Waze** (Waze va a las coordenadas exactas).
 7. **El clima** (en vivo, Open-Meteo): se consulta cada vez que se abre la invitación. Muestra 4 p.m., 6 p.m.,
    9 p.m. y 12 a.m. con ícono, temperatura y lluvia, más un consejo (abrigo / paraguas).
@@ -176,7 +176,6 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
 - [ ] Crear el **álbum compartido de Google Fotos** (con "Colaborar" y "Compartir mediante enlace") y pasar el link para `fotos.html`.
 - [ ] Probar en Samsung Internet el botón **"Abrir en Chrome"**.
 - [x] Números de WhatsApp de Diana y Daniel configurados en `CONFIG.whatsapp` (botones del cierre de confirmaciones).
-- [ ] Revisar que la **playlist** sea pública u "oculta" (no privada), para que los invitados puedan abrirla el día de la boda.
 - [ ] (Opcional) Agregar a Diana en `CORREOS_EXTRA` para que también reciba los avisos.
 
 ### 🛠️ Plan de trabajo: nuevas funciones (se hacen una a una y se prueban antes de seguir)
@@ -244,7 +243,7 @@ la boda", porque ambos muestran la mesa de cada familia.
   - **"Tu mesa" / "Su mesa"**: número grande (o "Novios"); si la familia quedó en mesas distintas, "Sus mesas" con
     quién va en cada una. Solo cuenta a quienes confirmaron (si ya respondieron). El script envía `mesas`
     (persona → mesa) en `?accion=invitado`.
-  - Botones: **Subir mis fotos** (`fotos.html`), **Nuestra playlist** (`CONFIG.playlistUrl`) y **Cómo llegar**.
+  - Botones: **Subir mis fotos** (`fotos.html`) y **Cómo llegar** (el de la playlist se quitó a pedido del usuario).
 - Pruebas: `?modo=boda` y, para simular la hora, `&hora=18:10` (ej. `?i=CODIGO&modo=boda&hora=18:10`).
 - El pase QR quedó fuera porque el punto 4 se omitió.
 
@@ -335,7 +334,8 @@ la boda", porque ambos muestran la mesa de cada familia.
 | `e476660` | 2026-10-04 | ★ Confirmación por persona aprobada por el usuario (probada con la hoja real) |
 | `9d2dfb9` | 2026-10-13 | Punto 4 omitido. Punto 5: modo "día de la boda" (sección ¡Hoy nos casamos!, itinerario en vivo, tu mesa, botones de fotos/playlist/cómo llegar; el script envía la mesa de cada persona) |
 | `e3039f4` | 2026-10-14 | Cierre automático de confirmaciones después del 30 de abril de 2027, con botones de WhatsApp "Escribe a Diana" / "Escribe a Daniel"; el script rechaza confirmaciones tardías |
-| — | 2026-10-14 | Números de WhatsApp de Diana y Daniel en los botones del cierre de confirmaciones |
+| `049076a` | 2026-10-14 | Números de WhatsApp de Diana y Daniel en los botones del cierre de confirmaciones |
+| — | 2026-10-14 | Se quita el botón "Nuestra playlist" del modo día de la boda |
 
 ---
 
