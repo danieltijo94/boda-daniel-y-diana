@@ -879,7 +879,7 @@ function setupHeroPaper() {
 
 /* ---------- Inicio ---------- */
 /* ---------- Lucecitas y estrellitas (mismo estilo dorado de la portada) ---------- */
-// Guirnaldas de luces cálidas que cuelgan arriba de algunas secciones y estrellitas doradas
+// Faroles dorados que cuelgan arriba de algunas secciones y estrellitas doradas
 // que titilan en los bordes, para que la tarjeta no se vea plana.
 function setupLights() {
   const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -897,25 +897,39 @@ function setupLights() {
       cont.appendChild(st);
     }
   };
-  const guirnalda = (sec) => {
-    const g = document.createElement("div");
-    g.className = "lights";
-    g.setAttribute("aria-hidden", "true");
-    // cable: dos curvas que cuelgan (de borde a centro y de centro a borde)
-    g.innerHTML = '<svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0 3 Q25 40 50 3 Q75 40 100 3" /></svg>';
-    const y = (t) => (1 - t) * (1 - t) * 3 + 2 * (1 - t) * t * 40 + t * t * 3; // altura del cable (de 0 a 40)
-    [0, 50].forEach((x0) => {
-      for (let k = 1; k <= 7; k++) {
-        const t = k / 8.2 + .02, b = document.createElement("span");
-        b.className = "bulb";
-        b.style.left = (x0 + t * 50) + "%";
-        b.style.top = (y(t) / 40 * 100) + "%";
-        b.style.animationDelay = -(Math.random() * 3) + "s";
-        b.style.animationDuration = (1.8 + Math.random() * 2.2) + "s";
-        g.appendChild(b);
-      }
+  // Faroles dorados (como los de la portada) que cuelgan arriba de algunas secciones
+  const NS = "http://www.w3.org/2000/svg";
+  const defs = document.createElementNS(NS, "svg");
+  defs.setAttribute("width", "0"); defs.setAttribute("height", "0"); defs.setAttribute("aria-hidden", "true");
+  defs.style.position = "absolute";
+  defs.innerHTML = `<defs><linearGradient id="oroF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8914f"/><stop offset=".5" stop-color="#ecd49c"/><stop offset="1" stop-color="#9c7535"/></linearGradient>
+    <radialGradient id="luzF" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#ffe7a6" stop-opacity=".9"/><stop offset="1" stop-color="#f3d07a" stop-opacity=".15"/></radialGradient>
+    <radialGradient id="haloF"><stop offset="0" stop-color="#ffe9b0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9b0" stop-opacity="0"/></radialGradient></defs>`;
+  document.body.appendChild(defs);
+  const farol = (cad) => `<svg viewBox="0 0 30 ${cad + 62}">
+    <line x1="15" y1="0" x2="15" y2="${cad}" stroke="#a88442" stroke-width="1.1" stroke-dasharray="2.2 1"/>
+    <g transform="translate(0 ${cad})">
+      <circle cx="15" cy="2" r="2" fill="none" stroke="url(#oroF)" stroke-width="1"/>
+      <path d="M8 10 Q15 2 22 10 Z" fill="url(#oroF)"/><rect x="6" y="10" width="18" height="2.5" rx="1" fill="url(#oroF)"/>
+      <circle cx="15" cy="30" r="17" fill="url(#haloF)" class="llama"/>
+      <path d="M7 12.5 H23 V44 H7 Z" fill="url(#luzF)" opacity=".85"/>
+      <path d="M7 12.5 H23 V44 H7 Z M11 12.5 V44 M19 12.5 V44 M7 20 Q15 15 23 20" fill="none" stroke="url(#oroF)" stroke-width="1"/>
+      <rect x="13.4" y="30" width="3.2" height="9" rx="1" fill="#fff8e6"/><path d="M15 23 C17 26 16.5 29 15 29.5 C13.5 29 13 26 15 23 Z" fill="#ffd36e" class="llama"/>
+      <rect x="6" y="44" width="18" height="2.5" rx="1" fill="url(#oroF)"/><path d="M9 46.5 L21 46.5 L15 54 Z" fill="url(#oroF)"/><circle cx="15" cy="57" r="1.8" fill="url(#oroF)"/>
+    </g></svg>`;
+  const faroles = (sec, n) => {
+    // [posición horizontal %, largo de la cadena]; alternan el lado para que no se vean iguales
+    const pos = n % 4 === 0 ? [[6, 10], [17, 0], [93, 6]] : [[7, 4], [83, 0], [94, 12]];
+    pos.forEach(([x, cad], k) => {
+      const f = document.createElement("div");
+      f.className = "farol";
+      f.setAttribute("aria-hidden", "true");
+      f.innerHTML = farol(cad);
+      f.style.left = `calc(${x}% - 17px)`;
+      f.style.height = ((cad + 62) * 34 / 30) + "px";
+      f.style.animationDelay = -(k * 1.7 + Math.random()) + "s";
+      sec.prepend(f);
     });
-    sec.prepend(g);
   };
   let n = 0;
   document.querySelectorAll("main .section").forEach((sec) => {
@@ -924,7 +938,8 @@ function setupLights() {
     cont.setAttribute("aria-hidden", "true");
     estrellas(cont, 10, 9);
     sec.prepend(cont);
-    if (n++ % 2 === 0) guirnalda(sec);
+    if (n % 2 === 0) faroles(sec, n);
+    n++;
   });
   const hero = document.querySelector(".hero");
   if (hero) { const c = document.createElement("div"); c.className = "twinkles"; c.setAttribute("aria-hidden", "true"); estrellas(c, 9, 10); hero.prepend(c); }
