@@ -14,3 +14,8 @@ Para regenerar: servir esta carpeta (`python3 -m http.server 8771`) y correr `no
 Sale `sprite-rosas.svg.txt`; su contenido reemplaza el bloque entre el comentario de "Rosas de jardín…" y
 "Papel de la portada" en `index.html` (cambiando `font-family="BS"` por `Berkshire Swash` y `"CGI"` por
 `Cormorant Garamond` con `font-style="italic"`).
+
+## Cerezos (sakura) — diseño actual (nov. 2026)
+`sakura.js` dibuja la flor de cerezo (`sakura`, `sakuraPerfil`, `botonSakura`, `hojaSakura`, `rama3d`) y
+`gen-sakura.html` arma los mismos símbolos con cerezos. Para regenerar: `GEN=gen-sakura.html` con el mismo `gen.mjs`
+(cambiando la página que abre) y luego `node insertar.mjs`. `gen.html` + `rosas.js` son la versión anterior con rosas.

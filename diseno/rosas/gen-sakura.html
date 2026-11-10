@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="0" height="0"><defs></defs></svg>
+<script src="comun.js"></script><script src="sakura.js"></script><script src="sello2.js"></script>
+<script>
+// Cerezos japoneses (sakura): mismos ids que antes para que todo el sitio cambie solo
+const svg = document.getElementById("s");
+addDefs(svg); addSelloDefs(svg);
+const sym = (id, vb) => el(svg, "symbol", { id, viewBox: vb, overflow: "visible" });
+const use = (g, href, x, y, w, h, extra = {}) => el(g, "use", Object.assign({ href: "#" + href, x, y, width: w, height: h }, extra));
+const R = (g, href, cx, cy, w, rot = 0) => use(g, href, cx - w / 2, cy - w / 2, w, w, rot ? { transform: `rotate(${rot} ${cx} ${cy})` } : {});
+// flores sueltas (se reutilizan en todas las ramas)
+sakura(sym("orchid", "-50 -50 100 100"), 0, 0, 40, "claro", 0, .95);
+sakura(sym("orchidBlush", "-50 -50 100 100"), 0, 0, 40, "rosa", 20, .8);
+sakura(sym("roseWine", "-50 -50 100 100"), 0, 0, 40, "intenso", -15, .9);
+sakura(sym("skLado", "-50 -50 100 100"), 0, 0, 40, "claro", 10, .6);
+sakuraPerfil(sym("skPerfil", "-50 -50 100 100"), 0, -6, 34, "rosa", 0);
+botonSakura(sym("obud", "-10 -14 20 28"), 0, -2, .9, 0);
+hojaSakura(sym("oleaf", "0 0 120 50"), 4, 26, 2.8, -6);
+const F = ["orchid", "skLado", "orchidBlush", "orchid", "skLado", "roseWine"];
+// flores a lo largo de una rama: [x, y, tamaño, id opcional]
+const flores = (g, lista) => lista.forEach(([x, y, w, id, rot], i) => {
+  if (id === "b") use(g, "obud", x - w * .36, y - w * .5, w * .72, w, { transform: `rotate(${rot || 0} ${x} ${y})` });
+  else if (id === "p") R(g, "skPerfil", x, y, w, rot || 0);
+  else R(g, id || F[i % F.length], x, y, w, rot || (i * 37) % 60 - 30);
+});
+// Racimo: varias flores juntas en pedúnculos cortos que salen de un punto de la rama, con botones
+let rs = 5; const rr = () => (rs = (rs * 9301 + 49297) % 233280) / 233280;
+function racimo(g, x, y, w, n = 3, botones = 1, dir = -90) {
+  const pos = [];
+  for (let i = 0; i < n; i++) {
+    const a = (dir + (i - (n - 1) / 2) * (300 / Math.max(n, 2)) * .55 + (rr() - .5) * 30) * Math.PI / 180;
+    const d = i === 0 && n > 2 ? w * .12 : w * (.3 + rr() * .14);
+    pos.push([x + Math.cos(a) * d, y + Math.sin(a) * d, w * (i === 0 ? 1 : .78 + rr() * .2)]);
+  }
+  for (let j = 0; j < botones; j++) {
+    const a = (dir + (rr() - .5) * 160) * Math.PI / 180, d = w * (.62 + rr() * .2);
+    const bx = x + Math.cos(a) * d, by = y + Math.sin(a) * d;
+    el(g, "path", { d: `M${x} ${y} Q${(x + bx) / 2 + 3} ${(y + by) / 2} ${bx} ${by}`, stroke: "#6d4a3a", "stroke-width": .8, fill: "none" });
+    use(g, "obud", bx - w * .11, by - w * .16, w * .22, w * .31, { transform: `rotate(${a * 180 / Math.PI + 90} ${bx} ${by})` });
+  }
+  pos.forEach(([px, py]) => el(g, "path", { d: `M${x} ${y} L${px} ${py}`, stroke: "#7a5545", "stroke-width": .7 }));
+  pos.slice().reverse().forEach(([px, py, ww], i) => R(g, F[Math.floor(rr() * F.length)], px, py, ww, Math.floor(rr() * 70)));
+}
+// Vara (antes de orquídeas)
+{ const g = sym("spray", "0 0 320 190");
+  rama3d(g, [[10, 176], [80, 130], [160, 96], [240, 70], [312, 52]], 5, 1.4);
+  racimo(g, 60, 140, 70, 3, 1); racimo(g, 150, 100, 64, 3, 1); racimo(g, 240, 70, 52, 2, 2); racimo(g, 300, 54, 34, 1, 1); }
+// Guirnalda (separadores y pie)
+{ const g = sym("garland", "0 0 360 130");
+  rama3d(g, [[6, 84], [70, 74], [130, 70], [180, 68], [230, 70], [290, 74], [354, 84]], 2.4, 2.4);
+  racimo(g, 34, 82, 34, 1, 1, 180); racimo(g, 326, 82, 34, 1, 1, 0);
+  racimo(g, 84, 76, 50, 2, 1, -120); racimo(g, 276, 76, 50, 2, 1, -60);
+  racimo(g, 130, 70, 62, 3, 1, -100); racimo(g, 230, 70, 62, 3, 1, -80);
+  racimo(g, 180, 66, 80, 4, 2, -90); }
+// Ramito encima de las tarjetas
+{ const g = sym("cluster", "0 0 200 120");
+  rama3d(g, [[8, 86], [60, 76], [100, 72], [146, 76], [192, 86]], 2, 1.2);
+  racimo(g, 40, 82, 40, 2, 1, -150); racimo(g, 160, 82, 40, 2, 1, -30); racimo(g, 100, 70, 72, 4, 1, -90); }
+// Rama grande (abajo a la izquierda): sube por el borde y corre por abajo, sin tocar los textos
+{ const g = sym("bouquet", "0 0 300 300");
+  rama3d(g, [[-8, 306], [16, 254], [30, 196], [40, 140], [38, 86], [28, 34], [22, -4]], 9, 1.4);
+  rama3d(g, [[16, 284], [76, 274], [140, 266], [204, 270], [262, 276], [302, 282]], 6, 1.4);
+  rama3d(g, [[30, 214], [74, 206], [112, 214], [140, 230]], 3.4, 1); rama3d(g, [[40, 130], [62, 112], [72, 96]], 2, .8);
+  use(g, "oleaf", 120, 246, 42, 18, { transform: "rotate(-24 120 254)" }); use(g, "oleaf", 44, 160, 36, 15, { transform: "rotate(-50 44 167)" });
+  racimo(g, 30, 266, 100, 4, 1, -60); racimo(g, 100, 270, 72, 3, 1, -90); racimo(g, 172, 266, 60, 3, 1, -90);
+  racimo(g, 234, 272, 46, 2, 1, -80); racimo(g, 290, 280, 30, 1, 1, -40);
+  racimo(g, 72, 206, 64, 3, 1, -60); racimo(g, 138, 228, 42, 2, 1, -40);
+  racimo(g, 38, 150, 56, 3, 1, 0); racimo(g, 70, 98, 34, 2, 1, -40); racimo(g, 36, 70, 40, 2, 1, 10); racimo(g, 24, 16, 26, 1, 1, -10); }
+// Rama de arriba a la derecha: cuelga de la esquina por arriba y por el borde derecho
+{ const g = sym("posy", "0 0 240 180");
+  rama3d(g, [[248, -6], [196, 12], [140, 22], [84, 28], [34, 26], [2, 20]], 6, 1.2);
+  rama3d(g, [[228, 4], [234, 56], [230, 112], [224, 172]], 4, 1.2); rama3d(g, [[140, 22], [118, 46], [110, 64]], 2, .8);
+  racimo(g, 214, 18, 92, 4, 1, 120); racimo(g, 156, 20, 62, 3, 1, 100); racimo(g, 110, 62, 36, 2, 1, 120);
+  racimo(g, 84, 28, 46, 2, 1, 80); racimo(g, 26, 24, 30, 1, 1, 160);
+  racimo(g, 232, 80, 54, 3, 1, 170); racimo(g, 228, 134, 38, 2, 1, 180); racimo(g, 224, 172, 24, 1, 1, 110); }
+selloCera(sym("sealMono", "-100 -100 200 200"), 96, { escala: .68 });
+window.listo = true;
+</script></body></html>
