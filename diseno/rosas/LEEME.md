@@ -19,3 +19,7 @@ Sale `sprite-rosas.svg.txt`; su contenido reemplaza el bloque entre el comentari
 `sakura.js` dibuja la flor de cerezo (`sakura`, `sakuraPerfil`, `botonSakura`, `hojaSakura`, `rama3d`) y
 `gen-sakura.html` arma los mismos símbolos con cerezos. Para regenerar: `GEN=gen-sakura.html` con el mismo `gen.mjs`
 (cambiando la página que abre) y luego `node insertar.mjs`. `gen.html` + `rosas.js` son la versión anterior con rosas.
+
+## Flores blancas de acuarela — diseño actual (nov. 2026)
+`blanco.js` (flor blanca, hoja salvia de acuarela, ramita dorada, botón) y `gen-blanco.html`, que combinan con el
+fondo `assets/fondo-portada.*`. Regenerar con `GEN=gen-blanco.html` y luego `node insertar.mjs`.

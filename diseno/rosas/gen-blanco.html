@@ -1,0 +1,47 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="0" height="0"><defs></defs></svg>
+<script src="comun.js"></script><script src="blanco.js"></script><script src="sello2.js"></script>
+<script>
+// Flores blancas de acuarela + hojas salvia + ramitas doradas (mismos ids que antes: todo el sitio cambia solo)
+const svg = document.getElementById("s");
+addDefs(svg); addSelloDefs(svg);
+const sym = (id, vb) => el(svg, "symbol", { id, viewBox: vb, overflow: "visible" });
+const use = (g, href, x, y, w, h, extra = {}) => el(g, "use", Object.assign({ href: "#" + href, x, y, width: w, height: h }, extra));
+const R = (g, href, cx, cy, w, rot = 0) => use(g, href, cx - w / 2, cy - w / 2, w, w, rot ? { transform: `rotate(${rot} ${cx} ${cy})` } : {});
+florBlanca(sym("orchid", "-50 -50 100 100"), 0, 0, 40, 0, .95);
+florBlanca(sym("orchidBlush", "-50 -50 100 100"), 0, 0, 40, 20, .75, "bpPet2");
+florBlanca(sym("roseWine", "-50 -50 100 100"), 0, 0, 40, -15, .62);
+botonBlanco(sym("obud", "-10 -14 20 28"), 0, -2, .9, 0);
+hojaSalvia(sym("oleaf", "0 0 120 50"), 4, 25, 112, 0, .3);
+// Separador: flores al centro, hojas salvia abiertas y ramitas doradas hacia los lados
+{ const g = sym("garland", "0 0 360 130");
+  ramitaOro(g, 150, 76, 140, 186, 6); ramitaOro(g, 210, 76, 140, -6, 6);
+  ramitaOro(g, 160, 64, 70, -150, 3); ramitaOro(g, 200, 64, 70, -30, 3);
+  hojaSalvia(g, 160, 74, 92, 194, .3); hojaSalvia(g, 200, 74, 92, -14, .3); hojaSalvia(g, 166, 80, 70, 160, .32, "bpHoja2", .75); hojaSalvia(g, 194, 80, 70, 20, .32, "bpHoja2", .75);
+  hojaSalvia(g, 168, 68, 50, -150, .32, "bpHoja2", .7); hojaSalvia(g, 192, 68, 50, -30, .32, "bpHoja2", .7);
+  tallo(g, [[180, 76], [120, 64], [100, 52]], .8); tallo(g, [[180, 76], [240, 64], [262, 52]], .8);
+  use(g, "obud", 92, 34, 14, 20, { transform: "rotate(-60 99 44)" }); use(g, "obud", 254, 34, 14, 20, { transform: "rotate(60 261 44)" });
+  R(g, "orchidBlush", 136, 70, 40, 10); R(g, "roseWine", 226, 70, 40, -20); R(g, "orchid", 180, 66, 70, 0); }
+// Ramito encima de las tarjetas
+{ const g = sym("cluster", "0 0 200 120");
+  ramitaOro(g, 82, 80, 80, 186, 4); ramitaOro(g, 118, 80, 80, -6, 4);
+  hojaSalvia(g, 90, 78, 64, 196, .3); hojaSalvia(g, 110, 78, 64, -16, .3); hojaSalvia(g, 92, 72, 40, -155, .32, "bpHoja2", .7); hojaSalvia(g, 108, 72, 40, -25, .32, "bpHoja2", .7);
+  use(g, "obud", 40, 56, 12, 17, { transform: "rotate(-70 46 64)" });
+  R(g, "orchidBlush", 70, 76, 34, 0); R(g, "roseWine", 132, 76, 32, 10); R(g, "orchid", 100, 66, 58, 0); }
+// Vara
+{ const g = sym("spray", "0 0 320 190");
+  tallo(g, [[10, 176], [90, 130], [170, 96], [250, 70], [312, 52]], 1.2); ramitaOro(g, 120, 116, 160, -30, 6);
+  [[60, 150, 70, -40], [140, 104, 70, -20], [220, 76, 60, -10], [100, 130, 60, 150], [190, 90, 54, 170]].forEach(([x, y, l, r]) => hojaSalvia(g, x, y, l, r));
+  R(g, "orchid", 80, 136, 64); R(g, "orchidBlush", 170, 96, 50); R(g, "roseWine", 260, 66, 38); use(g, "obud", 300, 40, 14, 20, { transform: "rotate(60 307 50)" }); }
+// Esquinas (por si se usan sin el fondo): mismo estilo
+{ const g = sym("bouquet", "0 0 300 300");
+  ramitaOro(g, 40, 270, 200, -40, 7); ramitaOro(g, 20, 240, 160, -75, 6); ramitaOro(g, 80, 286, 180, -8, 6);
+  [[10, 280, 120, -60], [30, 290, 110, -30], [20, 270, 100, -85], [60, 296, 100, -10], [40, 250, 80, -50]].forEach(([x, y, l, r], i) => hojaSalvia(g, x, y, l, r, .3, i % 2 ? "bpHoja2" : "bpHoja"));
+  R(g, "orchid", 60, 250, 90); R(g, "orchidBlush", 120, 270, 64); R(g, "roseWine", 30, 196, 56); use(g, "obud", 70, 120, 16, 22, { transform: "rotate(-20 78 131)" }); }
+{ const g = sym("posy", "0 0 240 180");
+  ramitaOro(g, 230, 10, 160, 160, 6); ramitaOro(g, 236, 20, 120, 110, 5);
+  [[240, 4, 110, 170], [236, 10, 100, 140], [240, 10, 80, 115]].forEach(([x, y, l, r], i) => hojaSalvia(g, x, y, l, r, .3, i % 2 ? "bpHoja2" : "bpHoja"));
+  R(g, "orchid", 190, 40, 80); R(g, "orchidBlush", 140, 30, 54); R(g, "roseWine", 220, 100, 46); }
+selloCera(sym("sealMono", "-100 -100 200 200"), 96, { escala: .68 });
+window.listo = true;
+</script></body></html>

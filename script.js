@@ -131,7 +131,7 @@ function setupIntro() {
 /* ---------- Pétalos de orquídea y destellos dorados ---------- */
 function makePetal(container, { fromTop = true } = {}) {
   const p = document.createElement("span");
-  // Pétalos de cerezo (rosa claro, rosa y rosa intenso) con algunos destellos dorados
+  // Pétalos blancos (blanco, con toque salvia y con toque dorado) y algunos destellos dorados
   const r = Math.random();
   p.className = "petal " + (r < 0.15 ? "spark" : r < 0.55 ? "p-marfil" : r < 0.8 ? "p-rubor" : "p-vino");
   const size = 10 + Math.random() * 12;
