@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (mismo estilo en todas las páginas adicionales, `tema.css` compartido)
+> **Última actualización:** 10 de noviembre de 2026 (nueva cita bíblica: Cantar de los Cantares 3, 4)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -53,7 +53,7 @@ siempre; cambian el estilo y las flores:
 1. **Aviso para Samsung Internet**: pantalla vino y dorado con botón "Abrir en Chrome" (Samsung oscurece la página a la fuerza) y opción "Continuar aquí".
 2. **Sobre animado** rosado con sello de cera "D&D"; al tocarlo se abre, sale la carta, caen pétalos y suena la música.
 3. **Portada**: marco dorado doble, monograma D&D, "Con la bendición de Dios y de nuestras familias", nombres en caligrafía, fecha y lugar, ramas de orquídeas animadas.
-4. **Tarjeta del invitado**: cita de Cantares 8:7, nombre de la familia y número de pases.
+4. **Tarjeta del invitado**: cita de Cantar de los Cantares 3, 4 («Encontré al que ama mi alma; lo abracé y no lo soltaré.»), nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
 5a. **¡Gracias!** (desde el 20 de junio de 2027 o con `?modo=gracias`): mensaje personalizado por familia y
    accesos a las fotos de los invitados y las oficiales; se ocultan las secciones de antes de la boda.
@@ -394,7 +394,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `6f14bba` | 2026-11-10 | **Logo nuevo en la portada** (en vez del sello de cera): corona ovalada dorada con hojas salvia, flores blancas, dos faroles y "DD" caligráfica en dorado, sin textos, según la imagen de los novios. Dibujado en SVG (símbolo `logoDD` en `gen-blanco.html`; la "DD" usa Pinyon Script). El sello del sobre no cambia |
 | `68388fc` | 2026-11-10 | Propuestas de **sello de cera con el logo nuevo** para el sobre (símbolos `sello_salvia`, `sello_marfil`, `sello_oro`, `sello_vino`, con `selloLogo` en `blanco.js`). Aún no se usan: el sobre sigue con el sello anterior hasta que los novios elijan |
 | `78ade10` | 2026-11-10 | **Sello del sobre: cera marfil con el logo nuevo** (opción B): "DD" caligráfica dorada, aro, coronita de hojas y faroles diminutos; tamaño 86 px. El símbolo `sealMono` ahora lo dibuja `selloLogo(..., "marfil")`; se quitaron las otras 3 propuestas |
-| — | 2026-11-10 | **Mismo estilo en todas las páginas adicionales** (panel de los novios, plano de mesas, enlaces de invitados, subida de fotos, tarjeta QR y ventana de clave): nuevo `tema.css` compartido con los colores y fuentes (sacados de `styles.css`) y el fondo de acuarela (`.pg-fondo`); logo DD y separador de flores en imagen (`assets/logo-dd.webp`, `assets/separador.webp`); QR en negro carbón. Regla nueva en `CLAUDE.md`: todo cambio de diseño se aplica también a estas páginas |
+| `5341fab` | 2026-11-10 | **Mismo estilo en todas las páginas adicionales** (panel de los novios, plano de mesas, enlaces de invitados, subida de fotos, tarjeta QR y ventana de clave): nuevo `tema.css` compartido con los colores y fuentes (sacados de `styles.css`) y el fondo de acuarela (`.pg-fondo`); logo DD y separador de flores en imagen (`assets/logo-dd.webp`, `assets/separador.webp`); QR en negro carbón. Regla nueva en `CLAUDE.md`: todo cambio de diseño se aplica también a estas páginas |
+| — | 2026-11-10 | Nueva cita bíblica: «Encontré al que ama mi alma; lo abracé y no lo soltaré.» (Cantar de los Cantares 3, 4), en vez de Cantares 8:7 |
 
 ---
 
