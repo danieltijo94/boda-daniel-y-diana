@@ -42,6 +42,51 @@ hojaSalvia(sym("oleaf", "0 0 120 50"), 4, 25, 112, 0, .3);
   ramitaOro(g, 230, 10, 160, 160, 6); ramitaOro(g, 236, 20, 120, 110, 5);
   [[240, 4, 110, 170], [236, 10, 100, 140], [240, 10, 80, 115]].forEach(([x, y, l, r], i) => hojaSalvia(g, x, y, l, r, .3, i % 2 ? "bpHoja2" : "bpHoja"));
   R(g, "orchid", 190, 40, 80); R(g, "orchidBlush", 140, 30, 54); R(g, "roseWine", 220, 100, 46); }
+// Logo: corona ovalada dorada con hojas salvia, flores blancas, dos faroles y la "DD" caligráfica (sin textos)
+{ const g = sym("logoDD", "0 0 240 300");
+  const cx = 120, cy = 150, rx = 96, ry = 126;
+  const P = (a, off = 0) => [cx + (rx + off) * Math.cos(a), cy + (ry + off) * Math.sin(a)];
+  const tang = (a) => Math.atan2((ry) * Math.cos(a), -(rx) * Math.sin(a)) * 180 / Math.PI;
+  el(g, "ellipse", { cx, cy, rx, ry, fill: "none", stroke: "url(#bpOro)", "stroke-width": 1.6 });
+  el(g, "ellipse", { cx: cx + 2, cy: cy + 1, rx: rx - 6, ry: ry - 6, fill: "none", stroke: "url(#bpOro)", "stroke-width": .8, transform: `rotate(-3 ${cx} ${cy})` });
+  // ramas de hojas que abrazan el óvalo (ángulos en grados: 0 = derecha, 90 = abajo)
+  const rama = (d0, d1, n, dir) => {
+    const pts = [];
+    for (let i = 0; i <= 24; i++) { const a = (d0 + (d1 - d0) * i / 24) * Math.PI / 180; pts.push(P(a, 2).map((v) => v.toFixed(1)).join(" ")); }
+    el(g, "path", { d: "M" + pts.join(" L"), stroke: "#7a8a75", "stroke-width": .9, fill: "none", opacity: .8 });
+    for (let i = 0; i < n; i++) {
+      const t = (i + .5) / n, a = (d0 + (d1 - d0) * t) * Math.PI / 180, [x, y] = P(a, 2);
+      const lado = i % 2 ? 1 : -1, len = 22 + 8 * Math.sin(t * Math.PI);
+      hojaSalvia(g, x, y, len, tang(a) * dir + (dir > 0 ? 0 : 180) + lado * 38, .36, i % 3 ? "bpHoja" : "bpHoja2", .92);
+    }
+  };
+  rama(250, 160, 9, 1);   // arriba-izquierda bajando por la izquierda
+  rama(150, 120, 4, 1);   // abajo-izquierda
+  rama(-42, 20, 7, -1);   // arriba-derecha bajando por la derecha
+  rama(40, 95, 7, -1);    // abajo-derecha hasta abajo
+  // flores blancas y botones entre las hojas
+  [[175, 26], [205, 22], [262, 20], [52, 24], [72, 20]].forEach(([d, w]) => { const [x, y] = P(d * Math.PI / 180, 2); R(g, "orchid", x, y, w, d); });
+  [[160, 0, -60], [268, 0, 10], [30, 0, 100], [80, 0, 140]].forEach(([d, , r]) => { const [x, y] = P(d * Math.PI / 180, 4); use(g, "obud", x - 5, y - 7, 10, 14, { transform: `rotate(${r} ${x} ${y})` }); });
+  // dos faroles colgando de una cadenita, arriba a la derecha (dentro del óvalo)
+  el(g, "path", { d: "M112 30 Q130 48 148 44 Q164 40 178 54", stroke: "#a88442", "stroke-width": .8, fill: "none", "stroke-dasharray": "1.6 .9" });
+  const farolito = (x, y, cad) => {
+    el(g, "line", { x1: x, y1: y, x2: x, y2: y + cad, stroke: "#a88442", "stroke-width": .7 });
+    const o = el(g, "g", { transform: `translate(${x - 7} ${y + cad}) scale(.47)` });
+    el(o, "circle", { cx: 15, cy: 30, r: 16, fill: "#ffe9b0", opacity: .35 });
+    el(o, "path", { d: "M8 10 Q15 2 22 10 Z", fill: "url(#bpOro)" }); el(o, "rect", { x: 6, y: 10, width: 18, height: 2.5, rx: 1, fill: "url(#bpOro)" });
+    el(o, "path", { d: "M7 12.5 H23 V44 H7 Z", fill: "#fff6d8", opacity: .9 });
+    el(o, "path", { d: "M7 12.5 H23 V44 H7 Z M11 12.5 V44 M19 12.5 V44 M7 20 Q15 15 23 20", fill: "none", stroke: "url(#bpOro)", "stroke-width": 1.2 });
+    el(o, "path", { d: "M15 23 C17 26 16.5 29 15 29.5 C13.5 29 13 26 15 23 Z", fill: "#f2c45a" });
+    el(o, "rect", { x: 6, y: 44, width: 18, height: 2.5, rx: 1, fill: "url(#bpOro)" }); el(o, "path", { d: "M9 46.5 L21 46.5 L15 54 Z", fill: "url(#bpOro)" });
+  };
+  farolito(134, 40, 10); farolito(166, 46, 22);
+  // "DD" caligráfica en dorado, entrelazada, con el trazo que cruza el óvalo
+  const dd = el(g, "g", { filter: "url(#bpDorado)" });
+  el(dd, "path", { d: "M34 152 C70 140 110 138 150 146", stroke: "url(#bpOroD)", "stroke-width": 1.5, fill: "none", "stroke-linecap": "round" });
+  el(dd, "path", { d: "M98 214 C140 206 180 200 214 182", stroke: "url(#bpOroD)", "stroke-width": 1.5, fill: "none", "stroke-linecap": "round" });
+  el(dd, "text", { x: 46, y: 176, "font-family": "PS", "font-size": 118, fill: "url(#bpOroD)" }).textContent = "D";
+  el(dd, "text", { x: 88, y: 226, "font-family": "PS", "font-size": 118, fill: "url(#bpOroD)" }).textContent = "D";
+  svg.querySelector("defs").insertAdjacentHTML("beforeend", `<linearGradient id="bpOroD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8823f"/><stop offset=".45" stop-color="#d6b468"/><stop offset=".7" stop-color="#b48b42"/><stop offset="1" stop-color="#8f6a2c"/></linearGradient><filter id="bpDorado" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx=".4" dy=".8" stdDeviation=".5" flood-color="#6b5226" flood-opacity=".35"/></filter>`); }
 selloCera(sym("sealMono", "-100 -100 200 200"), 96, { escala: .68 });
 window.listo = true;
 </script></body></html>

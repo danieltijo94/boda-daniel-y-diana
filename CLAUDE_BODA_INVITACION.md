@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (faroles dorados colgantes en vez de guirnaldas de luces)
+> **Última actualización:** 10 de noviembre de 2026 (logo nuevo DD con corona de hojas en la portada)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -27,7 +27,7 @@ siempre; cambian el estilo y las flores:
 - Paleta marfil / verde salvia / dorado, con **negro carbón** en nombres, títulos, textos y botones (antes vino); el sello sigue vino.
 - **Sobre** marfil con el **sello de cera vino** (monograma "D & D": D con rulos y línea grabada en oro, "&" itálica clásica).
 - **Portada**: **fondo de acuarela** elegido por los novios (flores blancas, hojas verde salvia, faroles dorados; `assets/fondo-portada.*`),
-  con el sello como monograma y los mismos textos. (Antes: tarjeta de **papel artesanal con borde rasgado suave**,
+  con el **logo DD** (corona ovalada dorada con hojas salvia, flores y faroles) arriba y los mismos textos. (Antes: tarjeta de **papel artesanal con borde rasgado suave**,
   una rama de cerezo que cuelga arriba a la derecha y otra que sube por el borde y corre por abajo a la izquierda,
   con racimos de flores rosa pálido, botones y sombra suave sobre el papel (estilo 3D); el sello es
   discreto (70 px en el sobre, 80 px en la portada).)
@@ -389,7 +389,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `b454ebd` | 2026-11-10 | Todo combina con el fondo de acuarela: el **sobre** usa el mismo fondo (sin ramos dibujados; letrero con franja marfil suave); separadores, pie y ramitos de las tarjetas con **flores blancas, hojas verde salvia y ramitas doradas** (`diseno/rosas/blanco.js` + `gen-blanco.html`); pétalos que caen blancos (con toque salvia o dorado); fondo de las secciones con manchas salvia muy suaves |
 | `d64c132` | 2026-11-10 | **Lucecitas y estrellitas**: guirnalda de luces cálidas que cuelga arriba de una sección sí y otra no, y estrellitas doradas que titilan en los bordes de todas las secciones y de la portada (`setupLights` en `script.js`; sin animación si el celular pide menos movimiento) |
 | `68a72f3` | 2026-11-10 | Letras y botones en **negro carbón** en vez de vino (opción 1 de 4 comparadas): `--wine` #2f2d2a, `--wine-deep` #1c1b19, `--ink` #3a3835, `--ink-soft` #6f6b64; sombras en gris cálido. El sello sigue vino y la muestra "Burdeos" del código de vestimenta no cambia |
-| — | 2026-11-10 | Las guirnaldas de luces se cambian por **faroles dorados colgantes** (opción A de 4 mostradas: faroles, luciérnagas, cortina de luces, ramita dorada): 3 faroles con velita que se mecen arriba de una sección sí y otra no, sin tocar los títulos; las estrellitas siguen |
+| `7a3cfe7` | 2026-11-10 | Las guirnaldas de luces se cambian por **faroles dorados colgantes** (opción A de 4 mostradas: faroles, luciérnagas, cortina de luces, ramita dorada): 3 faroles con velita que se mecen arriba de una sección sí y otra no, sin tocar los títulos; las estrellitas siguen |
+| — | 2026-11-10 | **Logo nuevo en la portada** (en vez del sello de cera): corona ovalada dorada con hojas salvia, flores blancas, dos faroles y "DD" caligráfica en dorado, sin textos, según la imagen de los novios. Dibujado en SVG (símbolo `logoDD` en `gen-blanco.html`; la "DD" usa Pinyon Script). El sello del sobre no cambia |
 
 ---
 

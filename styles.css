@@ -239,7 +239,6 @@ main {
   .corner-bl { width: 440px; height: 440px; }
   .intro-posy { width: 400px; height: 300px; }
   .intro-bouquet { width: 440px; height: 440px; }
-  .monogram { width: 92px; height: 92px; }
 }
 @keyframes swayR { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-2deg); } }
 @keyframes swayL { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(1.5deg); } }
@@ -248,7 +247,7 @@ main {
 
 .hero-inner { position: relative; z-index: 1; max-width: 640px; }
 /* Monograma: sello de cera vino con D&D */
-.monogram { display: block; width: 80px; height: 80px; margin: 0 auto 18px; filter: drop-shadow(0 6px 8px rgba(60, 20, 30, .3)); }
+.monogram { display: block; width: 136px; height: 170px; margin: -10px auto 8px; overflow: visible; filter: drop-shadow(0 3px 4px rgba(80, 70, 40, .12)); }
 .eyebrow {
   font-family: var(--caps); font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
   color: var(--ink-soft); max-width: 320px; margin: 0 auto 22px; line-height: 1.8;
@@ -621,7 +620,7 @@ html.samsung .chrome-gate {
 .reveal[data-delay="5"] { transition-delay: .75s; }
 .name.reveal { transform: translateY(20px) scale(.94); filter: blur(6px); transition-property: opacity, transform, filter; transition-duration: 1.4s; }
 .name.reveal.in { filter: none; transform: none; }
-.monogram.reveal { transform: scale(.6) rotate(-20deg); }
+.monogram.reveal { transform: scale(.85); }
 .monogram.reveal.in { transform: none; }
 
 /* =================== KEYFRAMES =================== */
