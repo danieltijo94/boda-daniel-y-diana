@@ -208,6 +208,20 @@ main {
 }
 /* Portada: tarjeta de papel artesanal (el tamaño del dibujo lo ajusta script.js) */
 .hero { background: radial-gradient(ellipse at 50% 30%, #eee7dc, var(--linen)); }
+/* Fondo de acuarela elegido por los novios (flores blancas, hojas salvia y faroles dorados).
+   Reemplaza el papel rasgado y las ramas de cerezo de la portada. */
+.hero.con-fondo {
+  background: url("assets/fondo-portada.jpg") 22% center / cover no-repeat, #ece8de;
+  background-image: image-set(url("assets/fondo-portada.webp") type("image/webp"), url("assets/fondo-portada.jpg") type("image/jpeg"));
+}
+.hero.con-fondo::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 62% 42% at 50% 52%, rgba(250, 248, 242, .6), transparent 72%);
+}
+.hero.con-fondo .hero-paper, .hero.con-fondo .corner { display: none; }
+@media (min-width: 900px) { .hero.con-fondo { background-position: center 30%; } }
+/* En celular se angosta un poco el dibujo para que los faroles queden contra el borde y no toquen el texto */
+@media (max-width: 600px) { .hero.con-fondo { background-size: 106% 100%; background-position: left center; } }
 .hero-paper {
   position: absolute; inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); pointer-events: none;
   filter: drop-shadow(0 10px 12px rgba(91, 70, 50, .25)); overflow: visible;

@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (flores de cerezo japonés / sakura en 3D)
+> **Última actualización:** 10 de noviembre de 2026 (portada con fondo de acuarela: flores blancas, hojas salvia y faroles)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -26,10 +26,11 @@ Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta 
 siempre; cambian el estilo y las flores:
 - Paleta marfil / champaña / dorado, con el vino burdeos en nombres, títulos, botones y el sello.
 - **Sobre** marfil con el **sello de cera vino** (monograma "D & D": D con rulos y línea grabada en oro, "&" itálica clásica).
-- **Portada**: tarjeta de **papel artesanal con borde rasgado suave** (sin marco dorado), el sello como monograma,
+- **Portada**: **fondo de acuarela** elegido por los novios (flores blancas, hojas verde salvia, faroles dorados; `assets/fondo-portada.*`),
+  con el sello como monograma y los mismos textos. (Antes: tarjeta de **papel artesanal con borde rasgado suave**,
   una rama de cerezo que cuelga arriba a la derecha y otra que sube por el borde y corre por abajo a la izquierda,
   con racimos de flores rosa pálido, botones y sombra suave sobre el papel (estilo 3D); el sello es
-  discreto (70 px en el sobre, 80 px en la portada).
+  discreto (70 px en el sobre, 80 px en la portada).) El sobre, separadores y tarjetas siguen con cerezos.
 - **Separadores** (antes de la frase bíblica, mesa, confirmación y pie): rama horizontal de cerezo con racimos al centro
   (casi todo el ancho del celular). Encima de cada tarjeta, un **ramito de cerezo** (`cluster`). Tarjetas en marfil claro (`--card`).
 - **Rosas de jardín** (marfil, rubor y vino) en todos los adornos (separadores, tarjeta del lugar, gracias, pie).
@@ -381,7 +382,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `fb180dc` | 2026-10-20 | Diseño nuevo con los mismos textos: marfil, papel artesanal, sello de cera vino con monograma D&D, rosas de jardín y pétalos de rosa; generador en `diseno/rosas/` |
 | `7f72c9c` | 2026-10-20 | Ajuste de proporciones: sello más pequeño (sobre 70 px, portada 80 px), ramos rehechos con rosas más grandes y juntas (hojas entre las rosas, flores secas detrás) y más grandes en la tarjeta y el sobre; en computador, ramos aún más grandes. Pétalos sin cambios |
 | `41bcfc4` | 2026-10-20 | Revisión de elegancia: separadores de rosas y pie de página rehechos y más grandes (rosas juntas, hojas, pampa y paniculata a los lados, línea dorada); ramito nuevo de 3 rosas encima de las tarjetas (lugar, mesa, agradecimiento y gracias del formulario) en vez de una rosa sola; rosas marfil con centro más suave; tarjetas en marfil claro en vez de blanco puro; más aire en la tarjeta del clima |
-| — | 2026-11-10 | Flores de **cerezo japonés (sakura)** en 3D en vez de rosas, según la referencia de Pinterest de los novios: ramas cafés con racimos de flores rosa pálido (pétalos con muesca, vetas, estambres y sombra sobre el papel) en las esquinas del sobre y la portada, separadores, pie y ramitos de las tarjetas; pétalos que caen ahora son de cerezo. Generador `diseno/rosas/gen-sakura.html` + `sakura.js` (el de rosas queda en `gen.html` por si quieren volver) |
+| `083eafb` | 2026-11-10 | Flores de **cerezo japonés (sakura)** en 3D en vez de rosas, según la referencia de Pinterest de los novios: ramas cafés con racimos de flores rosa pálido (pétalos con muesca, vetas, estambres y sombra sobre el papel) en las esquinas del sobre y la portada, separadores, pie y ramitos de las tarjetas; pétalos que caen ahora son de cerezo. Generador `diseno/rosas/gen-sakura.html` + `sakura.js` (el de rosas queda en `gen.html` por si quieren volver) |
+| — | 2026-11-10 | Portada con el **fondo de acuarela** que eligieron los novios (flores blancas, hojas salvia, faroles dorados): `assets/fondo-portada.webp/.jpg` (recortado sin los bordes del celular ni el botón de Pinterest). Clase `hero con-fondo`; oculta el papel rasgado y las ramas de cerezo de la portada (quitar la clase para volver) |
 
 ---
 
