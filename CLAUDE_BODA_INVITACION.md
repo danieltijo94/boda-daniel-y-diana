@@ -30,8 +30,8 @@ siempre; cambian el estilo y las flores:
   una rama de cerezo que cuelga arriba a la derecha y otra que sube por el borde y corre por abajo a la izquierda,
   con racimos de flores rosa pálido, botones y sombra suave sobre el papel (estilo 3D); el sello es
   discreto (70 px en el sobre, 80 px en la portada).
-- **Separadores** (antes de la frase bíblica, mesa, confirmación y pie): guirnalda ancha de rosas con flores secas
-  (casi todo el ancho del celular). Encima de cada tarjeta, un **ramito de 3 rosas** (`cluster`). Tarjetas en marfil claro (`--card`).
+- **Separadores** (antes de la frase bíblica, mesa, confirmación y pie): rama horizontal de cerezo con racimos al centro
+  (casi todo el ancho del celular). Encima de cada tarjeta, un **ramito de cerezo** (`cluster`). Tarjetas en marfil claro (`--card`).
 - **Rosas de jardín** (marfil, rubor y vino) en todos los adornos (separadores, tarjeta del lugar, gracias, pie).
 - **Pétalos de rosa** cayendo (marfil, rubor y vino) con destellos dorados.
 - Los dibujos se generan con `diseno/rosas/` (ver su `LEEME.md`).
