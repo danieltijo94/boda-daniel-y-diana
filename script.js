@@ -827,7 +827,7 @@ const enModoGracias = () => {
 function setupThanks() {
   if (!enModoGracias()) return;
   document.documentElement.classList.add("modo-gracias");
-  // Se queda la portada, el agradecimiento, "Nuestra historia" y el pie; lo demás era para antes de la boda
+  // Se queda la portada, el agradecimiento y el pie; lo demás era para antes de la boda
   ["hoy", "invitado", "cuenta", "lugar", "clima", "llegada", "itinerario", "vestimenta", "regalos", "fotos", "confirmar"]
     .forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = true; });
   $("#gracias").hidden = false;

@@ -1,7 +1,7 @@
 # 💍 Daniel Alejandro & Diana Carolina — Invitación de boda
 
 Invitación web con orquídeas, detalles dorados, sobre animado, música, pétalos cayendo, cuenta regresiva,
-ubicaciones, itinerario, galería, código de vestimenta, regalos y confirmación de asistencia dentro de la página (con aviso por correo, ver `CONFIGURAR-CORREO.md`).
+ubicaciones, itinerario, código de vestimenta, regalos y confirmación de asistencia dentro de la página (con aviso por correo, ver `CONFIGURAR-CORREO.md`).
 
 ## Invitados, pases y mesas
 La lista oficial de invitados está en **Google Sheets** (pestaña **Lista de Invitados**, una fila por persona:
@@ -21,7 +21,7 @@ Páginas de los novios (piden la clave `CLAVE_NOVIOS` del script):
 - **`script.js` → `CONFIG`**: fecha y hora, fecha límite, URL del script de confirmaciones, lugar para el calendario.
 - **`index.html`**: textos, padres, lugares y enlaces de Google Maps, itinerario, vestimenta, datos bancarios.
 - **`assets/cancion.mp3`**: la canción de fondo.
-- **`assets/`**: fotos; en la sección "Galería" reemplaza cada `<figure class="ph">` por `<img src="assets/foto1.jpg" alt="...">`.
+- **`assets/`**: imágenes (fondo de acuarela, logo DD, separador de flores y código QR).
 
 ## Publicar en GitHub Pages
 Settings → Pages → Source: *Deploy from a branch* → rama `main`, carpeta `/ (root)`.

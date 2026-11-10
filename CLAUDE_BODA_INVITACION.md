@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (nueva cita bíblica: Cantar de los Cantares 3, 4)
+> **Última actualización:** 10 de noviembre de 2026 (se quitó la sección "Nuestra historia")
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -71,11 +71,10 @@ siempre; cambian el estilo y las flores:
    valet parking bajo la responsabilidad de cada invitado, conductor elegido contratable en el lugar con costo adicional,
    y la celebración termina a las 12:00 de la noche.
 9. **Itinerario**: 4:00 Coffee time · 5:00 Ceremonia religiosa · 6:00 Brindis · 6:30 Cena · 7:30 ¡A celebrar! · 12:00 a.m. Fin de la celebración
-10. **Galería** "Nuestra historia" (espacios para fotos, pendiente).
-11. **Código de vestimenta**: Formal + colores reservados.
-12. **Regalos**: texto de lluvia de sobres.
-13. **Comparte tus fotos**: QR + botón hacia `fotos.html`.
-14. **Confirma tu asistencia** (formulario dentro de la invitación):
+10. **Código de vestimenta**: Formal + colores reservados.
+11. **Regalos**: texto de lluvia de sobres.
+12. **Comparte tus fotos**: QR + botón hacia `fotos.html`.
+13. **Confirma tu asistencia** (formulario dentro de la invitación):
     - **Con código:** una tarjeta por persona con **Asistirá / No podrá** (atajos "Todos asistiremos" /
       "Ninguno podrá asistir" si son 2 o más). Hay que marcar a todos antes de enviar.
     - Quien asiste: **restricción alimenticia propia** (Vegetariano, Vegano, Sin gluten, Sin lactosa, Alergia + detalle;
@@ -194,7 +193,6 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   una **nueva versión** (ver `INVITADOS-Y-MESAS.md`). Hasta hacerlo, la invitación no muestra el nombre de la familia.
 - [ ] Llenar la columna **Familia** de la Lista de Invitados (quiénes van en la misma invitación) **antes de enviar enlaces**,
   y armar las mesas en `mesas.html` (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
-- [ ] Fotos para la galería "Nuestra historia".
 - [ ] Canción de fondo (`assets/cancion.mp3`).
 - [ ] ⚠️ **La primera prueba de fotos falló** (en el Drive no existe la carpeta "Fotos boda – invitados": falta el permiso de Drive
   o publicar la nueva versión).
@@ -275,7 +273,7 @@ la boda", porque ambos muestran la mesa de cada familia.
 
 **6. Página de agradecimiento** — ✅ programada
 - Desde el 20 de junio de 2027 (hora de Colombia) la invitación se transforma: la portada dice "¡Recién casados!" y
-  quedan solo la portada, la sección **¡Gracias!**, "Nuestra historia" y el pie (el resto se oculta y no se consulta el clima).
+  quedan solo la portada, la sección **¡Gracias!** y el pie (el resto se oculta y no se consulta el clima).
 - Tarjeta de agradecimiento con el **nombre de la familia** y mensaje firmado "Con amor, Daniel & Diana";
   si no pudieron ir (todos marcaron "No podrá"), el mensaje cambia ("Aunque no pudieron acompañarnos…");
   usa "tú" si la invitación es de 1 persona y "ustedes" si es de varias. Sin código: "Querida familia y amigos".
@@ -292,7 +290,7 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 ### 💡 Ideas propuestas que aún no se programan
 1. **Mensaje personal para cada familia** (columna nueva en la pestaña Lista de Invitados).
 2. **"Agendar" en iPhone y Outlook** (archivo de calendario .ics, además de Google Calendar).
-3. **Nuestra historia**: línea de tiempo con fotos (cómo se conocieron, primera cita, propuesta).
+3. ~~**Nuestra historia**~~: descartada (los novios quitaron la galería en nov. 2026).
 4. **Libro de buenos deseos**: los invitados dejan un mensaje (se guarda en la hoja).
 5. **Trivia "¿Cuánto conoces a los novios?"** con ranking.
 6. **Versión en inglés** con botón para cambiar el idioma.
@@ -395,7 +393,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `68388fc` | 2026-11-10 | Propuestas de **sello de cera con el logo nuevo** para el sobre (símbolos `sello_salvia`, `sello_marfil`, `sello_oro`, `sello_vino`, con `selloLogo` en `blanco.js`). Aún no se usan: el sobre sigue con el sello anterior hasta que los novios elijan |
 | `78ade10` | 2026-11-10 | **Sello del sobre: cera marfil con el logo nuevo** (opción B): "DD" caligráfica dorada, aro, coronita de hojas y faroles diminutos; tamaño 86 px. El símbolo `sealMono` ahora lo dibuja `selloLogo(..., "marfil")`; se quitaron las otras 3 propuestas |
 | `5341fab` | 2026-11-10 | **Mismo estilo en todas las páginas adicionales** (panel de los novios, plano de mesas, enlaces de invitados, subida de fotos, tarjeta QR y ventana de clave): nuevo `tema.css` compartido con los colores y fuentes (sacados de `styles.css`) y el fondo de acuarela (`.pg-fondo`); logo DD y separador de flores en imagen (`assets/logo-dd.webp`, `assets/separador.webp`); QR en negro carbón. Regla nueva en `CLAUDE.md`: todo cambio de diseño se aplica también a estas páginas |
-| — | 2026-11-10 | Nueva cita bíblica: «Encontré al que ama mi alma; lo abracé y no lo soltaré.» (Cantar de los Cantares 3, 4), en vez de Cantares 8:7 |
+| `8c3b377` | 2026-11-10 | Nueva cita bíblica: «Encontré al que ama mi alma; lo abracé y no lo soltaré.» (Cantar de los Cantares 3, 4), en vez de Cantares 8:7 |
+| — | 2026-11-10 | Se quita la sección **"Nuestra historia"** (galería de fotos) de la invitación, con sus estilos |
 
 ---
 
