@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (lucecitas y estrellitas doradas a lo largo de la tarjeta)
+> **Última actualización:** 10 de noviembre de 2026 (letras y botones en negro carbón)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -22,9 +22,9 @@ Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta 
 | **Hoja de confirmaciones (Google Sheets)** | https://docs.google.com/spreadsheets/d/1dJpGfw0tYUVGXEwcRdgg4oP-WTlBkTo9WSq6OkTh2No/edit |
 | **Script de confirmaciones (URL publicada)** | configurada en `script.js` → `CONFIG.rsvpEndpoint` |
 
-**Versión actual del diseño:** *acuarela: flores blancas + hojas salvia + dorado + sello vino* (nov. 2026; antes cerezos y, en oct. 2026, rosas). Misma distribución y mismos textos de
+**Versión actual del diseño:** *acuarela: flores blancas + hojas salvia + dorado + letras negro carbón + sello vino* (nov. 2026; antes cerezos y, en oct. 2026, rosas). Misma distribución y mismos textos de
 siempre; cambian el estilo y las flores:
-- Paleta marfil / champaña / dorado, con el vino burdeos en nombres, títulos, botones y el sello.
+- Paleta marfil / verde salvia / dorado, con **negro carbón** en nombres, títulos, textos y botones (antes vino); el sello sigue vino.
 - **Sobre** marfil con el **sello de cera vino** (monograma "D & D": D con rulos y línea grabada en oro, "&" itálica clásica).
 - **Portada**: **fondo de acuarela** elegido por los novios (flores blancas, hojas verde salvia, faroles dorados; `assets/fondo-portada.*`),
   con el sello como monograma y los mismos textos. (Antes: tarjeta de **papel artesanal con borde rasgado suave**,
@@ -387,7 +387,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `083eafb` | 2026-11-10 | Flores de **cerezo japonés (sakura)** en 3D en vez de rosas, según la referencia de Pinterest de los novios: ramas cafés con racimos de flores rosa pálido (pétalos con muesca, vetas, estambres y sombra sobre el papel) en las esquinas del sobre y la portada, separadores, pie y ramitos de las tarjetas; pétalos que caen ahora son de cerezo. Generador `diseno/rosas/gen-sakura.html` + `sakura.js` (el de rosas queda en `gen.html` por si quieren volver) |
 | `435a513` | 2026-11-10 | Portada con el **fondo de acuarela** que eligieron los novios (flores blancas, hojas salvia, faroles dorados): `assets/fondo-portada.webp/.jpg` (recortado sin los bordes del celular ni el botón de Pinterest). Clase `hero con-fondo`; oculta el papel rasgado y las ramas de cerezo de la portada (quitar la clase para volver) |
 | `b454ebd` | 2026-11-10 | Todo combina con el fondo de acuarela: el **sobre** usa el mismo fondo (sin ramos dibujados; letrero con franja marfil suave); separadores, pie y ramitos de las tarjetas con **flores blancas, hojas verde salvia y ramitas doradas** (`diseno/rosas/blanco.js` + `gen-blanco.html`); pétalos que caen blancos (con toque salvia o dorado); fondo de las secciones con manchas salvia muy suaves |
-| — | 2026-11-10 | **Lucecitas y estrellitas**: guirnalda de luces cálidas que cuelga arriba de una sección sí y otra no, y estrellitas doradas que titilan en los bordes de todas las secciones y de la portada (`setupLights` en `script.js`; sin animación si el celular pide menos movimiento) |
+| `d64c132` | 2026-11-10 | **Lucecitas y estrellitas**: guirnalda de luces cálidas que cuelga arriba de una sección sí y otra no, y estrellitas doradas que titilan en los bordes de todas las secciones y de la portada (`setupLights` en `script.js`; sin animación si el celular pide menos movimiento) |
+| — | 2026-11-10 | Letras y botones en **negro carbón** en vez de vino (opción 1 de 4 comparadas): `--wine` #2f2d2a, `--wine-deep` #1c1b19, `--ink` #3a3835, `--ink-soft` #6f6b64; sombras en gris cálido. El sello sigue vino y la muestra "Burdeos" del código de vestimenta no cambia |
 
 ---
 
