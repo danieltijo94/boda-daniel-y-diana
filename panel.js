@@ -14,13 +14,13 @@ const Panel = (() => {
   const css = document.createElement("style");
   css.textContent = `
     .pn-veil { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px;
-      background: rgba(74, 51, 56, .45); backdrop-filter: blur(3px); }
-    .pn-box { width: 100%; max-width: 360px; background: #fdf9f4; border-radius: 16px; padding: 26px 22px; text-align: center;
-      border: 1px solid rgba(184,145,79,.6); box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); font-family: "Cormorant Garamond", Georgia, serif; color: #4a3338; }
-    .pn-box h2 { font-family: "Pinyon Script", cursive; font-weight: normal; font-size: 40px; color: #7a2e45; }
+      background: rgba(55, 50, 42, .4); backdrop-filter: blur(3px); }
+    .pn-box { width: 100%; max-width: 360px; background: var(--ivory, #fdf9f4); border-radius: 16px; padding: 26px 22px; text-align: center;
+      border: 1px solid rgba(184,145,79,.6); box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); font-family: "Cormorant Garamond", Georgia, serif; color: var(--ink, #3a3835); }
+    .pn-box h2 { font-family: "Pinyon Script", cursive; font-weight: normal; font-size: 40px; color: var(--wine, #2f2d2a); }
     .pn-box p { font-size: 17px; margin: 4px 0 14px; }
-    .pn-box input { width: 100%; font: inherit; font-size: 18px; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(184,145,79,.6); background: #fff; color: #4a3338; }
-    .pn-box button { margin-top: 12px; width: 100%; padding: 11px; border: 0; border-radius: 999px; background: #7a2e45; color: #fff;
+    .pn-box input { width: 100%; font: inherit; font-size: 18px; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(184,145,79,.6); background: #fff; color: var(--ink, #3a3835); }
+    .pn-box button { margin-top: 12px; width: 100%; padding: 11px; border: 0; border-radius: 999px; background: var(--wine, #2f2d2a); color: #fff;
       font-family: Cinzel, serif; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; }
     .pn-err { color: #a3272f; font-size: 16px; min-height: 20px; margin-top: 8px; }`;
   document.head.appendChild(css);
@@ -29,7 +29,7 @@ const Panel = (() => {
     return new Promise((resolve) => {
       const veil = document.createElement("div");
       veil.className = "pn-veil";
-      veil.innerHTML = `<form class="pn-box"><h2>Solo novios</h2>
+      veil.innerHTML = `<form class="pn-box"><img src="assets/logo-dd.webp" alt="" style="width:80px;display:block;margin:0 auto 2px"><h2>Solo novios</h2>
         <p>Escribe la clave de los novios (la que pusiste en <b>CLAVE_NOVIOS</b> del script de Google).</p>
         <input type="password" autocomplete="current-password" placeholder="Clave" required>
         <button type="submit">Entrar</button><p class="pn-err"></p></form>`;

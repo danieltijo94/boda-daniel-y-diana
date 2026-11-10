@@ -1,31 +1,7 @@
 /* =========================================================
-   Daniel Alejandro & Diana Carolina — Invitación con rosas (marfil, dorado y vino)
+   Daniel Alejandro & Diana Carolina — Invitación (acuarela marfil y salvia, dorado y negro carbón)
    ========================================================= */
-:root {
-  color-scheme: light dark;
-  --ivory: #fdf9f4;
-  --card: #fffdf9;
-  --champagne: #f4ede2;
-  --blush: #ebe1d3;
-  --linen: #e6ddcf;
-  --rose-light: #f6ece6;
-  --rose: #e3b0b4;
-  --rose-deep: #c4838e;
-  --wine: #2f2d2a;
-  --wine-deep: #1c1b19;
-  --gold: #b8914f;
-  --gold-light: #e7cf9c;
-  --gold-foil: linear-gradient(100deg, #a47a36 0%, #ecd49c 22%, #b8914f 42%, #f5e6bf 58%, #a47a36 78%, #e2c686 100%);
-  --leaf: #7d8f63;
-  --ink: #3a3835;
-  --ink-soft: #6f6b64;
-
-  --script: "Pinyon Script", "Great Vibes", cursive;
-  --serif: "Cormorant Garamond", Georgia, serif;
-  --caps: "Cinzel", "Cormorant Garamond", Georgia, serif;
-
-  --ease: cubic-bezier(.22, .8, .24, 1);
-}
+/* Los colores y las fuentes están en tema.css (compartido con todas las páginas) */
 /* Chrome no oscurece la página si declara su propio "tema oscuro":
    usamos la misma paleta clara para que se vea igual en cualquier modo. */
 @media (prefers-color-scheme: dark) {

@@ -8,13 +8,13 @@
   <meta name="robots" content="noindex">
   <title>Plano de mesas</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tema.css?v=202611100900">
   <style>
     :root {
-      color-scheme: light dark;
-      --ivory: #fdf9f4; --wine: #7a2e45; --gold: #b8914f; --ink: #4a3338; --ink-soft: #86696e;
-      --line: rgba(184,145,79,.45); --red: #a3272f;
+      /* Colores y fuentes: tema.css (el mismo de la invitación) */
+      --red: #a3272f;
     }
-    @media (prefers-color-scheme: dark) { html, body { background: #fdf9f4; color: #4a3338; } }
+    @media (prefers-color-scheme: dark) { html, body { background: var(--ivory); color: var(--ink); } }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     [hidden] { display: none !important; }
     body { font-family: "Cormorant Garamond", serif; font-variant-numeric: lining-nums; background: var(--ivory); color: var(--ink); padding: 24px 16px 40px; }
@@ -32,14 +32,14 @@
     .btn.ghost { background: #fff; color: var(--wine); }
     .btn:disabled { opacity: .45; cursor: default; }
     .btn.pending { animation: glow 1.6s ease-in-out infinite; }
-    @keyframes glow { 50% { box-shadow: 0 0 0 5px rgba(122,46,69,.18); } }
+    @keyframes glow { 50% { box-shadow: 0 0 0 5px rgba(47,45,42,.18); } }
     .status { min-height: 26px; margin-top: 10px; font-size: 18px; color: var(--wine); }
     .status.err { color: var(--red); }
 
     .layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; max-width: 1200px; margin: 0 auto; align-items: start; }
     .side {
       position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; background: #fff; border-radius: 16px;
-      border: 1px solid var(--line); padding: 16px 14px; box-shadow: 0 18px 30px -24px rgba(90,31,51,.5); transition: box-shadow .2s;
+      border: 1px solid var(--line); padding: 16px 14px; box-shadow: 0 18px 30px -24px rgba(55,50,42,.5); transition: box-shadow .2s;
     }
     .side h2, .fam-title { font-family: Cinzel, serif; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--wine); }
     .side h2 { font-size: 14px; text-align: center; }
@@ -70,11 +70,11 @@
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
     .table {
       background: #fff; border-radius: 16px; padding: 12px 14px 16px; text-align: center; border: 1px solid var(--line);
-      box-shadow: 0 18px 30px -24px rgba(90,31,51,.5); break-inside: avoid; transition: box-shadow .2s, transform .2s;
+      box-shadow: 0 18px 30px -24px rgba(55,50,42,.5); break-inside: avoid; transition: box-shadow .2s, transform .2s;
     }
-    .over { box-shadow: 0 0 0 3px var(--gold), 0 18px 30px -24px rgba(90,31,51,.5) !important; }
+    .over { box-shadow: 0 0 0 3px var(--gold), 0 18px 30px -24px rgba(55,50,42,.5) !important; }
     .table.target { cursor: pointer; }
-    .table.target:hover { transform: translateY(-2px); box-shadow: 0 0 0 2px var(--gold), 0 18px 30px -24px rgba(90,31,51,.5); }
+    .table.target:hover { transform: translateY(-2px); box-shadow: 0 0 0 2px var(--gold), 0 18px 30px -24px rgba(55,50,42,.5); }
     .table.full .t-count { color: var(--wine); font-weight: 600; }
     .t-head { display: flex; align-items: center; gap: 6px; }
     .t-name { flex: 1; min-width: 0; font-family: Cinzel, serif; font-size: 15px; letter-spacing: .08em; color: var(--wine); text-align: center;
@@ -117,10 +117,12 @@
     }
   </style>
 </head>
-<body>
+<body class="pg-fondo">
   <header class="top">
+    <img class="pg-logo" src="assets/logo-dd.webp" alt="" width="104" height="130">
     <h1>Plano de mesas</h1>
     <p class="sub">Daniel Alejandro &amp; Diana Carolina · 19 · 06 · 2027</p>
+    <img class="pg-flor" src="assets/separador.webp" alt="" width="300" height="108">
     <div class="summary" id="summary"></div>
     <div class="actions">
       <button class="btn ghost" id="addTable" type="button">+ Agregar mesa</button>
@@ -148,7 +150,7 @@
     Al tocar <b>Guardar cambios</b> se actualiza la columna <b>Numero de Mesa</b> de cada invitado. Para agregar o quitar invitados,
     edita la hoja y recarga esta página.</p>
 
-  <script src="panel.js?v=202609240500"></script>
+  <script src="panel.js?v=202611100900"></script>
   <script>
     const $ = (s, el = document) => el.querySelector(s);
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -196,8 +198,8 @@
         <circle cx="60" cy="60" r="35" fill="#fdf9f4" stroke="#b8914f" stroke-width="1.4"/>
         <circle cx="60" cy="60" r="30" fill="none" stroke="#b8914f" stroke-opacity=".35"/>
         ${num ? `<text x="60" y="52" text-anchor="middle" font-family="Cinzel" font-size="8" letter-spacing="2" fill="#b8914f">MESA</text>
-        <text x="60" y="76" text-anchor="middle" font-family="Cormorant Garamond" font-weight="600" font-size="28" fill="#7a2e45">${esc(m.nombre)}</text>`
-        : `<text x="60" y="67" text-anchor="middle" font-family="Pinyon Script" font-size="${m.nombre.length > 8 ? 14 : 20}" fill="#7a2e45">${esc(m.nombre)}</text>`}
+        <text x="60" y="76" text-anchor="middle" font-family="Cormorant Garamond" font-weight="600" font-size="28" fill="#2f2d2a">${esc(m.nombre)}</text>`
+        : `<text x="60" y="67" text-anchor="middle" font-family="Pinyon Script" font-size="${m.nombre.length > 8 ? 14 : 20}" fill="#2f2d2a">${esc(m.nombre)}</text>`}
       </svg>`;
     }
     function chip(p, quitar) {

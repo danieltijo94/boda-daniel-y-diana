@@ -4,43 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="supported-color-schemes" content="light dark">
   <meta name="robots" content="noindex">
   <title>Enlaces de invitados</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tema.css?v=202611100900">
   <style>
-    :root { color-scheme: light dark; }
-    @media (prefers-color-scheme: dark) { :root { color-scheme: light dark; } body { background: #fbf6f1; color: #5a4448; } }
-    body { font-family: Montserrat, sans-serif; background: #fbf6f1; color: #5a4448; margin: 0; padding: 24px 16px; }
+    @media (prefers-color-scheme: dark) { html, body { background: var(--ivory); color: var(--ink); } }
+    * { box-sizing: border-box; }
+    body { font-family: var(--serif); font-variant-numeric: lining-nums; background: var(--ivory); color: var(--ink); margin: 0; padding: 24px 16px 40px; font-size: 17px; }
     .wrap { max-width: 720px; margin: 0 auto; }
-    h1 { font-family: "Great Vibes", cursive; font-weight: normal; color: #a8646a; font-size: 44px; margin: 0; text-align: center; }
-    .sub { text-align: center; font-size: 13px; color: #8a7074; margin: 4px 0 20px; }
-    .total { text-align: center; font-size: 14px; margin-bottom: 18px; }
-    .card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 10px 24px -18px rgba(120,60,70,.6); }
+    h1 { font-family: var(--script); font-weight: normal; color: var(--wine); font-size: 50px; line-height: 1.2; margin: 0; text-align: center; }
+    .sub { text-align: center; font-size: 16px; font-style: italic; color: var(--ink-soft); margin: 4px 0 6px; }
+    .total { text-align: center; font-family: var(--caps); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; box-shadow: 0 18px 30px -26px var(--shadow); }
     .top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-    .name { font-weight: 500; }
-    .pases { font-size: 12px; background: #e9efe3; color: #6f8660; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
-    .mesa { font-size: 12px; background: #f6e9d2; color: #8a6a2f; padding: 3px 10px; border-radius: 20px; white-space: nowrap; margin-left: 6px; }
-    .who { font-size: 13px; color: #5a4448; margin-top: 6px; }
-    .state { font-size: 12px; margin-top: 6px; color: #8a7074; }
-    .state.yes { color: #6f8660; }
-    .state.no { color: #a8646a; }
-    .url { font-size: 12px; color: #8a7074; word-break: break-all; margin: 8px 0 10px; }
+    .name { font-family: var(--caps); font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: var(--wine); }
+    .pases { font-size: 14px; background: var(--sage-light); color: #4f6049; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+    .mesa { font-size: 14px; background: #f3ead6; color: #7a5e2c; padding: 2px 10px; border-radius: 20px; white-space: nowrap; margin-left: 6px; }
+    .who { font-size: 17px; margin-top: 6px; }
+    .state { font-size: 15px; margin-top: 4px; color: var(--ink-soft); font-style: italic; }
+    .state.yes { color: #4f6b49; }
+    .state.no { color: #8a5a4a; }
+    .url { font-size: 14px; color: var(--ink-soft); word-break: break-all; margin: 8px 0 10px; }
     .row { display: flex; gap: 8px; }
-    .row a, .row button { flex: 1; text-align: center; padding: 10px; border-radius: 30px; border: 0; font: inherit; font-size: 13px; cursor: pointer; text-decoration: none; }
-    .copy { background: #f3d9d3; color: #a8646a; }
-    .wa { background: #25d366; color: #fff; }
-    .err { color: #a8646a; text-align: center; }
+    .row a, .row button { flex: 1; text-align: center; padding: 9px; border-radius: 999px; font: inherit; font-size: 15px; cursor: pointer; text-decoration: none; }
+    .copy { background: #fff; border: 1px solid var(--line); color: var(--wine); }
+    .wa { background: #25d366; border: 1px solid #25d366; color: #fff; }
+    .err { color: #a3272f; text-align: center; }
   </style>
 </head>
-<body>
+<body class="pg-fondo">
   <div class="wrap">
+    <img class="pg-logo" src="assets/logo-dd.webp" alt="" width="104" height="130">
     <h1>Enlaces de invitados</h1>
     <p class="sub">Esta lista sale de la pestaña <b>Lista de Invitados</b> de Google Sheets. Para añadir o cambiar invitados, edita esa pestaña y recarga esta página.</p>
+    <img class="pg-flor" src="assets/separador.webp" alt="" width="300" height="108">
     <p class="total" id="total"></p>
     <div id="list"></div>
   </div>
-  <script src="panel.js?v=202609240500"></script>
+  <script src="panel.js?v=202611100900"></script>
   <script>
     const base = new URL("./", location.href).href;
     Panel.cargarLista()

@@ -6,7 +6,8 @@
   <meta name="robots" content="noindex">
   <title>Tarjeta QR para las mesas</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tema.css?v=202611100900">
+  <link rel="stylesheet" href="styles.css?v=202611100900">
   <style>
     @page { size: A6 portrait; margin: 0; }
     body { background: #eee; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px 16px; }
@@ -14,12 +15,12 @@
     .table-card {
       width: 105mm; min-height: 148mm; max-width: 100%; background: var(--ivory); text-align: center;
       padding: 12mm 9mm; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 0; border-radius: 0; margin: 0; animation: none;
     }
     .table-card::before { content: ""; position: absolute; inset: 5mm; border: 1px solid var(--gold); outline: 1px solid rgba(184,145,79,.4); outline-offset: -4px; pointer-events: none; }
     .table-card h1 { font-family: var(--script); font-weight: normal; font-size: 44px; color: var(--wine); line-height: 1.1; }
     .table-card p { font-size: 17px; line-height: 1.4; margin: 8px 0 14px; }
-    .table-card img { width: 52mm; height: 52mm; }
+    .table-card img[src*="qr"] { width: 48mm; height: 48mm; }
     .table-card .names { font-family: var(--script); font-size: 26px; color: var(--wine); margin-top: 12px; }
     .table-card .names i { font-family: var(--serif); color: var(--gold); font-size: .8em; }
     .table-card .date { font-family: var(--caps); font-size: 11px; letter-spacing: .3em; color: var(--gold); }
@@ -34,9 +35,11 @@
   <p class="tip">Tarjeta tamaño A6 (media carta pequeña). Imprímela y ponla en cada mesa.</p>
   <button class="btn" onclick="print()">Imprimir</button>
   <div class="table-card">
+    <img src="assets/logo-dd.webp" alt="" style="width:26mm;height:auto;margin-bottom:2mm">
     <h1>Comparte tus fotos</h1>
     <p>Escanea el código con la cámara de tu celular y sube las fotos y videos que tomes hoy.</p>
     <img src="assets/qr-fotos.svg" alt="Código QR para subir fotos">
+    <img src="assets/separador.webp" alt="" style="width:46mm;height:auto;margin:2mm 0 0">
     <p class="names">Daniel Alejandro<br><i>&amp;</i> Diana Carolina</p>
     <p class="date">19 · 06 · 2027</p>
   </div>

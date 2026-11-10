@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (sello marfil con el logo nuevo en el sobre)
+> **Última actualización:** 10 de noviembre de 2026 (mismo estilo en todas las páginas adicionales, `tema.css` compartido)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -31,6 +31,7 @@ siempre; cambian el estilo y las flores:
   una rama de cerezo que cuelga arriba a la derecha y otra que sube por el borde y corre por abajo a la izquierda,
   con racimos de flores rosa pálido, botones y sombra suave sobre el papel (estilo 3D); el sello es
   discreto (70 px en el sobre, 80 px en la portada).)
+- **Páginas adicionales** (panel, mesas, enlaces, fotos, QR): mismo estilo, con `tema.css` compartido, fondo de acuarela, logo DD y separador de flores.
 - **Sobre**: mismo fondo de acuarela que la portada, con **sello de cera marfil** con el logo nuevo ("DD" dorada y coronita de hojas).
 - **Faroles y estrellitas**: faroles dorados con velita (como los de la portada) que cuelgan y se mecen arriba de algunas secciones, y estrellitas doradas que titilan en los bordes.
 - **Separadores** (antes de la frase bíblica, mesa, confirmación y pie): flores blancas al centro con hojas salvia y ramitas doradas a los lados
@@ -392,7 +393,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `7a3cfe7` | 2026-11-10 | Las guirnaldas de luces se cambian por **faroles dorados colgantes** (opción A de 4 mostradas: faroles, luciérnagas, cortina de luces, ramita dorada): 3 faroles con velita que se mecen arriba de una sección sí y otra no, sin tocar los títulos; las estrellitas siguen |
 | `6f14bba` | 2026-11-10 | **Logo nuevo en la portada** (en vez del sello de cera): corona ovalada dorada con hojas salvia, flores blancas, dos faroles y "DD" caligráfica en dorado, sin textos, según la imagen de los novios. Dibujado en SVG (símbolo `logoDD` en `gen-blanco.html`; la "DD" usa Pinyon Script). El sello del sobre no cambia |
 | `68388fc` | 2026-11-10 | Propuestas de **sello de cera con el logo nuevo** para el sobre (símbolos `sello_salvia`, `sello_marfil`, `sello_oro`, `sello_vino`, con `selloLogo` en `blanco.js`). Aún no se usan: el sobre sigue con el sello anterior hasta que los novios elijan |
-| — | 2026-11-10 | **Sello del sobre: cera marfil con el logo nuevo** (opción B): "DD" caligráfica dorada, aro, coronita de hojas y faroles diminutos; tamaño 86 px. El símbolo `sealMono` ahora lo dibuja `selloLogo(..., "marfil")`; se quitaron las otras 3 propuestas |
+| `78ade10` | 2026-11-10 | **Sello del sobre: cera marfil con el logo nuevo** (opción B): "DD" caligráfica dorada, aro, coronita de hojas y faroles diminutos; tamaño 86 px. El símbolo `sealMono` ahora lo dibuja `selloLogo(..., "marfil")`; se quitaron las otras 3 propuestas |
+| — | 2026-11-10 | **Mismo estilo en todas las páginas adicionales** (panel de los novios, plano de mesas, enlaces de invitados, subida de fotos, tarjeta QR y ventana de clave): nuevo `tema.css` compartido con los colores y fuentes (sacados de `styles.css`) y el fondo de acuarela (`.pg-fondo`); logo DD y separador de flores en imagen (`assets/logo-dd.webp`, `assets/separador.webp`); QR en negro carbón. Regla nueva en `CLAUDE.md`: todo cambio de diseño se aplica también a estas páginas |
 
 ---
 

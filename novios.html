@@ -8,13 +8,13 @@
   <meta name="robots" content="noindex">
   <title>Panel de los novios</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tema.css?v=202611100900">
   <style>
     :root {
-      color-scheme: light dark;
-      --ivory: #fdf9f4; --wine: #7a2e45; --gold: #b8914f; --ink: #4a3338; --ink-soft: #86696e;
-      --line: rgba(184,145,79,.45); --red: #a3272f; --green: #3f7d5a;
+      /* Colores y fuentes: tema.css (el mismo de la invitación) */
+      --red: #a3272f; --green: #5f7a58;
     }
-    @media (prefers-color-scheme: dark) { html, body { background: #fdf9f4; color: #4a3338; } }
+    @media (prefers-color-scheme: dark) { html, body { background: var(--ivory); color: var(--ink); } }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     [hidden] { display: none !important; }
     body { font-family: "Cormorant Garamond", serif; font-variant-numeric: lining-nums; background: var(--ivory); color: var(--ink); padding: 24px 16px 48px; }
@@ -28,7 +28,7 @@
     .links a:hover { border-color: var(--gold); }
 
     .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .tile { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 10px 14px; text-align: center; box-shadow: 0 18px 30px -24px rgba(90,31,51,.5); }
+    .tile { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 10px 14px; text-align: center; box-shadow: 0 18px 30px -24px rgba(55,50,42,.5); }
     .tile b { display: block; font-size: 44px; font-weight: 500; line-height: 1; color: var(--wine); }
     .tile span { font-family: Cinzel, serif; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
     .tile.si b { color: var(--green); }
@@ -49,7 +49,7 @@
     .hint { text-align: center; font-size: 16px; font-style: italic; color: var(--ink-soft); margin-bottom: 14px; }
 
     .list { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
-    .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: 0 18px 30px -26px rgba(90,31,51,.5); }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: 0 18px 30px -26px rgba(55,50,42,.5); }
     .card h3 { font-family: Cinzel, serif; font-weight: 500; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--wine); display: flex; justify-content: space-between; gap: 8px; }
     .card h3 small { font-family: "Cormorant Garamond", serif; letter-spacing: 0; text-transform: none; font-size: 15px; color: var(--ink-soft); white-space: nowrap; }
     .people { list-style: none; margin-top: 8px; }
@@ -87,10 +87,12 @@
     }
   </style>
 </head>
-<body>
+<body class="pg-fondo">
   <div class="wrap">
+    <img class="pg-logo" src="assets/logo-dd.webp" alt="" width="104" height="130">
     <h1>Panel de los novios</h1>
     <p class="sub">Daniel Alejandro &amp; Diana Carolina · 19 · 06 · 2027</p>
+    <img class="pg-flor" src="assets/separador.webp" alt="" width="300" height="108">
     <nav class="links">
       <a href="mesas.html">🪑 Plano de mesas</a>
       <a href="enlaces.html">💌 Enlaces para enviar</a>
@@ -115,7 +117,7 @@
     <main id="view"><p class="empty">Cargando…</p></main>
   </div>
 
-  <script src="panel.js?v=202610140500"></script>
+  <script src="panel.js?v=202611100900"></script>
   <script>
     const $ = (s) => document.querySelector(s);
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

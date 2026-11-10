@@ -19,6 +19,11 @@ Responde siempre **en español** y con explicaciones sencillas (el usuario no es
   + Familia y Código que agrega el script; y pestaña Mesas), servida por `google-apps-script/Code.gs`;
   ya no hay `invitados.csv`. La clave `CLAVE_NOVIOS` va solo en Apps Script.
 - Al cambiar `styles.css` o `script.js`, sube el `?v=` en `index.html` para que los celulares no usen la versión vieja.
+- **Mismo estilo en todas las páginas**: los colores, fuentes y el fondo de acuarela viven en `tema.css`, que usan la invitación
+  y las páginas adicionales (`novios.html`, `mesas.html`, `enlaces.html`, `fotos.html`, `qr-mesa.html`, la ventana de clave de `panel.js`).
+  Cada vez que cambie el diseño de la invitación (paleta, logo, flores, fondo), aplícalo también a esas páginas:
+  cambia `tema.css` y, si cambian el logo o el separador, vuelve a generar `assets/logo-dd.webp` y `assets/separador.webp`.
+  Sube el `?v=` de `tema.css` en todas las páginas.
 - **Nunca subas secretos ni la lista real de invitados** al repositorio (es público): la palabra secreta de la playlist, la URL del script
   de la pareja y `CLAVE_NOVIOS` van solo en Apps Script.
 - Después de cambiar un script de Google, recuérdale al usuario publicar una **nueva versión**

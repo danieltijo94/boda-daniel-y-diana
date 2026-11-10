@@ -1,0 +1,53 @@
+/* =========================================================
+   TEMA COMPARTIDO — Daniel Alejandro & Diana Carolina
+   Colores, fuentes y fondo que usan TODAS las páginas: la invitación (index.html),
+   el panel de los novios, el plano de mesas, los enlaces, la subida de fotos y la tarjeta QR.
+   Si se cambia la paleta de la invitación, se cambia aquí y todo queda igual.
+   ========================================================= */
+:root {
+  color-scheme: light dark;
+  --ivory: #fdf9f4;
+  --card: #fffdf9;
+  --champagne: #f4ede2;
+  --blush: #ebe1d3;
+  --linen: #e6ddcf;
+  --rose-light: #f6ece6;
+  --rose: #e3b0b4;
+  --rose-deep: #c4838e;
+  --wine: #2f2d2a;
+  --wine-deep: #1c1b19;
+  --gold: #b8914f;
+  --gold-light: #e7cf9c;
+  --gold-foil: linear-gradient(100deg, #a47a36 0%, #ecd49c 22%, #b8914f 42%, #f5e6bf 58%, #a47a36 78%, #e2c686 100%);
+  --leaf: #7d8f63;
+  --ink: #3a3835;
+  --ink-soft: #6f6b64;
+  --sage: #8d9c87;
+  --sage-light: #dfe5da;
+  --line: rgba(184, 145, 79, .45);
+  --shadow: rgba(55, 50, 42, .45);
+
+  --script: "Pinyon Script", "Great Vibes", cursive;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --caps: "Cinzel", "Cormorant Garamond", Georgia, serif;
+
+  --ease: cubic-bezier(.22, .8, .24, 1);
+}
+
+/* Fondo de acuarela (el mismo de la portada) que se desvanece hacia abajo: páginas adicionales */
+.pg-fondo {
+  background:
+    linear-gradient(180deg, rgba(250, 248, 242, .25) 0, rgba(250, 248, 242, .8) 320px, var(--ivory) 620px) no-repeat,
+    url("assets/fondo-portada.jpg") top center / 100% auto no-repeat,
+    var(--ivory) !important;
+}
+@media (min-width: 900px) {
+  .pg-fondo { background:
+    linear-gradient(180deg, rgba(250, 248, 242, .45) 0, rgba(250, 248, 242, .9) 300px, var(--ivory) 520px) no-repeat,
+    url("assets/fondo-portada.jpg") center 18% / 100% auto no-repeat,
+    var(--ivory) !important; }
+}
+/* Logo DD (corona de hojas y faroles) y separador de flores blancas, en imagen */
+.pg-logo { display: block; width: 104px; height: auto; margin: 0 auto 2px; }
+.pg-flor { display: block; width: min(300px, 80vw); height: auto; margin: 4px auto 14px; }
+@media print { .pg-fondo { background: #fff !important; } .pg-flor { width: 220px; } }
