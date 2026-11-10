@@ -390,7 +390,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `d64c132` | 2026-11-10 | **Lucecitas y estrellitas**: guirnalda de luces cálidas que cuelga arriba de una sección sí y otra no, y estrellitas doradas que titilan en los bordes de todas las secciones y de la portada (`setupLights` en `script.js`; sin animación si el celular pide menos movimiento) |
 | `68a72f3` | 2026-11-10 | Letras y botones en **negro carbón** en vez de vino (opción 1 de 4 comparadas): `--wine` #2f2d2a, `--wine-deep` #1c1b19, `--ink` #3a3835, `--ink-soft` #6f6b64; sombras en gris cálido. El sello sigue vino y la muestra "Burdeos" del código de vestimenta no cambia |
 | `7a3cfe7` | 2026-11-10 | Las guirnaldas de luces se cambian por **faroles dorados colgantes** (opción A de 4 mostradas: faroles, luciérnagas, cortina de luces, ramita dorada): 3 faroles con velita que se mecen arriba de una sección sí y otra no, sin tocar los títulos; las estrellitas siguen |
-| — | 2026-11-10 | **Logo nuevo en la portada** (en vez del sello de cera): corona ovalada dorada con hojas salvia, flores blancas, dos faroles y "DD" caligráfica en dorado, sin textos, según la imagen de los novios. Dibujado en SVG (símbolo `logoDD` en `gen-blanco.html`; la "DD" usa Pinyon Script). El sello del sobre no cambia |
+| `6f14bba` | 2026-11-10 | **Logo nuevo en la portada** (en vez del sello de cera): corona ovalada dorada con hojas salvia, flores blancas, dos faroles y "DD" caligráfica en dorado, sin textos, según la imagen de los novios. Dibujado en SVG (símbolo `logoDD` en `gen-blanco.html`; la "DD" usa Pinyon Script). El sello del sobre no cambia |
+| — | 2026-11-10 | Propuestas de **sello de cera con el logo nuevo** para el sobre (símbolos `sello_salvia`, `sello_marfil`, `sello_oro`, `sello_vino`, con `selloLogo` en `blanco.js`). Aún no se usan: el sobre sigue con el sello anterior hasta que los novios elijan |
 
 ---
 

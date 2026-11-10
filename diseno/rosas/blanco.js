@@ -93,3 +93,41 @@ function botonBlanco(g, x, y, s, rot) {
 function tallo(g, pts, w = 1) {
   el(g, "path", { d: "M" + pts.map((p) => p.join(" ")).join(" L"), stroke: "#6f7e6b", "stroke-width": w, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", opacity: .85 });
 }
+// Sello de cera con el logo nuevo: corona de hojitas en relieve dorado y la "DD" caligráfica
+const CERAS = {
+  salvia: ["#b6c2b0", "#8a9b84", "#56664f", "#76876f", "#cfd8ca"],
+  marfil: ["#fffaf0", "#ece2cc", "#c7b591", "#e3d7bc", "#ffffff"],
+  oro:    ["#f6e2a6", "#cfa856", "#8a6a2c", "#b9914a", "#fff1c4"],
+  vino:   ["#a9506a", "#7d2f47", "#4a1727", "#6f2840", "#d98ca2"],
+};
+function selloLogo(g, tono = "salvia") {
+  const svg = g.ownerSVGElement, d = svg.querySelector("defs"), [c0, c1, c2, cin, luz] = CERAS[tono], id = "cera" + tono;
+  defsBlanco(svg);
+  if (!svg.querySelector("#" + id)) d.insertAdjacentHTML("beforeend", `
+    <radialGradient id="${id}" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="${c0}"/><stop offset=".5" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></radialGradient>
+    <radialGradient id="${id}i" cx=".5" cy=".5" r=".5"><stop offset=".8" stop-color="${cin}"/><stop offset=".95" stop-color="${c2}"/><stop offset="1" stop-color="${c0}"/></radialGradient>`);
+  if (!svg.querySelector("#ddRelieve")) d.insertAdjacentHTML("beforeend", `
+    <filter id="ddRelieve" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx=".5" dy=".9" stdDeviation=".5" flood-color="#2a1d0c" flood-opacity=".45"/></filter>`);
+  el(g, "path", { d: "M0 -96 C30 -100 62 -84 80 -58 C98 -32 100 4 90 32 C78 66 50 94 8 96 C-30 100 -66 84 -86 50 C-100 20 -98 -22 -82 -52 C-64 -82 -34 -94 0 -96 Z", fill: `url(#${id})`, filter: "url(#waxEdge)" });
+  el(g, "circle", { r: 72, fill: `url(#${id}i)` });
+  el(g, "circle", { r: 72, fill: "none", stroke: luz, "stroke-width": 1.2, opacity: .5 });
+  const oro = tono === "oro" ? "#7a5a22" : "url(#bpOroD)";
+  // aro fino y corona de hojitas en relieve (con un espacio abajo, como el logo)
+  el(g, "ellipse", { rx: 60, ry: 64, fill: "none", stroke: oro, "stroke-width": 1, filter: "url(#ddRelieve)" });
+  const hojita = (a, lado) => {
+    const x = 60 * Math.cos(a), y = 64 * Math.sin(a), rot = Math.atan2(64 * Math.cos(a), -60 * Math.sin(a)) * 180 / Math.PI + lado * 40;
+    el(g, "path", { d: "M0 0 C3 -4 10 -4 14 0 C10 4 3 4 0 0 Z", transform: `translate(${x} ${y}) rotate(${rot})`, fill: tono === "oro" ? "#9c7a36" : "none", stroke: oro, "stroke-width": .9, filter: "url(#ddRelieve)" });
+  };
+  for (let i = 0; i < 9; i++) { const a = (200 + i * 15) * Math.PI / 180; hojita(a, i % 2 ? 1 : -1); hojita(Math.PI - a, i % 2 ? -1 : 1); }
+  [[-1, 1], [1, 1]].forEach(([sx]) => el(g, "circle", { cx: sx * 42, cy: 46, r: 3, fill: oro, opacity: .9 })); // florecitas abajo
+  el(g, "path", { d: "M-6 -64 L-6 -56 M6 -64 L6 -50", stroke: oro, "stroke-width": .7 });
+  el(g, "rect", { x: -9, y: -57, width: 6, height: 9, rx: 1, fill: "none", stroke: oro, "stroke-width": .8 });   // dos faroles diminutos
+  el(g, "rect", { x: 3, y: -51, width: 6, height: 9, rx: 1, fill: "none", stroke: oro, "stroke-width": .8 });
+  // "DD" caligráfica
+  const dd = el(g, "g", { filter: "url(#ddRelieve)" });
+  el(dd, "path", { d: "M-50 -2 C-30 -8 -8 -9 14 -5", stroke: oro, "stroke-width": 1.1, fill: "none", "stroke-linecap": "round" });
+  el(dd, "path", { d: "M-22 30 C0 26 22 22 40 12", stroke: oro, "stroke-width": 1.1, fill: "none", "stroke-linecap": "round" });
+  el(dd, "text", { x: -46, y: 10, "font-family": "PS", "font-size": 60, fill: oro }).textContent = "D";
+  el(dd, "text", { x: -24, y: 36, "font-family": "PS", "font-size": 60, fill: oro }).textContent = "D";
+  el(g, "path", { d: "M-58 -68 C-30 -86 14 -88 44 -74", stroke: luz, "stroke-width": 5, "stroke-linecap": "round", opacity: .3, fill: "none" });
+}
