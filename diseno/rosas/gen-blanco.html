@@ -87,7 +87,7 @@ hojaSalvia(sym("oleaf", "0 0 120 50"), 4, 25, 112, 0, .3);
   el(dd, "text", { x: 46, y: 176, "font-family": "PS", "font-size": 118, fill: "url(#bpOroD)" }).textContent = "D";
   el(dd, "text", { x: 88, y: 226, "font-family": "PS", "font-size": 118, fill: "url(#bpOroD)" }).textContent = "D";
   svg.querySelector("defs").insertAdjacentHTML("beforeend", `<linearGradient id="bpOroD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8823f"/><stop offset=".45" stop-color="#d6b468"/><stop offset=".7" stop-color="#b48b42"/><stop offset="1" stop-color="#8f6a2c"/></linearGradient><filter id="bpDorado" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx=".4" dy=".8" stdDeviation=".5" flood-color="#6b5226" flood-opacity=".35"/></filter>`); }
-["salvia", "marfil", "oro", "vino"].forEach((t) => selloLogo(sym("sello_" + t, "-100 -100 200 200"), t));
-selloCera(sym("sealMono", "-100 -100 200 200"), 96, { escala: .68 });
+// Sello del sobre: cera marfil con el logo nuevo (opción B elegida por los novios)
+selloLogo(sym("sealMono", "-100 -100 200 200"), "marfil");
 window.listo = true;
 </script></body></html>

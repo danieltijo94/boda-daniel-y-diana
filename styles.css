@@ -148,7 +148,7 @@ main {
 }
 .seal {
   position: absolute; z-index: 4; left: 50%; top: 58%;
-  width: 70px; height: 70px; margin: -35px 0 0 -35px;
+  width: 86px; height: 86px; margin: -43px 0 0 -43px;
   filter: drop-shadow(0 5px 8px rgba(60, 20, 30, .4));
   transition: transform .6s var(--ease), opacity .5s;
 }
