@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (todo en estilo acuarela: flores blancas, hojas salvia, dorado)
+> **Última actualización:** 10 de noviembre de 2026 (lucecitas y estrellitas doradas a lo largo de la tarjeta)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -32,6 +32,7 @@ siempre; cambian el estilo y las flores:
   con racimos de flores rosa pálido, botones y sombra suave sobre el papel (estilo 3D); el sello es
   discreto (70 px en el sobre, 80 px en la portada).)
 - **Sobre**: mismo fondo de acuarela que la portada.
+- **Lucecitas y estrellitas**: guirnaldas de luces cálidas arriba de algunas secciones y estrellitas doradas que titilan en los bordes.
 - **Separadores** (antes de la frase bíblica, mesa, confirmación y pie): flores blancas al centro con hojas salvia y ramitas doradas a los lados
   (casi todo el ancho del celular). Encima de cada tarjeta, un **ramito de flores blancas y hojas salvia** (`cluster`). Tarjetas en marfil claro (`--card`).
 - **Rosas de jardín** (marfil, rubor y vino) en todos los adornos (separadores, tarjeta del lugar, gracias, pie).
@@ -385,7 +386,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `41bcfc4` | 2026-10-20 | Revisión de elegancia: separadores de rosas y pie de página rehechos y más grandes (rosas juntas, hojas, pampa y paniculata a los lados, línea dorada); ramito nuevo de 3 rosas encima de las tarjetas (lugar, mesa, agradecimiento y gracias del formulario) en vez de una rosa sola; rosas marfil con centro más suave; tarjetas en marfil claro en vez de blanco puro; más aire en la tarjeta del clima |
 | `083eafb` | 2026-11-10 | Flores de **cerezo japonés (sakura)** en 3D en vez de rosas, según la referencia de Pinterest de los novios: ramas cafés con racimos de flores rosa pálido (pétalos con muesca, vetas, estambres y sombra sobre el papel) en las esquinas del sobre y la portada, separadores, pie y ramitos de las tarjetas; pétalos que caen ahora son de cerezo. Generador `diseno/rosas/gen-sakura.html` + `sakura.js` (el de rosas queda en `gen.html` por si quieren volver) |
 | `435a513` | 2026-11-10 | Portada con el **fondo de acuarela** que eligieron los novios (flores blancas, hojas salvia, faroles dorados): `assets/fondo-portada.webp/.jpg` (recortado sin los bordes del celular ni el botón de Pinterest). Clase `hero con-fondo`; oculta el papel rasgado y las ramas de cerezo de la portada (quitar la clase para volver) |
-| — | 2026-11-10 | Todo combina con el fondo de acuarela: el **sobre** usa el mismo fondo (sin ramos dibujados; letrero con franja marfil suave); separadores, pie y ramitos de las tarjetas con **flores blancas, hojas verde salvia y ramitas doradas** (`diseno/rosas/blanco.js` + `gen-blanco.html`); pétalos que caen blancos (con toque salvia o dorado); fondo de las secciones con manchas salvia muy suaves |
+| `b454ebd` | 2026-11-10 | Todo combina con el fondo de acuarela: el **sobre** usa el mismo fondo (sin ramos dibujados; letrero con franja marfil suave); separadores, pie y ramitos de las tarjetas con **flores blancas, hojas verde salvia y ramitas doradas** (`diseno/rosas/blanco.js` + `gen-blanco.html`); pétalos que caen blancos (con toque salvia o dorado); fondo de las secciones con manchas salvia muy suaves |
+| — | 2026-11-10 | **Lucecitas y estrellitas**: guirnalda de luces cálidas que cuelga arriba de una sección sí y otra no, y estrellitas doradas que titilan en los bordes de todas las secciones y de la portada (`setupLights` en `script.js`; sin animación si el celular pide menos movimiento) |
 
 ---
 

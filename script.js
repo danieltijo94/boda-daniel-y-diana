@@ -878,6 +878,59 @@ function setupHeroPaper() {
 }
 
 /* ---------- Inicio ---------- */
+/* ---------- Lucecitas y estrellitas (mismo estilo dorado de la portada) ---------- */
+// Guirnaldas de luces cálidas que cuelgan arriba de algunas secciones y estrellitas doradas
+// que titilan en los bordes, para que la tarjeta no se vea plana.
+function setupLights() {
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const estrellas = (cont, n, margen) => {
+    for (let i = 0; i < n; i++) {
+      const st = document.createElement("i");
+      st.className = "twinkle" + (Math.random() < .35 ? " dot" : "");
+      const izq = Math.random() < .5;
+      st.style.left = (izq ? 1 + Math.random() * margen : 97 - Math.random() * margen) + "%";
+      st.style.top = (6 + Math.random() * 88) + "%";
+      const t = 9 + Math.random() * 9;
+      st.style.width = st.style.height = t + "px";
+      st.style.animationDelay = -(Math.random() * 4) + "s";
+      st.style.animationDuration = (2.4 + Math.random() * 2.6) + "s";
+      cont.appendChild(st);
+    }
+  };
+  const guirnalda = (sec) => {
+    const g = document.createElement("div");
+    g.className = "lights";
+    g.setAttribute("aria-hidden", "true");
+    // cable: dos curvas que cuelgan (de borde a centro y de centro a borde)
+    g.innerHTML = '<svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0 3 Q25 40 50 3 Q75 40 100 3" /></svg>';
+    const y = (t) => (1 - t) * (1 - t) * 3 + 2 * (1 - t) * t * 40 + t * t * 3; // altura del cable (de 0 a 40)
+    [0, 50].forEach((x0) => {
+      for (let k = 1; k <= 7; k++) {
+        const t = k / 8.2 + .02, b = document.createElement("span");
+        b.className = "bulb";
+        b.style.left = (x0 + t * 50) + "%";
+        b.style.top = (y(t) / 40 * 100) + "%";
+        b.style.animationDelay = -(Math.random() * 3) + "s";
+        b.style.animationDuration = (1.8 + Math.random() * 2.2) + "s";
+        g.appendChild(b);
+      }
+    });
+    sec.prepend(g);
+  };
+  let n = 0;
+  document.querySelectorAll("main .section").forEach((sec) => {
+    const cont = document.createElement("div");
+    cont.className = "twinkles";
+    cont.setAttribute("aria-hidden", "true");
+    estrellas(cont, 10, 9);
+    sec.prepend(cont);
+    if (n++ % 2 === 0) guirnalda(sec);
+  });
+  const hero = document.querySelector(".hero");
+  if (hero) { const c = document.createElement("div"); c.className = "twinkles"; c.setAttribute("aria-hidden", "true"); estrellas(c, 9, 10); hero.prepend(c); }
+  if (quieto) document.documentElement.classList.add("sin-titileo");
+}
+
 setupChromeGate();
 setupHeroPaper();
 fillDates();
@@ -889,3 +942,4 @@ setupReveal();
 setupCountdown();
 setupCalendar();
 setupWeather();
+setupLights();
