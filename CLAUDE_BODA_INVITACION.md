@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 11 de noviembre de 2026 (la música empieza al tocar el sello)
+> **Última actualización:** 11 de noviembre de 2026 (sobre más realista con filo dorado y forro de acuarela)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -51,7 +51,7 @@ siempre; cambian el estilo y las flores:
 
 ### Qué tiene la invitación (en orden)
 1. **Aviso para Samsung Internet**: pantalla vino y dorado con botón "Abrir en Chrome" (Samsung oscurece la página a la fuerza) y opción "Continuar aquí".
-2. **Sobre animado** sobre el fondo de acuarela, con sello de cera marfil y el logo DD; al tocarlo se abre, sale la carta y caen pétalos. La música ("Can You Feel the Love Tonight" en piano) empieza al tocar el sello.
+2. **Sobre animado** realista (papel de algodón, pliegues, filo dorado y forro de acuarela) sobre el fondo de acuarela, con sello de cera marfil y el logo DD; al tocarlo se abre, sale la carta y caen pétalos. La música ("Can You Feel the Love Tonight" en piano) empieza al tocar el sello.
 3. **Portada**: marco dorado doble, monograma D&D, "Con la bendición de Dios y de nuestras familias", nombres en caligrafía, fecha y lugar, ramas de orquídeas animadas.
 4. **Tarjeta del invitado**: cita de Cantar de los Cantares 3, 4 («Encontré al que ama mi alma; lo abracé y no lo soltaré.»), nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
@@ -397,7 +397,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `ecc2da9` | 2026-11-10 | Se quita la sección **"Nuestra historia"** (galería de fotos) de la invitación, con sus estilos |
 | `f9728f0` | 2026-11-11 | Canción de fondo: "Can You Feel the Love Tonight" en piano (`assets/cancion.mp3`, recomprimida a 128 kbps: 3 MB); suena al abrir el sobre y se repite |
 | `b746444` | 2026-11-11 | La música intenta sonar **apenas se abre la invitación**; si el celular lo bloquea (lo normal en iPhone y Android), empieza con el **primer toque en cualquier parte**, sin tener que tocar el sello. Si la pausan con el botón, no vuelve a sonar sola. El botón de música se ve también sobre el sobre; el audio se precarga |
-| — | 2026-11-11 | Por decisión de los novios, la música vuelve a empezar **solo al tocar el sello** (sin intentar sonar sola ni con toques en otras partes); el audio ya no se precarga. Se mantiene el botón de pausa visible sobre todo |
+| `8e26d9a` | 2026-11-11 | Por decisión de los novios, la música vuelve a empezar **solo al tocar el sello** (sin intentar sonar sola ni con toques en otras partes); el audio ya no se precarga. Se mantiene el botón de pausa visible sobre todo |
+| — | 2026-11-11 | **Sobre más realista (opción B de 3)**: papel de algodón con textura, pliegues con luz y sombra, sombra de la solapa, filo dorado en la solapa, forro de acuarela por dentro, carta con marco dorado, sello con más relieve y sombra en el piso (bloque "Sobre realista" en `styles.css`) |
 
 ---
 
