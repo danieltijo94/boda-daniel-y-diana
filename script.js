@@ -54,6 +54,20 @@ function fillDates() {
 /* ---------- Invitado personalizado (?i=CODIGO → pestaña "Invitados" de Google Sheets) ---------- */
 let guest = null;
 
+// Trato: si la invitación es para una sola persona se le tutea; si es para varias (o es la invitación
+// general), las frases van en plural. En index.html el texto escrito es el plural y data-tu guarda la versión con tú.
+let tuteo = false;
+const segunTrato = (tu, plural) => (tuteo ? tu : plural);
+function aplicarTrato() {
+  tuteo = !!guest && guest.nombres.length === 1;
+  document.querySelectorAll("[data-tu]").forEach((el) => {
+    if (el.dataset.ustedes === undefined) el.dataset.ustedes = el.innerHTML;
+    el.innerHTML = tuteo ? el.dataset.tu : el.dataset.ustedes;
+  });
+  fillDates();
+  if (typeof consejoClima === "function") consejoClima();
+}
+
 function showGuest() {
   const pases = guest.nombres.length;
   $("#guestName").textContent = guest.familia;
@@ -63,6 +77,7 @@ function showGuest() {
   $("#passesNum").textContent = pases;
   $("#passesText").textContent = pases === 1 ? "pase reservado" : "pases reservados";
   $("#passesBox").hidden = false;
+  aplicarTrato();
 }
 
 async function fillGuest() {
@@ -89,6 +104,7 @@ async function fillGuest() {
       showGuest();
     } else if (r.error === "no existe") {
       guest = null;
+      aplicarTrato();
       try { localStorage.removeItem(key); } catch { /* ignorar */ }
     }
   } catch { /* sin conexión: se queda con lo guardado, o la invitación general */ }
@@ -221,7 +237,7 @@ function setupCalendar() {
   url.searchParams.set("text", "Boda de Daniel Alejandro & Diana Carolina 💍");
   url.searchParams.set("dates", `${fmt(weddingDate)}/${fmt(end)}`);
   url.searchParams.set("location", CONFIG.lugarCalendario);
-  url.searchParams.set("details", "¡Te esperamos para celebrar nuestro amor! Ubicación: https://maps.app.goo.gl/DuaCmXVdwyJRUusX6");
+  url.searchParams.set("details", segunTrato("¡Te esperamos", "¡Los esperamos") + " para celebrar nuestro amor! Ubicación: https://maps.app.goo.gl/DuaCmXVdwyJRUusX6");
   $("#calendarBtn").href = url.toString();
 }
 
@@ -300,7 +316,7 @@ function whatsappButtons(box, intro) {
     a.target = "_blank";
     a.rel = "noopener";
     a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>';
-    a.append(`Escribe a ${nombre}`);
+    a.append(segunTrato(`Escribe a ${nombre}`, `Escríbanle a ${nombre}`));
     return a;
   });
   box.replaceChildren();
@@ -426,9 +442,10 @@ function setupRSVP() {
     done.hidden = false;
     $("#rsvpDoneTitle").textContent = van.length ? "¡Gracias por confirmar!" : "¡Gracias por avisarnos!";
     $("#rsvpDoneText").textContent = !van.length
-      ? "Te vamos a extrañar. Gracias por acompañarnos con tu cariño."
+      ? segunTrato("Te vamos a extrañar. Gracias por acompañarnos con tu cariño.", "Los vamos a extrañar. Gracias por acompañarnos con su cariño.")
       : !guest ? "Te esperamos con mucha ilusión para celebrar juntos."
-      : `Te esperamos con mucha ilusión a ${juntar(van)}.` + (noVan.length ? ` Extrañaremos a ${juntar(noVan)}.` : "");
+      : tuteo ? "¡Te esperamos con mucha ilusión!"
+      : `Esperamos con mucha ilusión a ${juntar(van)}.` + (noVan.length ? ` Extrañaremos a ${juntar(noVan)}.` : "");
   };
 
   const doneWhen = $("#rsvpDoneWhen");
@@ -489,9 +506,9 @@ function setupRSVP() {
     if (!done.hidden) {
       doneWhen.textContent = "El plazo para cambiar la respuesta ya terminó.";
       doneWhen.hidden = false;
-      $("#rsvpDoneWa").hidden = !whatsappButtons($("#rsvpDoneWa"), "¿Algún cambio de último momento? Escríbenos:");
+      $("#rsvpDoneWa").hidden = !whatsappButtons($("#rsvpDoneWa"), segunTrato("¿Algún cambio de último momento? Escríbenos:", "¿Algún cambio de último momento? Escríbannos:"));
     } else {
-      whatsappButtons($("#rsvpClosedWa"), "Si necesitas hablar con nosotros, escríbenos:");
+      whatsappButtons($("#rsvpClosedWa"), segunTrato("Si necesitas hablar con nosotros, escríbenos:", "Si necesitan hablar con nosotros, escríbannos:"));
       $("#rsvpClosed").hidden = false;
     }
     return;
@@ -632,6 +649,18 @@ function iconoClima({ codigo, lluvia, noche }) {
   return noche ? "luna" : "sol";
 }
 
+// Consejo según el clima (se vuelve a escribir si cambia el trato: tú o plural)
+let ultimoClima = null;
+function consejoClima() {
+  if (!ultimoClima) return;
+  const { minima, lluvia } = ultimoClima;
+  const consejos = [];
+  if (minima <= 13) consejos.push(`La noche será fría (${Math.round(minima)} °C): ${segunTrato("lleva", "lleven")} un abrigo o chal elegante.`);
+  if (lluvia >= 40) consejos.push(`Podría llover: ${segunTrato("ten", "tengan")} a mano un paraguas.`);
+  if (!consejos.length) consejos.push("¡Pinta para una noche perfecta!");
+  $("#wTip").textContent = consejos.join(" ");
+}
+
 function pintarClima({ titulo, franjas, nota }) {
   $("#wKicker").textContent = titulo;
   $("#wSlots").innerHTML = franjas.map((f) => `
@@ -641,13 +670,11 @@ function pintarClima({ titulo, franjas, nota }) {
       <span class="w-temp">${Math.round(f.temp)}°</span>
       <span class="w-rain">☂ ${Math.round(f.lluvia)}%</span>
     </div>`).join("");
-  const minima = Math.min(...franjas.map((f) => f.temp));
-  const lluvia = Math.max(...franjas.map((f) => f.lluvia));
-  const consejos = [];
-  if (minima <= 13) consejos.push(`La noche será fría (${Math.round(minima)} °C): lleva un abrigo o chal elegante.`);
-  if (lluvia >= 40) consejos.push("Podría llover: ten a mano un paraguas.");
-  if (!consejos.length) consejos.push("¡Pinta para una noche perfecta!");
-  $("#wTip").textContent = consejos.join(" ");
+  ultimoClima = {
+    minima: Math.min(...franjas.map((f) => f.temp)),
+    lluvia: Math.max(...franjas.map((f) => f.lluvia)),
+  };
+  consejoClima();
   $("#wNote").textContent = nota;
   $("#weatherCard").classList.add("ready");
 }
@@ -792,7 +819,7 @@ function setupWeddingDay() {
       $("#nowLabel").textContent = `Empezamos a las ${primero.hora}`;
       $("#nowIcon").innerHTML = primero.icono;
       $("#nowWhat").textContent = primero.que;
-      $("#nowNext").textContent = `Faltan ${falta(primero.min - ahora)} · ¡Te esperamos!`;
+      $("#nowNext").textContent = `Faltan ${falta(primero.min - ahora)} · ${segunTrato("¡Te esperamos!", "¡Los esperamos!")}`;
       $("#nowBar").style.width = "0%";
       return;
     }
