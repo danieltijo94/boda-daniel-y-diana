@@ -103,18 +103,12 @@ function setupIntro() {
   let opened = false;
   let pausadaPorUsuario = false;
 
-  // La música intenta sonar apenas se abre la invitación. Los celulares no dejan sonar audio
-  // hasta que la persona toca la pantalla, así que si lo bloquean, empieza con el primer toque
-  // en cualquier parte (no hace falta tocar el sello).
-  const eventos = ["pointerdown", "touchend", "click", "keydown"];
-  const quitar = () => eventos.forEach((e) => document.removeEventListener(e, sonar, true));
+  // La música empieza cuando el invitado toca el sello (los celulares solo dejan sonar audio tras un toque)
   function sonar() {
     if (pausadaPorUsuario || !music.paused) return;
     music.volume = 0.6;
-    music.play().then(() => { btn.hidden = false; btn.classList.remove("paused"); quitar(); }).catch(() => { /* aún bloqueada o sin archivo */ });
+    music.play().then(() => { btn.hidden = false; btn.classList.remove("paused"); }).catch(() => { /* sin archivo de música */ });
   }
-  eventos.forEach((e) => document.addEventListener(e, sonar, true));
-  sonar();
 
   const open = () => {
     if (opened) return;
