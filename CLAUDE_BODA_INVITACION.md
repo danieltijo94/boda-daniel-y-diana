@@ -313,6 +313,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
   (no salón libre); pensado para **computador**. Protegido con `CLAVE_NOVIOS` (solo en Apps Script).
 - **El código es la llave**: una sola respuesta por invitación, guardada en la hoja y visible/editable desde cualquier celular.
 - **Pase QR de entrada (punto 4): omitido** por decisión del usuario.
+- **Trato (nov. 2026):** una persona → tú; varias personas o invitación general → plural (ustedes). Todo texto nuevo dirigido al invitado debe tener las dos versiones (`data-tu` en el HTML o `segunTrato()` en JS).
+- **Música (nov. 2026):** empieza solo al tocar el sello (decisión de los novios).
 - **Diseño (oct. 2026):** se pasó de orquídeas rosadas a **rosas + marfil + sello vino**, inspirado en una referencia
   de papel artesanal con dorados. Se probaron ilustraciones antes de cambiar la invitación. Decisiones: nombres en
   **cursiva vino**; **sin marco** y **sin esquina rasgada** (borde suave en los cuatro lados); un solo ramo abajo a la
