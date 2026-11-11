@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 11 de noviembre de 2026 (arreglo: el cuadro del clima siempre aparece)
+> **Última actualización:** 11 de noviembre de 2026 (orden de colores, texto de regalos y aviso de solo adultos)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -71,8 +71,8 @@ siempre; cambian el estilo y las flores:
    valet parking bajo la responsabilidad de cada invitado, conductor elegido contratable en el lugar con costo adicional,
    y la celebración termina a las 12:00 de la noche.
 9. **Itinerario**: 4:00 Coffee time · 5:00 Ceremonia religiosa · 6:00 Brindis · 6:30 Cena · 7:30 ¡A celebrar! · 12:00 a.m. Fin de la celebración
-10. **Código de vestimenta**: Formal + colores reservados.
-11. **Regalos**: texto de lluvia de sobres.
+10. **Código de vestimenta**: Formal + colores reservados: Blanco (la novia), Azul noche (el novio), Burdeos (damas de honor).
+11. **Regalos**: «Su obsequio será recibido con enorme gratitud en la lluvia de sobres que dispondremos durante la recepción.»
 12. **Comparte tus fotos**: QR + botón hacia `fotos.html`.
 13. **Confirma tu asistencia** (formulario dentro de la invitación):
     - **Con código:** una tarjeta por persona con **Asistirá / No podrá** (atajos "Todos asistiremos" /
@@ -399,7 +399,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `b746444` | 2026-11-11 | La música intenta sonar **apenas se abre la invitación**; si el celular lo bloquea (lo normal en iPhone y Android), empieza con el **primer toque en cualquier parte**, sin tener que tocar el sello. Si la pausan con el botón, no vuelve a sonar sola. El botón de música se ve también sobre el sobre; el audio se precarga |
 | `8e26d9a` | 2026-11-11 | Por decisión de los novios, la música vuelve a empezar **solo al tocar el sello** (sin intentar sonar sola ni con toques en otras partes); el audio ya no se precarga. Se mantiene el botón de pausa visible sobre todo |
 | `e356a7f` | 2026-11-11 | **Sobre más realista (opción B de 3)**: papel de algodón con textura, pliegues con luz y sombra, sombra de la solapa, filo dorado en la solapa, forro de acuarela por dentro, carta con marco dorado, sello con más relieve y sombra en el piso (bloque "Sobre realista" en `styles.css`) |
-| — | 2026-11-11 | **Arreglo del clima**: el cuadro de horas desaparecía si fallaba cualquiera de las 5 consultas de años pasados a Open-Meteo (por ejemplo, por límite de consultas). Ahora usa los años que sí llegan, los guarda en el celular (`localStorage`, no cambian) y, si no llega ninguno, muestra valores típicos de junio en la sabana (17°, 15°, 12°, 10°). El pronóstico real sigue apareciendo 15 días antes de la boda |
+| `13e4bb5` | 2026-11-11 | **Arreglo del clima**: el cuadro de horas desaparecía si fallaba cualquiera de las 5 consultas de años pasados a Open-Meteo (por ejemplo, por límite de consultas). Ahora usa los años que sí llegan, los guarda en el celular (`localStorage`, no cambian) y, si no llega ninguno, muestra valores típicos de junio en la sabana (17°, 15°, 12°, 10°). El pronóstico real sigue apareciendo 15 días antes de la boda |
+| — | 2026-11-11 | Código de vestimenta en orden Blanco (novia) → Azul noche (novio) → Burdeos (damas); nuevo texto de regalos («Su obsequio será recibido con enorme gratitud en la lluvia de sobres que dispondremos durante la recepción.»); "Evento solo para adultos" más notorio: recuadro con doble filo dorado, ícono de copas y letra más grande |
 
 ---
 
