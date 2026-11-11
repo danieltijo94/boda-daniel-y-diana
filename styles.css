@@ -166,7 +166,7 @@ main {
 
 /* =================== MÚSICA =================== */
 .music-btn {
-  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  position: fixed; right: 16px; bottom: 16px; z-index: 110;
   width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--gold-light); cursor: pointer;
   background: rgba(255, 255, 255, .9); backdrop-filter: blur(6px);
   box-shadow: 0 6px 20px rgba(55, 50, 42, .2);

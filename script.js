@@ -101,15 +101,27 @@ function setupIntro() {
   const music = $("#music");
   const btn = $("#musicBtn");
   let opened = false;
+  let pausadaPorUsuario = false;
+
+  // La música intenta sonar apenas se abre la invitación. Los celulares no dejan sonar audio
+  // hasta que la persona toca la pantalla, así que si lo bloquean, empieza con el primer toque
+  // en cualquier parte (no hace falta tocar el sello).
+  const eventos = ["pointerdown", "touchend", "click", "keydown"];
+  const quitar = () => eventos.forEach((e) => document.removeEventListener(e, sonar, true));
+  function sonar() {
+    if (pausadaPorUsuario || !music.paused) return;
+    music.volume = 0.6;
+    music.play().then(() => { btn.hidden = false; btn.classList.remove("paused"); quitar(); }).catch(() => { /* aún bloqueada o sin archivo */ });
+  }
+  eventos.forEach((e) => document.addEventListener(e, sonar, true));
+  sonar();
 
   const open = () => {
     if (opened) return;
     opened = true;
     intro.classList.add("opening");
     burst(intro.querySelector(".intro-petals"), 40);
-
-    music.volume = 0.6;
-    music.play().then(() => { btn.hidden = false; }).catch(() => { /* sin archivo de música */ });
+    sonar();
 
     setTimeout(() => {
       intro.classList.add("hide");
@@ -123,8 +135,8 @@ function setupIntro() {
   env.addEventListener("click", open);
 
   btn.addEventListener("click", () => {
-    if (music.paused) { music.play(); btn.classList.remove("paused"); }
-    else { music.pause(); btn.classList.add("paused"); }
+    if (music.paused) { pausadaPorUsuario = false; music.play(); btn.classList.remove("paused"); }
+    else { pausadaPorUsuario = true; music.pause(); btn.classList.add("paused"); }
   });
 }
 
