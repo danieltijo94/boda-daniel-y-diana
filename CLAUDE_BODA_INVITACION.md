@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 11 de noviembre de 2026 (sobre más realista con filo dorado y forro de acuarela)
+> **Última actualización:** 11 de noviembre de 2026 (arreglo: el cuadro del clima siempre aparece)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -398,7 +398,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `f9728f0` | 2026-11-11 | Canción de fondo: "Can You Feel the Love Tonight" en piano (`assets/cancion.mp3`, recomprimida a 128 kbps: 3 MB); suena al abrir el sobre y se repite |
 | `b746444` | 2026-11-11 | La música intenta sonar **apenas se abre la invitación**; si el celular lo bloquea (lo normal en iPhone y Android), empieza con el **primer toque en cualquier parte**, sin tener que tocar el sello. Si la pausan con el botón, no vuelve a sonar sola. El botón de música se ve también sobre el sobre; el audio se precarga |
 | `8e26d9a` | 2026-11-11 | Por decisión de los novios, la música vuelve a empezar **solo al tocar el sello** (sin intentar sonar sola ni con toques en otras partes); el audio ya no se precarga. Se mantiene el botón de pausa visible sobre todo |
-| — | 2026-11-11 | **Sobre más realista (opción B de 3)**: papel de algodón con textura, pliegues con luz y sombra, sombra de la solapa, filo dorado en la solapa, forro de acuarela por dentro, carta con marco dorado, sello con más relieve y sombra en el piso (bloque "Sobre realista" en `styles.css`) |
+| `e356a7f` | 2026-11-11 | **Sobre más realista (opción B de 3)**: papel de algodón con textura, pliegues con luz y sombra, sombra de la solapa, filo dorado en la solapa, forro de acuarela por dentro, carta con marco dorado, sello con más relieve y sombra en el piso (bloque "Sobre realista" en `styles.css`) |
+| — | 2026-11-11 | **Arreglo del clima**: el cuadro de horas desaparecía si fallaba cualquiera de las 5 consultas de años pasados a Open-Meteo (por ejemplo, por límite de consultas). Ahora usa los años que sí llegan, los guarda en el celular (`localStorage`, no cambian) y, si no llega ninguno, muestra valores típicos de junio en la sabana (17°, 15°, 12°, 10°). El pronóstico real sigue apareciendo 15 días antes de la boda |
 
 ---
 

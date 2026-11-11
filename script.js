@@ -671,11 +671,23 @@ async function climaTipico() {
   const { lat, lon } = CONFIG.clima;
   const hoy = new Date().getFullYear();
   const anios = [1, 2, 3, 4, 5].map((n) => hoy - n);
-  const datos = await Promise.all(anios.map(async (y) => {
+  // Si falla algún año (el servicio a veces limita las consultas) se usan los que sí llegaron;
+  // los datos de años pasados no cambian, así que se guardan en el celular para no volver a pedirlos.
+  const cache = (y, v) => { try { if (v) localStorage.setItem("climaJunio" + y, JSON.stringify(v)); else return JSON.parse(localStorage.getItem("climaJunio" + y)); } catch { return null; } };
+  const res = await Promise.allSettled(anios.map(async (y) => {
+    const guardado = cache(y);
+    if (guardado && guardado.time) return guardado;
     const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}` +
       `&start_date=${y}-06-12&end_date=${y}-06-27&hourly=temperature_2m,precipitation&timezone=America%2FBogota`;
-    return (await (await fetch(url)).json()).hourly;
+    const h = (await (await fetch(url)).json()).hourly;
+    if (!h || !h.time) throw new Error("sin datos");
+    cache(y, h);
+    return h;
   }));
+  const datos = [], aniosOk = [];
+  res.forEach((r, k) => { if (r.status === "fulfilled") { datos.push(r.value); aniosOk.push(anios[k]); } });
+  if (!datos.length) throw new Error("sin datos del clima");
+  anios.splice(0, anios.length, ...aniosOk);
   return CLIMA_HORAS.map(([hh, nombre, noche, sig]) => {
     let temp = 0, n = 0, conLluvia = 0;
     datos.forEach((h, k) => {
@@ -724,9 +736,13 @@ async function setupWeather() {
         `El pronóstico real para la boda aparecerá aquí desde el ${desdeTexto}.`,
     });
   } catch {
-    $("#wKicker").textContent = `El clima en ${lugar} en junio`;
-    $("#wTip").textContent = "Las tardes suelen ser frescas y las noches frías: te recomendamos llevar un abrigo o chal elegante.";
-    $("#weatherCard").classList.add("ready");
+    // Sin conexión con el servicio del clima: valores típicos de la sabana de Bogotá a mediados de junio
+    const fijos = [[17, 25], [15, 25], [12, 20], [10, 15]];
+    pintarClima({
+      titulo: `Así suele estar el clima en ${lugar} a mediados de junio`,
+      franjas: CLIMA_HORAS.map(([hh, nombre, noche], i) => ({ nombre, noche, temp: fijos[i][0], lluvia: fijos[i][1] })),
+      nota: `Valores típicos de la temporada. El pronóstico real para la boda aparecerá aquí desde el ${desdeTexto}.`,
+    });
   }
 }
 
