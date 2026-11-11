@@ -2,7 +2,7 @@
 
 Documento de seguimiento del proyecto: qué se hizo, cómo funciona, qué falta y la última versión de cada pieza.
 
-> **Última actualización:** 10 de noviembre de 2026 (se quitó la sección "Nuestra historia")
+> **Última actualización:** 11 de noviembre de 2026 (canción de fondo: "Can You Feel the Love Tonight" en piano)
 > **Rama de trabajo:** `claude/tender-cerf-3qmwm1` (es la que publica GitHub Pages)
 
 ---
@@ -51,7 +51,7 @@ siempre; cambian el estilo y las flores:
 
 ### Qué tiene la invitación (en orden)
 1. **Aviso para Samsung Internet**: pantalla vino y dorado con botón "Abrir en Chrome" (Samsung oscurece la página a la fuerza) y opción "Continuar aquí".
-2. **Sobre animado** rosado con sello de cera "D&D"; al tocarlo se abre, sale la carta, caen pétalos y suena la música.
+2. **Sobre animado** sobre el fondo de acuarela, con sello de cera marfil y el logo DD; al tocarlo se abre, sale la carta, caen pétalos y suena la música ("Can You Feel the Love Tonight" en piano).
 3. **Portada**: marco dorado doble, monograma D&D, "Con la bendición de Dios y de nuestras familias", nombres en caligrafía, fecha y lugar, ramas de orquídeas animadas.
 4. **Tarjeta del invitado**: cita de Cantar de los Cantares 3, 4 («Encontré al que ama mi alma; lo abracé y no lo soltaré.»), nombre de la familia y número de pases.
 5. **Cuenta regresiva** + botón "Agendar en mi calendario" (Google Calendar).
@@ -114,7 +114,7 @@ Pétalos de rosa y destellos dorados cayendo.
 | `fotos.html` | Página del QR: **sube fotos y videos a la carpeta "Fotos boda – invitados" de Drive** sin cuenta de Google (reduce las fotos a 2560 px; videos hasta 45 MB; nombre del archivo con la familia y la hora) y botón "Ver las fotos de todos" |
 | `qr-mesa.html` | Tarjeta A6 para imprimir con el QR de fotos |
 | `assets/qr-fotos.svg` | Código QR (apunta a `fotos.html`, nunca cambia) |
-| `assets/cancion.mp3` | Música de fondo (**pendiente**) |
+| `assets/cancion.mp3` | Música de fondo: "Can You Feel the Love Tonight" (El Rey León) en piano, versión de Riyandi Kusuma (3:12, se repite; 128 kbps, 3 MB) |
 | `google-apps-script/Code.gs` | Script de confirmaciones (cuenta de Daniel, en la hoja) |
 | `google-apps-script/Playlist-pareja.gs` | Script de la playlist (cuenta de la pareja, dueña de la playlist) |
 | `google-apps-script/appsscript-pareja.json` | Manifiesto para activar YouTube en el script de la pareja |
@@ -193,7 +193,7 @@ GitHub Pages publica la rama `claude/tender-cerf-3qmwm1` (Settings → Pages). C
   una **nueva versión** (ver `INVITADOS-Y-MESAS.md`). Hasta hacerlo, la invitación no muestra el nombre de la familia.
 - [ ] Llenar la columna **Familia** de la Lista de Invitados (quiénes van en la misma invitación) **antes de enviar enlaces**,
   y armar las mesas en `mesas.html` (mesas nuevas empiezan con 10 sillas; se ajustan con − / +).
-- [ ] Canción de fondo (`assets/cancion.mp3`).
+- [x] Canción de fondo (`assets/cancion.mp3`): "Can You Feel the Love Tonight" en piano.
 - [ ] ⚠️ **La primera prueba de fotos falló** (en el Drive no existe la carpeta "Fotos boda – invitados": falta el permiso de Drive
   o publicar la nueva versión).
 - [ ] Activar las **fotos en Drive**: pegar el nuevo `Code.gs`, ejecutar `probarFotos` (acepta el permiso de Drive) y publicar una nueva versión (ver `FOTOS.md`).
@@ -394,7 +394,8 @@ la canción, la fecha de respuesta y los nombres escritos para los acompañantes
 | `78ade10` | 2026-11-10 | **Sello del sobre: cera marfil con el logo nuevo** (opción B): "DD" caligráfica dorada, aro, coronita de hojas y faroles diminutos; tamaño 86 px. El símbolo `sealMono` ahora lo dibuja `selloLogo(..., "marfil")`; se quitaron las otras 3 propuestas |
 | `5341fab` | 2026-11-10 | **Mismo estilo en todas las páginas adicionales** (panel de los novios, plano de mesas, enlaces de invitados, subida de fotos, tarjeta QR y ventana de clave): nuevo `tema.css` compartido con los colores y fuentes (sacados de `styles.css`) y el fondo de acuarela (`.pg-fondo`); logo DD y separador de flores en imagen (`assets/logo-dd.webp`, `assets/separador.webp`); QR en negro carbón. Regla nueva en `CLAUDE.md`: todo cambio de diseño se aplica también a estas páginas |
 | `8c3b377` | 2026-11-10 | Nueva cita bíblica: «Encontré al que ama mi alma; lo abracé y no lo soltaré.» (Cantar de los Cantares 3, 4), en vez de Cantares 8:7 |
-| — | 2026-11-10 | Se quita la sección **"Nuestra historia"** (galería de fotos) de la invitación, con sus estilos |
+| `ecc2da9` | 2026-11-10 | Se quita la sección **"Nuestra historia"** (galería de fotos) de la invitación, con sus estilos |
+| — | 2026-11-11 | Canción de fondo: "Can You Feel the Love Tonight" en piano (`assets/cancion.mp3`, recomprimida a 128 kbps: 3 MB); suena al abrir el sobre y se repite |
 
 ---
 

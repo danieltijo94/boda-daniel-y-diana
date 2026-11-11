@@ -1,3 +1,5 @@
-Pon aquí:
-- cancion.mp3  -> la canción que sonará al abrir el sobre
-- tus fotos (foto1.jpg, foto2.jpg, ...) para la galería
+Imágenes y audio de la invitación:
+- cancion.mp3 -> la canción que suena al abrir el sobre ("Can You Feel the Love Tonight", piano)
+- fondo-portada.webp/.jpg -> fondo de acuarela de la portada y el sobre
+- logo-dd.webp, separador.webp -> logo DD y separador de flores (para las páginas adicionales)
+- qr-fotos.svg -> código QR que lleva a fotos.html
